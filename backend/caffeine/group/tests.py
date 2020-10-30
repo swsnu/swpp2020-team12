@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
-from .models import Group
-from .models import StudyRoom
-from user.models import User
 import datetime
 import json
+from django.test import TestCase, Client
+from user.models import User
+from .models import Group
+from .models import StudyRoom
+
 
 
 # Create your tests here.
@@ -18,8 +19,8 @@ class GroupTestCase(TestCase):
                                       time=datetime.timedelta(hours=15, minutes=20))
         group1.members.add(user1, user2)
         group2.members.add(user2, user3)
-        studyRoom1 = StudyRoom.objects.create(group=group1)  # 다른 그룹의 user들은 못들어오게 짜야하지 않나??
-        studyRoom1.active_members.add(user1)
+        study_room1 = StudyRoom.objects.create(group=group1)  # 다른 그룹의 user들은 못들어오게 짜야하지 않나??
+        study_room1.active_members.add(user1)
 
     def test_group_count(self):
         self.assertEqual(Group.objects.all().count(), 2)

@@ -5,12 +5,12 @@ matrix:
         sonarcloud:
           organization: "swsnu"
           token:
-          secure: "t5eUDIAGLgJOMNPoYfzsafJyIeKf9eoJHz9hSCPmw93P3oId6SDZeLBrLYi94/uUw1HUixUmEoyqg9t+YU1NBZPXZ39w/aUzLPzD5Z+2RE7dT9cZyDHfbxUXK4KJjq53o2awGLL7QXGTq+/izVWrFcbkHRjxdUpACpVUV3w6BeHxSdMEQGDUIl0M/2kD0zRUlnKJkBKWb9wQN8o3NJxd+ciNOD6OmU6yoZqiLrg8sU9AjZ4VLdKi5qXy6pE4+IWfXpX0CgvlakLiztLKptG64IHSbaPF7QnFqeoK4KhJS8xEewVxpSlHn6dIpFVxhInajJqGcmpFN8kmM0UPyYec/7qVEiVmC8aRfd6Q1Y/1q31+k27mFDosrNnp2unywLOjnX8hd4Oqf5o4++Ofq1ozG+9P7BZkBPyn8wJcT+bLwMXS5t37CoRlaLaSuavlG3XXJf71Vit+7QWZMopX5N7fML5PQ2Zcda5QgQeJfeeBjIwuf0eaIon5dN48RXObluqBsE6PwM3dWjjcg3fo18TQCjKonesOaXsnRKECKEHVTZIlZaJ22hBB9ndshMUs/kEWK18vKuwoM3XqB5yljK0fPG9p0+IIpajPfFxJ8uZlyFRKP5YdKdMa9YeN/GklatkDEhokpmDOzlZ7Md+aU831OK2eIH2Zl6/6Hx0ZLgjOX94="
+            secure: "sAOoSZYxDtPECH9afwdNK9hTDHSuHpaLPWvLd5p+/RVXKZoBXzyujKo6VnOm3Uemlmh0edL6lbnGfmX9WWJOobaKXSctWC3iYXVZMJjgFA4PpdVbztq0KkqZ1RwXTfvLVHmpVPCvI8Ay8CXlhDyX6lZc805q5T76AEGjPHz4yPIBho83KxM/eLKknefbphvZd5Rbbcji1Z7CwJPk6C4s6zEFRwEjgH1lV3uu/qprisL+uJeGIipSu/Udfh3ynu+RAnp3Tute/Fc8IBvwHh/X2TDQ9kHc6rdPLRwPzbNALiP9VAAlxkVIy13HY2fC8E1rAV1Wgy320e10cg8Of/LZufYmhvpqGS7DjajyNXuYKuNgWj3tg7KAeHM36hcooqnNRzf61ApD3ZkEQrhS2tXx+s3HqZUAmXCxt2dkx9PPSKe8UcpRwtgsfMbXWWoOvq/AMGLWM8pBlJeea5L83EgGq9CBpC0Mi/JgWF+661pUcsNagjyVTyU9rEh58lHtAYGqE9pQTCOlUgOlVN8+XzAwNYrj31SnXvtB1Gi1rj/GCgWYJMB7eSh7f2GAocaW44xTgHlP7VTT3ruxJ8Xp/eXJZJoUZrL7Kexqctk4KO6e5O+k+cwaZy4y43rfNu0xjuU9Hx4tJOZRnN3KKyLjdA2eDNKVeWbSvq7bYhdp7tZGqiQ="
       node_js: '12'
       cache:
-        -  yarn: true
+        - yarn: true
       before_install:
-        -  cd frontend
+        - cd frontend
       install:
         - yarn install
       script:

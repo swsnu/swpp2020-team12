@@ -1,13 +1,38 @@
 matrix:
   include:
     - language: node_js
+      node_js: '12'
       addons:
         sonarcloud:
           organization: "swsnu"
           token:
-            secure: "aB6wC/+IKI9klJ/ZybfXZxzst0imT93P3rP/8CMrUl43dmyQj7RgiF4iVyiXuGuzKjIVc1zOcXN1/wy1kdZmSCKjtWbeyR8oQ4hwv1w1cYkA3f1stFCAQm9J93vkp930YNulv/nFwEl+uLkgAfMDCI1b1AykYso/bBhRXCR/slyW1ayVot1JMSvqYU8+cFX7oufSN4FRhbo8cUPW8brmkxNWAn85taDFkb81TRfSOjGbuyYWlGfFSmj6zOivstPJCaYaJopBQDy0SnLPGZuCgMJ0q0VZFbsTIBCq02bjgmCf8CyJdOQqZ4eQiOlw4anm8tC63gknn6IiDuRvCk0P164uLaTrJNjGmq6EUmzGb7HQITpEajCJVBD4sO1I1Yd/n7xpZs5kr65e+K3yiRcotlZ99LJieEIjZxFmjZoo9S3mVptrbANCLwEqgHDL8m7uxOdn3AEIpQQDXs5GvdoD5U6p8YvnvSCOs5UyaOM2yIX5h3rG0QfMPFnlccGiB7ssvrCfXUo/vp+tzPcvcMQi84xglxqnk1QtO6MZirFTbki+sbp64RbbLmYKeeRC6gmeO20wG6iY8wMNj+XUS2legSRJQp8xUZUdMTQMFRdtSrguEWC/RC38pIsK933UWnW7rj1fJYF1tu1G/eyBR4LjUQ7jplBlHiqkBqsTcyeeN3M="
+            secure: "t5eUDIAGLgJOMNPoYfzsafJyIeKf9eoJHz9hSCPmw93P3oId6SDZeLBrLYi94/uUw1HUixUmEoyqg9t+YU1NBZPXZ39w/aUzLPzD5Z+2RE7dT9cZyDHfbxUXK4KJjq53o2awGLL7QXGTq+/izVWrFcbkHRjxdUpACpVUV3w6BeHxSdMEQGDUIl0M/2kD0zRUlnKJkBKWb9wQN8o3NJxd+ciNOD6OmU6yoZqiLrg8sU9AjZ4VLdKi5qXy6pE4+IWfXpX0CgvlakLiztLKptG64IHSbaPF7QnFqeoK4KhJS8xEewVxpSlHn6dIpFVxhInajJqGcmpFN8kmM0UPyYec/7qVEiVmC8aRfd6Q1Y/1q31+k27mFDosrNnp2unywLOjnX8hd4Oqf5o4++Ofq1ozG+9P7BZkBPyn8wJcT+bLwMXS5t37CoRlaLaSuavlG3XXJf71Vit+7QWZMopX5N7fML5PQ2Zcda5QgQeJfeeBjIwuf0eaIon5dN48RXObluqBsE6PwM3dWjjcg3fo18TQCjKonesOaXsnRKECKEHVTZIlZaJ22hBB9ndshMUs/kEWK18vKuwoM3XqB5yljK0fPG9p0+IIpajPfFxJ8uZlyFRKP5YdKdMa9YeN/GklatkDEhokpmDOzlZ7Md+aU831OK2eIH2Zl6/6Hx0ZLgjOX94="
+              node_js: '12'
+              cache:
+                - yarn: true
+              before_install:
+                - cd frontend
+              install:
+                - yarn install
+              script:
+                - ./node_modules/.bin/eslint src/
+                - yarn test --coverage --watchAll=false
+                - cd ..
+                - sonar-scanner
 
-      node_js: '12'
+                - language: python
+                  python: '3.7'
+                  cache:
+                    - pip: true
+                  before_install:
+                    - cd backend/caffeine
+                  install:
+                    - pip install -r requirements.txt
+                  script:
+                    - pylint **/*.py --load-plugins pylint_django
+                    - coverage run --source='.' manage.py test
+                    - coverage xml
+
       cache:
         - yarn: true
       before_install:

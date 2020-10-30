@@ -2,16 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import groupReducer from './store/reducers/groups'
+import { connectRouter, routerMiddleware } from 'connected-react-router'; 
+import { createBrowserHistory } from 'history';
 
+const history = createBrowserHistory();
+const rootReducer = combineReducers({
+  group: groupReducer,
+  router: connectRouter(history)
+});
+const store = createStore(rootReducer,
+  applyMiddleware(logger, thunk, routerMiddleware(history)));
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}> <App history={history} /> </Provider>,
   document.getElementById('root')
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//reportWebVitals();

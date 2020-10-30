@@ -10,7 +10,7 @@ matrix:
       cache:
         - yarn: true
       before_install:
-        - cd frontend
+        - cd frontend/caffeine
       install:
         - yarn install
       script:

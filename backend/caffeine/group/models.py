@@ -20,9 +20,8 @@ class Group(models.Model):
 
 class StudyRoom(models.Model):
     group = models.OneToOneField(Group,
-                              on_delete=models.CASCADE)
-    active_members = models.ManyToManyField(User)                  #group에 속한 user들만 들어올 수 있게 하려면?
-
+                                 on_delete=models.CASCADE)
+    active_members = models.ManyToManyField(User)  # group에 속한 user들만 들어올 수 있게 하려면?
 
     def getActiveUsers(self):
-        return self. active_members
+        return self.active_members

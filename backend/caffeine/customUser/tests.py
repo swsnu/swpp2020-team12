@@ -1,6 +1,7 @@
 from django.test import TestCase
 from .models import CustomUser as User
 
+
 # Create your tests here.
 class UserTestCase(TestCase):
     def setUp(self):  # beforeeach 같은거

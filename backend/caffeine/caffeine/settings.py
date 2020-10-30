@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-AUTH_USER_MODEL = 'customUser.CustomUser' #이게 이상한거같음
+AUTH_USER_MODEL = 'user.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'group.apps.GroupConfig',
-    'customUser.apps.UserConfig',
+    'user.apps.UserConfig',
     'study.apps.StudyConfig',
     'subject.apps.SubjectConfig'
 ]

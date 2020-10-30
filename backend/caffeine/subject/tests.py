@@ -1,6 +1,6 @@
 from django.test import TestCase
 from .models import Subject
-from customUser.models import CustomUser as User
+from user.models import User
 import datetime
 
 

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from .models import Group
 from .models import StudyRoom
-from customUser.models import CustomUser as User
+from user.models import User
 import datetime
 
 

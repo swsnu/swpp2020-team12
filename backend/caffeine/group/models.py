@@ -1,5 +1,5 @@
 from django.db import models
-from customUser.models import CustomUser as User
+from user.models import User
 
 
 # Create your models here.
@@ -8,7 +8,7 @@ class Group(models.Model):
     name = models.CharField(null=False, max_length=64)
     password = models.CharField(null=True, max_length=64)
     description = models.TextField(null=True, blank=True)
-    time = models.DurationField()  # sum of all customUser's daily study time
+    time = models.DurationField()  # sum of all user's daily study time
     members = models.ManyToManyField(User)
 
     def __str__(self):

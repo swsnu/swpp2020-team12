@@ -17,8 +17,8 @@ export const getGroups_ = (groups) =>{
 }
 export const getGroups = () =>{
     return dispatch =>{
-        return axios.get('/group')
-            .then(res => dispatch(SearchGroups_(res.data)));
+        return axios.get('/group/user')
+            .then(res => dispatch(getGroups_(res.data)));
     }
 }
 export const getGroup_ = (group) =>{
@@ -27,7 +27,7 @@ export const getGroup_ = (group) =>{
 export const getGroup = (group_id) =>{
     return dispatch =>{
         return axios.get('/group/'+group_id)
-            .then(res => dispatch(SearchGroups_(res.data)));
+            .then(res => dispatch(getGroup_(res.data)));
     }
 }
 export const deleteGroup_ = (group_id) =>{
@@ -36,7 +36,7 @@ export const deleteGroup_ = (group_id) =>{
 export const deleteGroup = (group_id) =>{
     return dispatch =>{
         return axios.delete('/group/user/'+group_id)
-            .then(() => dispatch(SearchGroups_(group_id)));
+            .then(() => dispatch(deleteGroup_(group_id)));
     }
 }
 export const addGroup_ = (group) =>{

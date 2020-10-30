@@ -26,16 +26,21 @@ class Groups extends Component {
         this.props.history.push('/groups/'+group.id)
     }
     searchHandler = ()=>{
-        this.props.searchedGroupList(this.state.group_name)
+        this.props.SearchGroups(this.state.group_name)
+    }
+    timecounter = (time)=>{
+        const hours=time.split('H')
+        return(hours)
     }
     render() {
+        console.log(this.props.myGroupList)
         const groups = this.props.myGroupList.map(group => {
             return (
                 <Group
                     key={group.id}
                     name={group.name}
                     members={group.members}
-                    averagehours={group.time}
+                    averagehours={this.timecounter(group.time)}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
@@ -43,7 +48,7 @@ class Groups extends Component {
         });
         const searchedgroups = this.props.searchedGroupList.map(group => {
             return (
-               <li id={group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>{group.name} 
+               <li id={'searched'+group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>{group.name} 
                     {group.members} members</li>
             );
         });

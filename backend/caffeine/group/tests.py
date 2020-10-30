@@ -1,8 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .models import Group
 from .models import StudyRoom
 from user.models import User
 import datetime
+import json
 
 
 # Create your tests here.
@@ -25,3 +26,43 @@ class GroupTestCase(TestCase):
 
     def test_studyRoom_count(self):
         self.assertEqual(StudyRoom.objects.count(), 1)
+
+    def test_user_group_list_get(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/user')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [{'description': 'this is description1',
+                                            'id': 1,
+                                            'name': 'team1',
+                                            'time': 'P0DT10H42M00S'},
+                                           {'description': 'this is description2',
+                                            'id': 2,
+                                            'name': 'team2',
+                                            'time': 'P0DT15H20M00S'}
+                                           ])
+
+    def test_user_group_list_post(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.post('/group/user', json.dumps({
+            'description': 'test_descript',
+            'password': '',
+            'name': 'test_team'}), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json(), {
+            'description': 'test_descript',
+            'time': 'P0DT00H00M00S',
+            'name': 'test_team',
+            'id': 3})
+
+  #  def test_user_group_get(self):
+  #      client = Client()
+  #      client.login(username='id2', password='pw2')
+  #      response = client.get('/group/user/2')
+  #      self.assertEqual(response.status_code, 200)
+  #      self.assertEqual(response.json(), [{'description': 'this is description2',
+  #                                          'id': 2,
+  #                                          'name': 'team2',
+  #                                          'time': 'P0DT15H20M00S'}
+  #                                         ])

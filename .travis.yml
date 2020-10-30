@@ -5,7 +5,8 @@ matrix:
         sonarcloud:
           organization: "swsnu"
           token:
-            secure: "sAOoSZYxDtPECH9afwdNK9hTDHSuHpaLPWvLd5p+/RVXKZoBXzyujKo6VnOm3Uemlmh0edL6lbnGfmX9WWJOobaKXSctWC3iYXVZMJjgFA4PpdVbztq0KkqZ1RwXTfvLVHmpVPCvI8Ay8CXlhDyX6lZc805q5T76AEGjPHz4yPIBho83KxM/eLKknefbphvZd5Rbbcji1Z7CwJPk6C4s6zEFRwEjgH1lV3uu/qprisL+uJeGIipSu/Udfh3ynu+RAnp3Tute/Fc8IBvwHh/X2TDQ9kHc6rdPLRwPzbNALiP9VAAlxkVIy13HY2fC8E1rAV1Wgy320e10cg8Of/LZufYmhvpqGS7DjajyNXuYKuNgWj3tg7KAeHM36hcooqnNRzf61ApD3ZkEQrhS2tXx+s3HqZUAmXCxt2dkx9PPSKe8UcpRwtgsfMbXWWoOvq/AMGLWM8pBlJeea5L83EgGq9CBpC0Mi/JgWF+661pUcsNagjyVTyU9rEh58lHtAYGqE9pQTCOlUgOlVN8+XzAwNYrj31SnXvtB1Gi1rj/GCgWYJMB7eSh7f2GAocaW44xTgHlP7VTT3ruxJ8Xp/eXJZJoUZrL7Kexqctk4KO6e5O+k+cwaZy4y43rfNu0xjuU9Hx4tJOZRnN3KKyLjdA2eDNKVeWbSvq7bYhdp7tZGqiQ="
+            secure: "aB6wC/+IKI9klJ/ZybfXZxzst0imT93P3rP/8CMrUl43dmyQj7RgiF4iVyiXuGuzKjIVc1zOcXN1/wy1kdZmSCKjtWbeyR8oQ4hwv1w1cYkA3f1stFCAQm9J93vkp930YNulv/nFwEl+uLkgAfMDCI1b1AykYso/bBhRXCR/slyW1ayVot1JMSvqYU8+cFX7oufSN4FRhbo8cUPW8brmkxNWAn85taDFkb81TRfSOjGbuyYWlGfFSmj6zOivstPJCaYaJopBQDy0SnLPGZuCgMJ0q0VZFbsTIBCq02bjgmCf8CyJdOQqZ4eQiOlw4anm8tC63gknn6IiDuRvCk0P164uLaTrJNjGmq6EUmzGb7HQITpEajCJVBD4sO1I1Yd/n7xpZs5kr65e+K3yiRcotlZ99LJieEIjZxFmjZoo9S3mVptrbANCLwEqgHDL8m7uxOdn3AEIpQQDXs5GvdoD5U6p8YvnvSCOs5UyaOM2yIX5h3rG0QfMPFnlccGiB7ssvrCfXUo/vp+tzPcvcMQi84xglxqnk1QtO6MZirFTbki+sbp64RbbLmYKeeRC6gmeO20wG6iY8wMNj+XUS2legSRJQp8xUZUdMTQMFRdtSrguEWC/RC38pIsK933UWnW7rj1fJYF1tu1G/eyBR4LjUQ7jplBlHiqkBqsTcyeeN3M="
+
       node_js: '12'
       cache:
         - yarn: true

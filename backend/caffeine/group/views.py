@@ -4,7 +4,10 @@ import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Group
-from django.core import serializers
+
+
+# from .serializers import GroupSerializer
+
 
 # Create your views here.
 
@@ -38,16 +41,18 @@ def user_group_list(request):
 def user_group_info(request, group_id):
     """유저의 자기 그룹을 클릭했을 때"""
     # if group member에 request.user가 없다면 403
-   # if request.method == 'GET':
-   #     group = Group.objects.filter(id=group_id).first()  # get 하면 비어있을 때 에러 떠서
-   #     count = group.members.all().count()
-   #     serialized_data = serializers.serialize('json', group.members.all(),
-   #                                             fields=['name', 'message'], indent=4)
-   #     response_dict = {'id': group.id, 'name': group.name, 'count': count,
-   #                      'time': group.time, 'description': group.description,
-   #                      'members': serialized_data}
-   #     return JsonResponse(response_dict, status=200)
-    return HttpResponseNotAllowed(['GET', 'DELETE'])
+    if request.method == 'GET':
+        group = Group.objects.filter(id=group_id).first()
+        count = group.members.count()
+        member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                       for member in group.members.iterator()]
+        response_dict = {'id': group.id, 'name': group.name, 'count': count,
+                         'time': group.time, 'description': group.description,
+                         'members': member_list
+                         }
+        return JsonResponse(response_dict, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
 @csrf_exempt

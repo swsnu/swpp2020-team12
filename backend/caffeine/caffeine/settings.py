@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'customUser.CustomUser' #이게 이상한거같음
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'group.apps.GroupConfig',
+    'customUser.apps.UserConfig',
+    'study.apps.StudyConfig',
+    'subject.apps.SubjectConfig'
 ]
 
 MIDDLEWARE = [

@@ -46,7 +46,6 @@ export const addGroup_ = (group) =>{
         name: group.name,
         description: group.description,
         time: group.time,
-        members: 1,
     };
 }
 export const addGroup= (data) =>{

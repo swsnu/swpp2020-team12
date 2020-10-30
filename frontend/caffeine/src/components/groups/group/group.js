@@ -13,7 +13,7 @@ const Group = (props) => {
             <div className="studytime">
                 Average time: {props.averagehours}
             </div>
-            {props.announcement!==''&&
+            {props.announcement!==null&&
             <div className="announcement">
                 Announcement: {props.announcement}
             </div>

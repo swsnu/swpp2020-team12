@@ -3,20 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import { applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import groupReducer from './store/reducers/groups'
-import { connectRouter, routerMiddleware } from 'connected-react-router'; 
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
-const rootReducer = combineReducers({
-  group: groupReducer,
-  router: connectRouter(history)
-});
-const store = createStore(rootReducer,
-  applyMiddleware(thunk, routerMiddleware(history)));
+import store, { history } from './store/store';
 ReactDOM.render(
   <Provider store={store}> <App history={history} /> </Provider>,
   document.getElementById('root')

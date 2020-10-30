@@ -10,7 +10,6 @@ function App(props) {
       <div className="App" >
         <Switch>
           <Route path='/group' exact component={Group} />
-          <Route render={() => <h1>Not Found</h1>} />
         </Switch>
       </div>
     </ConnectedRouter>

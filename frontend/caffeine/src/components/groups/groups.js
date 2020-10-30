@@ -20,7 +20,7 @@ class Groups extends Component {
     }
     clickGroupHandler = (group)=>{
         this.props.getGroup(group.id)
-        this.setState({isAddopend: true})
+        this.setState({isDeatilopend: true})
     }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/groups/'+group.id)
@@ -28,27 +28,22 @@ class Groups extends Component {
     searchHandler = ()=>{
         this.props.SearchGroups(this.state.group_name)
     }
-    timecounter = (time)=>{
-        const hours=time.split('H')
-        return(hours)
-    }
     render() {
-        console.log(this.props.myGroupList)
         const groups = this.props.myGroupList.map(group => {
             return (
                 <Group
                     key={group.id}
                     name={group.name}
                     members={group.members}
-                    averagehours={this.timecounter(group.time)}
+                    averagehours={group.time}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
             );
         });
-        const searchedgroups = this.props.searchedGroupList.map(group => {
+        const searchedgroups = this.props.searchGroupList.map(group => {
             return (
-               <li id={'searched'+group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>{group.name} 
+               <li key={group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>{group.name} 
                     {group.members} members</li>
             );
         });
@@ -73,7 +68,7 @@ class Groups extends Component {
 const mapStateToProps = state => {
     return {
         myGroupList: state.group.myGroupList,
-        searchedGroupList: state.group.searchGroupList,
+        searchGroupList: state.group.searchGroupList,
         specificGroupInfo: state.group.specificGroupInfo
     };
   }
@@ -84,10 +79,6 @@ const mapDispatchToProps = dispatch => {
             dispatch(actionCreators.SearchGroups(group_name)),
         getAllGroups: () =>
             dispatch(actionCreators.getGroups()),
-        addGroup: (data) =>
-            dispatch(actionCreators.addGroup(data)),
-        deleteGroup: (group_id) =>
-            dispatch(actionCreators.deleteGroup(group_id)),
         getGroup: (group_id) =>
             dispatch(actionCreators.getGroup(group_id))
     }

@@ -56,13 +56,17 @@ class GroupTestCase(TestCase):
             'name': 'test_team',
             'id': 3})
 
-  #  def test_user_group_get(self):
-  #      client = Client()
-  #      client.login(username='id2', password='pw2')
-  #      response = client.get('/group/user/2')
-  #      self.assertEqual(response.status_code, 200)
-  #      self.assertEqual(response.json(), [{'description': 'this is description2',
-  #                                          'id': 2,
-  #                                          'name': 'team2',
-  #                                          'time': 'P0DT15H20M00S'}
-  #                                         ])
+    def test_user_group_get(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/user/2')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'id': 2,
+            'count': 2,
+            'description': 'this is description2',
+            'name': 'team2',
+            'time': 'P0DT15H20M00S',
+            'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
+                        {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
+        })

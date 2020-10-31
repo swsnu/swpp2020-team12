@@ -8,7 +8,7 @@
   ```
   cd frontend/caffeine
   yarn install
-  yarn test  #for testing
+  yarn test --coverage --watchAll=false    #for testing
   yarn start #for running
   ```
 # Back end

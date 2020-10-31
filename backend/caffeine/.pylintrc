@@ -6,15 +6,15 @@
 extension-pkg-whitelist=
 
 # Specify a score threshold to be exceeded before program exits with error.
-fail-under=10.0
+fail-under=100
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=CVS
+ignore=CVS,migrations
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
-ignore-patterns=
+ignore-patterns=manage.py
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
@@ -143,7 +143,10 @@ disable=print-statement,
         missing-class-docstring,
         missing-function-docstring,
         too-many-locals,
-        attribute-defined-outside-init
+        attribute-defined-outside-init,
+        unused-import,
+        wrong-import-order,
+        invalid-name,
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

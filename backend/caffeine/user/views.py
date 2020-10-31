@@ -1,3 +1,4 @@
+'''
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
@@ -6,7 +7,6 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 import json
 
 # Create your views here.
-'''
 @ensure_csrf_cookie
 def token(request):
     if request.method == 'GET':

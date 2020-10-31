@@ -1,7 +1,8 @@
-from django.test import TestCase
-from .models import Subject
-from user.models import User
 import datetime
+from django.test import TestCase
+from user.models import User
+from .models import Subject
+
 
 
 # Create your tests here.
@@ -17,5 +18,5 @@ class SubjectTestCase(TestCase):
         Subject.objects.create(name='team3', description='this is description3',
                                time=datetime.timedelta(hours=11, minutes=00), user=user1)
 
-    def test_Subject_count(self):
+    def test_subject_count(self):
         self.assertEqual(Subject.objects.all().count(), 3)

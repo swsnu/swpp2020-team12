@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
-from .models import Group
-from .models import StudyRoom
-from user.models import User
 import datetime
 import json
+from django.test import TestCase, Client
+from user.models import User
+from .models import Group
+from .models import StudyRoom
+
 
 
 # Create your tests here.
@@ -18,8 +19,8 @@ class GroupTestCase(TestCase):
                                       time=datetime.timedelta(hours=15, minutes=20))
         group1.members.add(user1, user2)
         group2.members.add(user2, user3)
-        studyRoom1 = StudyRoom.objects.create(group=group1)  # 다른 그룹의 user들은 못들어오게 짜야하지 않나??
-        studyRoom1.active_members.add(user1)
+        study_room1 = StudyRoom.objects.create(group=group1)  # 다른 그룹의 user들은 못들어오게 짜야하지 않나??
+        study_room1.active_members.add(user1)
 
     def test_group_count(self):
         self.assertEqual(Group.objects.all().count(), 2)
@@ -56,13 +57,17 @@ class GroupTestCase(TestCase):
             'name': 'test_team',
             'id': 3})
 
-  #  def test_user_group_get(self):
-  #      client = Client()
-  #      client.login(username='id2', password='pw2')
-  #      response = client.get('/group/user/2')
-  #      self.assertEqual(response.status_code, 200)
-  #      self.assertEqual(response.json(), [{'description': 'this is description2',
-  #                                          'id': 2,
-  #                                          'name': 'team2',
-  #                                          'time': 'P0DT15H20M00S'}
-  #                                         ])
+    def test_user_group_get(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/user/2')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'id': 2,
+            'count': 2,
+            'description': 'this is description2',
+            'name': 'team2',
+            'time': 'P0DT15H20M00S',
+            'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
+                        {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
+        })

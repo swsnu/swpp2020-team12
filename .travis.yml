@@ -5,7 +5,7 @@ matrix:
         sonarcloud:
           organization: "swsnu"
           token:
-            secure: "oYNJm9kxRRhPiHjO5cCZHMDTPFRBbA3ThtJ4NQf6HsQlf0nXu+i6o/vZ/aVHgAeLrx1rUwbGzPU94z1tR6A3BihPzWOxnB6+O0zkb/HPwKi6Nt9AZt7/wWv/DT2U9EM17xY5uwYypWO0nVPgolR6CTdrrgNgjkjBQZcmYod1Kb0GaNyAT8yCvbPItgzqdHGYwucNTTkTjYzX8VGts8M4lpdllwKZn8qd299+NYbK5Pp3GlahXBLGcnWizjj3xdWmw97NyBwNWHu/rBKbwwao8AElJJuwQRUEP5FhIR0dYoVwjZZmlKDSo+0gnfswlXJcKP+a9wNazYUwH1c2yC30ZAUzJ0GamHfgMFkZxQtuhyEWbe+SoExPMMqV20JVEmw3xG+b9x/w17+IZpS77nIMLZsPTsVkG1cFdHTCAZemjl55nehnJ3sjNbtHn9fPhhbXPZB48bndtn0o9PUkrJxrct6kX/YGjXbZblj1pnZCHCXyBB+TVW8wUravttfzPfNzCvGoWxC+i4WyPYeEy0lA6/KE0qJtjHSIGCKQoSzMW3QytJtvQD293Ol8LmIFSRLLlfdYVwGpDStUBkhtHV6BgJTFuT+/k7MZJKUr2zTz98dlkjUaUHgNC7oJSE81roiKgJLci+4h45IHvhRWme8WjdokxmeemXr6nwTjSqpAIJE="
+            secure: "TFoQKMBULDkBLHg2DgfhoZw5xosfx8YhXIpuBLFlEu2Nte2tEZR4Ey+/su3fzc3r5ZrJHuncE7fK1z3iHkpxqJ+VmuUwapsOf98Pt7zv5+ukX+/lhxOp6WvocuGjnulAFItYALeEUaMC43oXNVTG/lj+AGfzVXnDjisUK41XN5KToMnSUHkN+ysIkk/NRd8YQ9Bf53kWUc1ZTvbnKwfbKDJ2Xk57tOwv7kiSZ0hMqR5IzMwtD3nFH4W8UyHuNkXsTXmmLEnudlS5/Sxe9ZgdVETKpN/BtFVBbWK68UbHXfAlWLyfpiz6R0oNKGB1a3lGjr3/D+J3YfxuGzSJuWLgci/oMN8D4qskLtPPodyrpo7NzikuqC7DWHTwoLBKAoUMFhiJ2IC5cEvPNK9VsSwIRlOcCELHlwoDRwB6muZe2YUJxPjIb2aWlYdfnqZXJ8hI6dw3LjazhtUf2WAqUlYHhU0ijlHZmMtKY2F8iFSMyJxbMN60Y0ZW9qt7LTKwyBp3zloBBEz9rB29UqLZmvZqs4UW9ILtkKS+s6w4t8FW8R/FfgskE2XyNZfgiaIW52mRlVtAZIixL/13a0cQMyjmb7P1jXDpeEg7mq7VlkHwzNV2KS/4OWCkiaHHtrZaJxmYDGmKnmmDDVozjn3a1S71V81dqWfu6q8q4Lp/jhe5o/A="
       node_js: '12'
       cache:
         - yarn: true
@@ -16,8 +16,6 @@ matrix:
       script:
         #- ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
-        - cd .. && cd ..
-        - sonar-scanner
 
     - language: python
       python: '3.7'
@@ -31,3 +29,5 @@ matrix:
         #- pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage xml
+        - cd .. && cd ..
+        - sonar-scanner

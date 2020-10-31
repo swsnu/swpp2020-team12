@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'group.apps.GroupConfig',
     'user.apps.UserConfig',
     'study.apps.StudyConfig',
-    'subject.apps.SubjectConfig',
+    'subject.apps.SubjectConfig'
 ]
 
 MIDDLEWARE = [

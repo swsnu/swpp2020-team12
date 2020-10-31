@@ -5,7 +5,11 @@ matrix:
         sonarcloud:
           organization: "swsnu"
           token:
+<<<<<<< HEAD
             secure: "oYNJm9kxRRhPiHjO5cCZHMDTPFRBbA3ThtJ4NQf6HsQlf0nXu+i6o/vZ/aVHgAeLrx1rUwbGzPU94z1tR6A3BihPzWOxnB6+O0zkb/HPwKi6Nt9AZt7/wWv/DT2U9EM17xY5uwYypWO0nVPgolR6CTdrrgNgjkjBQZcmYod1Kb0GaNyAT8yCvbPItgzqdHGYwucNTTkTjYzX8VGts8M4lpdllwKZn8qd299+NYbK5Pp3GlahXBLGcnWizjj3xdWmw97NyBwNWHu/rBKbwwao8AElJJuwQRUEP5FhIR0dYoVwjZZmlKDSo+0gnfswlXJcKP+a9wNazYUwH1c2yC30ZAUzJ0GamHfgMFkZxQtuhyEWbe+SoExPMMqV20JVEmw3xG+b9x/w17+IZpS77nIMLZsPTsVkG1cFdHTCAZemjl55nehnJ3sjNbtHn9fPhhbXPZB48bndtn0o9PUkrJxrct6kX/YGjXbZblj1pnZCHCXyBB+TVW8wUravttfzPfNzCvGoWxC+i4WyPYeEy0lA6/KE0qJtjHSIGCKQoSzMW3QytJtvQD293Ol8LmIFSRLLlfdYVwGpDStUBkhtHV6BgJTFuT+/k7MZJKUr2zTz98dlkjUaUHgNC7oJSE81roiKgJLci+4h45IHvhRWme8WjdokxmeemXr6nwTjSqpAIJE="
+=======
+            secure: "J3dfsS+aJQcqt7MS/XmLsiy4ydJ2+HOrTwf9fYMMk6He2jO1S06lRcuEGlpfYMaATbO09K09yNAvnqVyMqWO33YbHTxQq3NUwls8B7klRUfDiatjHYnzu4Gb35WvHNiatc8d0in4fQJcVpeZNVt2VD5J316EwDHvFxMfOUXqbG4UeQKg561euQmAxbNsUL75hmR+WDeO6OHOIAjHKoLShHGJvcrvoY4VvKwpfQ8c7Yh72SC9qP1XP2sk3In25JafuKjcEQy6bZgEC0micMZM69a1SdsbSFAoO6dG7p6JnbsGvfAT7s1E6oGVytaZXd3HKVdHsVsI5Z1dXdM42bl+C9JvWypEup59X5raXBDsUOf42le5HgHqBrNP/G8i95s/XpBHKuu6F2/L+px9FwsmBWaYjN5iyDFogSYGDyPf+xwOa84pgAcvcTVRQUvXeuvZSHK/1IKMLv2lBzFm6EhLhmyrtF0AM09bm0AGqaFgApv3Tvm01Xwa7MGb71xN2AgBc5cocUzSWugqYQWL7I3GZXUdjuXLoHuntF2eCXZG7/bRvG3eJpA4ik0IQCDXQAESfr85hOx+rQppq00nxQJHWpyOh/hff3ybhkfrD7AbkSMI2alM9/oLG7cAKwh23IiRwJWzGWVhUbOvo+2cjqrgpWoE39IyIgYmDe2IsJ4RdSs="
+>>>>>>> 999d35a18941508d1ebf5b87c5db31a02bb1f271
       node_js: '12'
       cache:
         - yarn: true
@@ -16,7 +20,11 @@ matrix:
       script:
         - ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
+<<<<<<< HEAD
         - cd ../..
+=======
+        - cd .. & cd ..
+>>>>>>> 999d35a18941508d1ebf5b87c5db31a02bb1f271
         - sonar-scanner
 
     - language: python

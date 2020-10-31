@@ -30,5 +30,5 @@ matrix:
         - coverage run --source='.' manage.py test
         - coverage xml
         - cd ..
-        - cd ..
+      #  - cd ..
         - sonar-scanner

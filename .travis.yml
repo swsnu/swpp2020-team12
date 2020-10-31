@@ -5,18 +5,18 @@ matrix:
         sonarcloud:
           organization: "swsnu"
           token:
-          secure: "t5eUDIAGLgJOMNPoYfzsafJyIeKf9eoJHz9hSCPmw93P3oId6SDZeLBrLYi94/uUw1HUixUmEoyqg9t+YU1NBZPXZ39w/aUzLPzD5Z+2RE7dT9cZyDHfbxUXK4KJjq53o2awGLL7QXGTq+/izVWrFcbkHRjxdUpACpVUV3w6BeHxSdMEQGDUIl0M/2kD0zRUlnKJkBKWb9wQN8o3NJxd+ciNOD6OmU6yoZqiLrg8sU9AjZ4VLdKi5qXy6pE4+IWfXpX0CgvlakLiztLKptG64IHSbaPF7QnFqeoK4KhJS8xEewVxpSlHn6dIpFVxhInajJqGcmpFN8kmM0UPyYec/7qVEiVmC8aRfd6Q1Y/1q31+k27mFDosrNnp2unywLOjnX8hd4Oqf5o4++Ofq1ozG+9P7BZkBPyn8wJcT+bLwMXS5t37CoRlaLaSuavlG3XXJf71Vit+7QWZMopX5N7fML5PQ2Zcda5QgQeJfeeBjIwuf0eaIon5dN48RXObluqBsE6PwM3dWjjcg3fo18TQCjKonesOaXsnRKECKEHVTZIlZaJ22hBB9ndshMUs/kEWK18vKuwoM3XqB5yljK0fPG9p0+IIpajPfFxJ8uZlyFRKP5YdKdMa9YeN/GklatkDEhokpmDOzlZ7Md+aU831OK2eIH2Zl6/6Hx0ZLgjOX94="
+          secure: "oYNJm9kxRRhPiHjO5cCZHMDTPFRBbA3ThtJ4NQf6HsQlf0nXu+i6o/vZ/aVHgAeLrx1rUwbGzPU94z1tR6A3BihPzWOxnB6+O0zkb/HPwKi6Nt9AZt7/wWv/DT2U9EM17xY5uwYypWO0nVPgolR6CTdrrgNgjkjBQZcmYod1Kb0GaNyAT8yCvbPItgzqdHGYwucNTTkTjYzX8VGts8M4lpdllwKZn8qd299+NYbK5Pp3GlahXBLGcnWizjj3xdWmw97NyBwNWHu/rBKbwwao8AElJJuwQRUEP5FhIR0dYoVwjZZmlKDSo+0gnfswlXJcKP+a9wNazYUwH1c2yC30ZAUzJ0GamHfgMFkZxQtuhyEWbe+SoExPMMqV20JVEmw3xG+b9x/w17+IZpS77nIMLZsPTsVkG1cFdHTCAZemjl55nehnJ3sjNbtHn9fPhhbXPZB48bndtn0o9PUkrJxrct6kX/YGjXbZblj1pnZCHCXyBB+TVW8wUravttfzPfNzCvGoWxC+i4WyPYeEy0lA6/KE0qJtjHSIGCKQoSzMW3QytJtvQD293Ol8LmIFSRLLlfdYVwGpDStUBkhtHV6BgJTFuT+/k7MZJKUr2zTz98dlkjUaUHgNC7oJSE81roiKgJLci+4h45IHvhRWme8WjdokxmeemXr6nwTjSqpAIJE="
       node_js: '12'
       cache:
         - yarn: true
       before_install:
-        - cd frontend
+        - cd frontend/caffeine
       install:
         - yarn install
       script:
-        - ./node_modules/.bin/eslint src/
+        - ../node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
-        - cd ..
+        - cd ../..
         - sonar-scanner
 
     - language: python

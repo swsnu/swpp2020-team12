@@ -4,8 +4,7 @@ matrix:
       addons:
         sonarcloud:
           organization: "swsnu"
-          token:
-            secure: "RydkiaWGaK/B4sTfv8trWNVv4ZT5vZf7VE3WdhSCGMwJmgatMgtFWN+x/e11vYd3J/sik/rdyUo0WgTnQx+KqePiUTrMCFba0jfxEt4MG83lcJWytyFRrBzV7b6XpnOFH1xVVhI9OHhUBrzhEBpkrZPJwHwy9K03ohoMKN7xsHgdEVmcRpNWI2j+oRiU/OHojodF4bV/cqKJ0qW3WsgHIuZaJQv6qpXjXS1YQDhbocikRP9i1xc14zk5tVpDDpuSwQ0m0nwdtKbmP4c0Ubrvuhj7jmuLuGdzGjnxRy8EK/qjJqolWhbBMzwRh/3aCNC/W0v9orhOqlMiOf2G3XuCOmk10SLdmBI/hwaouY89t7uIML963QcmfuJPTmO/fUvPBfUDqwVfVvfjnhMj7DHwLGUB9tJp5U40xdVJ1SLe2hFivmzSzOOJgPe21WnPDwL3igRkSQnrqc+DG3QHjOBEzKqT3+IYU01sKCtYVAXntZTcg9b3Fob9NH9hTnB8Unh3DO3PqUf/wDuYrjLaVmAGZVcH11KucU5hMyDyoRBz5WXm7pKUWa5bQTSGFHmpZr4g0xJU519JIete5OG9o6HVWkQNEEqXtiT6sb1O60UBSjyLkuLzGL2GaBZWmqYYjOnIPr+CYdFHbfQy6F6a82Zz6sfPbLMswLvKz4FXrEMDiAQ="
+          token: "RydkiaWGaK/B4sTfv8trWNVv4ZT5vZf7VE3WdhSCGMwJmgatMgtFWN+x/e11vYd3J/sik/rdyUo0WgTnQx+KqePiUTrMCFba0jfxEt4MG83lcJWytyFRrBzV7b6XpnOFH1xVVhI9OHhUBrzhEBpkrZPJwHwy9K03ohoMKN7xsHgdEVmcRpNWI2j+oRiU/OHojodF4bV/cqKJ0qW3WsgHIuZaJQv6qpXjXS1YQDhbocikRP9i1xc14zk5tVpDDpuSwQ0m0nwdtKbmP4c0Ubrvuhj7jmuLuGdzGjnxRy8EK/qjJqolWhbBMzwRh/3aCNC/W0v9orhOqlMiOf2G3XuCOmk10SLdmBI/hwaouY89t7uIML963QcmfuJPTmO/fUvPBfUDqwVfVvfjnhMj7DHwLGUB9tJp5U40xdVJ1SLe2hFivmzSzOOJgPe21WnPDwL3igRkSQnrqc+DG3QHjOBEzKqT3+IYU01sKCtYVAXntZTcg9b3Fob9NH9hTnB8Unh3DO3PqUf/wDuYrjLaVmAGZVcH11KucU5hMyDyoRBz5WXm7pKUWa5bQTSGFHmpZr4g0xJU519JIete5OG9o6HVWkQNEEqXtiT6sb1O60UBSjyLkuLzGL2GaBZWmqYYjOnIPr+CYdFHbfQy6F6a82Zz6sfPbLMswLvKz4FXrEMDiAQ="
       node_js: '12'
       cache:
         - yarn: true

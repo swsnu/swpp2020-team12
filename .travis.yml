@@ -16,6 +16,7 @@ matrix:
       script:
         - ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
+        - coverage xml
         - cd .. & cd ..
         - sonar-scanner
 

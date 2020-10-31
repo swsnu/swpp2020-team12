@@ -8,15 +8,14 @@ matrix:
             secure: "J3dfsS+aJQcqt7MS/XmLsiy4ydJ2+HOrTwf9fYMMk6He2jO1S06lRcuEGlpfYMaATbO09K09yNAvnqVyMqWO33YbHTxQq3NUwls8B7klRUfDiatjHYnzu4Gb35WvHNiatc8d0in4fQJcVpeZNVt2VD5J316EwDHvFxMfOUXqbG4UeQKg561euQmAxbNsUL75hmR+WDeO6OHOIAjHKoLShHGJvcrvoY4VvKwpfQ8c7Yh72SC9qP1XP2sk3In25JafuKjcEQy6bZgEC0micMZM69a1SdsbSFAoO6dG7p6JnbsGvfAT7s1E6oGVytaZXd3HKVdHsVsI5Z1dXdM42bl+C9JvWypEup59X5raXBDsUOf42le5HgHqBrNP/G8i95s/XpBHKuu6F2/L+px9FwsmBWaYjN5iyDFogSYGDyPf+xwOa84pgAcvcTVRQUvXeuvZSHK/1IKMLv2lBzFm6EhLhmyrtF0AM09bm0AGqaFgApv3Tvm01Xwa7MGb71xN2AgBc5cocUzSWugqYQWL7I3GZXUdjuXLoHuntF2eCXZG7/bRvG3eJpA4ik0IQCDXQAESfr85hOx+rQppq00nxQJHWpyOh/hff3ybhkfrD7AbkSMI2alM9/oLG7cAKwh23IiRwJWzGWVhUbOvo+2cjqrgpWoE39IyIgYmDe2IsJ4RdSs="
       node_js: '12'
       cache:
-        -  yarn: true
+        - yarn: true
       before_install:
-        -  cd frontend/caffeine
+        - cd frontend/caffeine
       install:
         - yarn install
       script:
         - ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
-        - coverage xml
         - cd .. & cd ..
         - sonar-scanner
 

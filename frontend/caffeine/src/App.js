@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';

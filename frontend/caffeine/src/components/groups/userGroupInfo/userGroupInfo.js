@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+/* eslint react/prop-types: 0 */
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import * as actionCreators from '../../store/actions/index';
+import * as actionCreators from '../../../store/actions/index';
 
 import Modal from 'react-bootstrap/Modal'
 import ListGroup from 'react-bootstrap/ListGroup' 
 
-const userGroupInfo=(props) => {
-    const userlist=props.GroupInfo.map(user=>{
+const UserGroupInfo=(props) => {
+    const memberlist=props.members.map(user=>{
         return(
-            <ListGroup.Item>
-                {user.name}
-                {user.stdyhour}
+            <ListGroup.Item key={user.id}>
+                <div className="name"><h3>{user.name}</h3><h4>{user.stdyhour}</h4></div>
+                <h4>{user.message}</h4>
             </ListGroup.Item>
         );
     })
@@ -22,14 +23,14 @@ const userGroupInfo=(props) => {
             </Modal.Header>
             <Modal.Body>
                 <ListGroup>
-                    {userlist}
+                    {memberlist}
                 </ListGroup>
             </Modal.Body>
             <Modal.Footer>
-                <button id="join-stduy-botton" />
+                <button id="join-stduy-botton" >study with me!</button>
             </Modal.Footer>
         </Modal>
     )
 }    
 
-export default userGroupInfo;
+export default UserGroupInfo;

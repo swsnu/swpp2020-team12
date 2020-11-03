@@ -17,7 +17,7 @@ export const getGroups_ = (groups) =>{
 }
 export const getGroups = () =>{
     return dispatch =>{
-        return axios.get('/group/user')
+        return axios.get('/group')
             .then(res => dispatch(getGroups_(res.data)));
     }
 }
@@ -46,6 +46,7 @@ export const addGroup_ = (group) =>{
         name: group.name,
         description: group.description,
         time: group.time,
+        members: group.members
     };
 }
 export const addGroup= (data) =>{

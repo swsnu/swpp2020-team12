@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 import Group from './group/group'
+import userGroupInfo from './userGroupInfo/userGroupInfo'
 import './groups.css'
 
 class Groups extends Component {
@@ -13,14 +14,17 @@ class Groups extends Component {
         content:'',
         passward:'',
         isAddopend: false,
-        isDeatilopend: false,
+        Deatilshow: false,
       }
     componentDidMount(){
         this.props.getAllGroups()
     }
     clickGroupHandler = (group)=>{
         this.props.getGroup(group.id)
-        this.setState({isDeatilopend: true})
+        this.setState({Deatilshow: true})
+    }
+    handleDetailShow(){
+        this.setState({Deatilshow: false})
     }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/groups/'+group.id)
@@ -51,6 +55,14 @@ class Groups extends Component {
             <div className='Grouplist'>
                 <h1>I'm in...</h1>
                 <button id='create-group-button' onClick={()=>this.setState({isAddopend: true})}>Create</button>
+                {this.props.specificGroupInfo&&<userGroupInfo
+                    key={this.props.specificGroupInfo.id}
+                    Groupname={this.props.specificGroupInfo.name}
+                    show={this.state.Deatilshow}
+                    members={this.state.specificGroupInfo.members}
+                    handleDetailShow={this.handleDetailShow}
+                />
+                }
                 {groups}
                 <div className='searchgroup'>
                     <input type='text' id='group-search-input' value={this.state.group_name} 

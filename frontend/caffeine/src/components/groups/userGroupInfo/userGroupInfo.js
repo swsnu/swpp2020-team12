@@ -5,7 +5,8 @@ import { withRouter } from 'react-router';
 import * as actionCreators from '../../../store/actions/index';
 
 import Modal from 'react-bootstrap/Modal'
-import ListGroup from 'react-bootstrap/ListGroup' 
+import ListGroup from 'react-bootstrap/ListGroup'
+import Button from 'react-bootstrap/Button' 
 
 const UserGroupInfo=(props) => {
     const memberlist=props.members.map(user=>{
@@ -27,6 +28,8 @@ const UserGroupInfo=(props) => {
                 </ListGroup>
             </Modal.Body>
             <Modal.Footer>
+                <Button variant="outline-danger" size="sm" id="quit-group-botton" 
+                    onClick={props.onClickquit}>leave group</Button> 
                 <button id="join-stduy-botton" >study with me!</button>
             </Modal.Footer>
         </Modal>

@@ -2,19 +2,20 @@
 import React from 'react';
 
 const Group = (props) => {
+    console.log(props.announcement)
     return (
         <div className="Group">
             <div className="name"
                 onClick={props.clickDetail}>
-                {props.name}
+                <h3>{props.name}</h3>
             </div>
             <div className="members">
-                {props.members} members 
+                <h4>{props.members} members</h4>
             </div>
             <div className="studytime">
-                Average time: {props.averagehours}
+                <h4>Average time: {props.averagehours}</h4>
             </div>
-            {props.announcement!==null&&
+            {props.announcement!==''&&
             <div className="announcement">
                 Announcement: {props.announcement}
             </div>

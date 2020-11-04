@@ -20,7 +20,7 @@ class Groups extends Component {
         group_name:'Find groups',
         name: '',
         announcement: '',
-        passward:'',
+        password:'',
         Createshow: false,
         Detailshow: false,
       }
@@ -43,15 +43,22 @@ class Groups extends Component {
     onChangeAnnounce=(event)=>{
         this.setState({announcement: event.target.value})
     }
+    onChangepassword=(event)=>{
+        this.setState({password: event.target.value})
+    }
     onClickconfirm=()=>{
         this.setState({Createshow: false})
         this.props.addgroup({
             name: this.state.name,
             description: this.state.announcement,
             members: [mockuser],
-            time:0,
-            passward: this.state.passward
+            time: 0,
+            passward: this.state.password
         })
+    }
+    onClickquit=()=>{
+        this.setState({Detailshow: false})
+        this.props.quitgroup(this.props.specificGroupInfo.id)
     }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/group/'+group.id)
@@ -86,10 +93,12 @@ class Groups extends Component {
                     name={this.state.name}
                     announcement={this.state.announcement}
                     show={this.state.Createshow}
+                    password={this.state.password}
                     handlecreateshow={this.handlecreateshow}
                     onClickconfirm={this.onClickconfirm}
                     onChangeName={this.onChangeName}
                     onChangeAnnounce={this.onChangeAnnounce}
+                    onChangepassword={this.onChangepassword}
                 />
                 {this.props.specificGroupInfo&&<UserGroupInfo
                     key={this.props.specificGroupInfo.id}
@@ -97,6 +106,7 @@ class Groups extends Component {
                     show={this.state.Detailshow}
                     members={this.props.specificGroupInfo.members}
                     handleDetailShow={this.handleDetailShow}
+                    onClickquit={this.onClickquit}
                 />
                 }
                 {groups}
@@ -130,7 +140,9 @@ const mapDispatchToProps = dispatch => {
         getGroup: (group_id) =>
             dispatch(actionCreators.getGroup(group_id)),
         addgroup: (data)=>
-            dispatch(actionCreators.addGroup(data))
+            dispatch(actionCreators.addGroup(data)),
+        quitgroup: (group_id) =>
+            dispatch(actionCreators.deleteGroup(group_id))
     }
   }
 

@@ -3,5 +3,7 @@ export {
     getGroups,
     getGroup,
     addGroup,
-    deleteGroup
+    deleteGroup,
+    getunEnrolled,
+    joinGroup
 } from './groups';

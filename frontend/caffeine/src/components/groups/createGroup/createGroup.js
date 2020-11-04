@@ -26,6 +26,11 @@ const CreateGroup=(props) => {
                         <Form.Control type="name" value={props.announcement} placeholder="Group Announcement"
                             onChange={(event)=>props.onChangeAnnounce(event)} />
                     </Form.Group>
+                    <Form.Group controlId="formpassword">
+                        <Form.Label>Group Joining Password</Form.Label>
+                        <Form.Control type="password" value={props.password} placeholder="it is optional"
+                            onChange={(event)=>props.onChangepassword(event)} />
+                    </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>

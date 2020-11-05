@@ -1,52 +1,52 @@
 {
-  "group": [
-    {
-      "id": 1,
-      "name": "test1",
-      "members": [
+    "group": [
         {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
+            "id": 1,
+            "name": "test1",
+            "members": [
+                {
+                    "id": 1,
+                    "name": "tesuser1",
+                    "stdyhour": "2hour",
+                    "message": "I'm good"
+                },
+                {   
+                    "id": 2,
+                    "name": "tesuser2",
+                    "stdyhour": "1hour",
+                    "message": "2"
+                },
+                {
+                    "id": 3,
+                    "name": "tesuser3",
+                    "stdyhour": "3hour",
+                    "message": ""
+                }
+            ],
+            "password": null,
+            "time": "2hour",
+            "description": "stduying"
         },
         {
-          "id": 2,
-          "name": "tesuser2",
-          "stdyhour": "1hour",
-          "message": "2"
-        },
-        {
-          "id": 3,
-          "name": "tesuser3",
-          "stdyhour": "3hour",
-          "message": ""
+            "id": 2,
+            "name": "test2",
+            "members": [
+                {
+                    "id": 1,
+                    "name": "tesuser1",
+                    "stdyhour": "2hour",
+                    "message": "I'm good"
+                },
+                {
+                    "id": 4,
+                    "name": "tesuser4",
+                    "stdyhour": "40min",
+                    "message": "4"
+                }
+            ],
+            "password": null,
+            "time": "2hour",
+            "description": ""
         }
-      ],
-      "password": null,
-      "time": "2hour",
-      "description": "stduying"
-    },
-    {
-      "id": 2,
-      "name": "test2",
-      "members": [
-        {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
-        },
-        {
-          "id": 4,
-          "name": "tesuser4",
-          "stdyhour": "40min",
-          "message": "4"
-        }
-      ],
-      "password": null,
-      "time": "2hour",
-      "description": ""
-    }
-  ]
+    ]
 }

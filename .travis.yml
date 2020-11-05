@@ -22,6 +22,11 @@ matrix:
 
     - language: python
       python: '3.7'
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+          token:
+            secure: "FOZ/Ksa9gYSTH0ZA04iNuxlCUGvoEomTXO1eF3scTpUeQ62dr/gBkDEif96qXp0fw5LBED05zlR9xpE3cIdFyQGJ/6vwEGg00hxHXQZ9xeQXzppbcb4ANHFswgmmPGfw09H32eR/GRYylB86YUSmxUdQ0Q4K8aB0/AW2RrYVfdDUQCSc+orCkKRsELBobE9gxuIAyW/B9On1Ar8jQ/hsJc8wWS4B9fjpr8QLtT/Vs3bL/45DKGDtd2nMnF+1blb+WE40Ov23hhnnu0oYP0bfh8VwZ72Ixxj/GAMjkPNnDGI8+CbkrAhWwCVNn7zPcbLqhmbHdKnx434Y4oxuoldW1anQupa+CudhPYGJXZb0x+zkkNwzjJVmUrQ/u/sgDcScGG7eC6x9rJ7zniNWZOknkMVMdB70kHCHnLd/7Up2QYizMYZkndJ+rUGw/sDQ+MeJ9TP6z6bcDUjz7eo4MyE6l98DBsC1rpgDNvWcJQq7WKtQFy1JSXxF2qUGQk+77t1xopkXU8lsiMNnT9M+DctPfOOMUGV7gh6wgsOnWyg91oenIvzlvXluVagLvxntmhkS9msZTEQiyVDoI4NpnYsQCX4/zjGtGfMyEUrBXhF/jjkJMeFdnAyMBIh1876O+FoWfxEJCUbQNOQ7PKYE3HWFTXjRoXGbqsPZ9WL5AVoA9Fo="
       cache:
         - pip: true
       before_install:
@@ -32,3 +37,6 @@ matrix:
         #- pylint **/*.py --load-plugins pylint_django
         - coverage run --source='.' manage.py test
         - coverage xml
+        - cd ..
+        - cd ..
+        - sonar-scanner

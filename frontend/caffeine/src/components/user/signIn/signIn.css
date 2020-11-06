@@ -1,0 +1,33 @@
+.logo {
+    position: relative;
+    right: 400px;
+    top: 100px;
+}
+
+.logo_text {
+    position: relative;
+    top: -350px;
+    left: 300px
+}
+
+.Input {
+    position: relative;
+    top: -350px;
+    left: 300px
+}
+
+.Text {
+    border-radius: 10px;
+    width:600px;
+    height:50px;
+    margin: 10px;
+}
+
+.button {
+    border-radius: 10px;
+    width:295px;
+    height:50px;
+    font-size: 30px;
+    margin: 5px;
+}
+

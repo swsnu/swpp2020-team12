@@ -5,5 +5,10 @@ export {
     addGroup,
     deleteGroup,
     getunEnrolled,
-    joinGroup
+    joinGroup,
 } from './groups';
+
+export {
+    signin,
+    signup,
+} from './user';

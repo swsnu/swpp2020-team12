@@ -16,5 +16,6 @@
   cd backend/caffeine
   pip install -r requirements.txt
   coverage run --source='.' manage.py test  #for testing
+  python manage.py migrate
   python manage.py runserver #for running
   ```

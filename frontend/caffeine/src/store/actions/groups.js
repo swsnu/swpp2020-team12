@@ -17,9 +17,18 @@ export const getGroups_ = (groups) =>{
 }
 export const getGroups = () =>{
     return dispatch =>{
-        return axios.get('/group/user')
+        return axios.get('/group')
             .then(res => dispatch(getGroups_(res.data)));
     }
+}
+export const getunEnrolled = (group_id) =>{
+    return dispatch =>{
+        return axios.get('/group/'+group_id)
+            .then(res => dispatch(getunEnrolled_(res.data)));
+    }
+}
+export const getunEnrolled_ = (groups) =>{
+    return { type: actionTypes.GET_UNENROLLED, unenrolled: groups };
 }
 export const getGroup_ = (group) =>{
     return { type: actionTypes.GET_GROUP, targetGroup: group };
@@ -35,8 +44,17 @@ export const deleteGroup_ = (group_id) =>{
 }
 export const deleteGroup = (group_id) =>{
     return dispatch =>{
-        return axios.delete('/group/user/'+group_id)
+        return axios.delete('/group/'+group_id)
             .then(() => dispatch(deleteGroup_(group_id)));
+    }
+}
+export const joinGroup_ = (group_id) =>{
+    return { type: actionTypes.JOIN_GROUP, targetID: group_id };
+}
+export const joinGroup = (group_id) =>{
+    return dispatch =>{
+        return axios.put('/group/'+group_id)
+            .then(() => dispatch(joinGroup_(group_id)));
     }
 }
 export const addGroup_ = (group) =>{
@@ -46,6 +64,7 @@ export const addGroup_ = (group) =>{
         name: group.name,
         description: group.description,
         time: group.time,
+        members: group.members
     };
 }
 export const addGroup= (data) =>{

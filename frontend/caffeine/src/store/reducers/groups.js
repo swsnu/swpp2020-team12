@@ -29,6 +29,10 @@ const reducer =(state=initialState, action)=>{
                 return group.id!==action.targetID;
             });
             return { ...state, myGroupList: deleted_groups}
+        case actionTypes.GET_UNENROLLED:
+            return {...state, unenrolledGroupInfo: action.unenrolled}
+        case actionTypes.JOIN_GROUP:
+            return {...state, unenrolledGroupInfo: null}
         default:
             break;
     }

@@ -7,8 +7,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
+    "bootstrap": "^4.5.3",
     "connected-react-router": "^6.8.0",
+    "json-server": "^0.16.2",
     "react": "16.9.0",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "16.9.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
@@ -22,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "backend": "cp api/db.json api/_db.json && json-server --watch api/_db.json --routes api/routes.json --port 8000"
   },
   "eslintConfig": {
     "extends": [

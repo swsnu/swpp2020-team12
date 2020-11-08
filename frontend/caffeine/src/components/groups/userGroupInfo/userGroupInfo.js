@@ -29,7 +29,7 @@ const UserGroupInfo=(props) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" size="sm" id="quit-group-botton" 
-                    onClick={props.onClickquit}>leave group</Button> 
+                    onClick={props.onClickQuit}>leave group</Button>
                 <button id="join-stduy-botton" >study with me!</button>
             </Modal.Footer>
         </Modal>

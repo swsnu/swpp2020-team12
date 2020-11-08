@@ -5,5 +5,13 @@ export {
     addGroup,
     deleteGroup,
     getunEnrolled,
-    joinGroup
+    joinGroup,
 } from './groups';
+
+export{
+    getSubjects,
+    getSubject,
+    addSubject,
+    deleteSubject,
+    editSubject
+} from './subjects'

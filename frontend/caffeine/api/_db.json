@@ -1,11 +1,56 @@
 {
   "group": [
     {
-      "id": 2
+      "id": 1,
+      "name": "test1",
+      "members": [
+        {
+          "id": 1,
+          "name": "tesuser1",
+          "stdyhour": "2hour",
+          "message": "I'm good"
+        },
+        {
+          "id": 2,
+          "name": "tesuser2",
+          "stdyhour": "1hour",
+          "message": "2"
+        },
+        {
+          "id": 3,
+          "name": "tesuser3",
+          "stdyhour": "3hour",
+          "message": ""
+        }
+      ],
+      "password": null,
+      "time": "2hour",
+      "description": "stduying"
     },
     {
-      "name": "fdf",
-      "description": "dfdf",
+      "id": 2,
+      "name": "test2",
+      "members": [
+        {
+          "id": 1,
+          "name": "tesuser1",
+          "stdyhour": "2hour",
+          "message": "I'm good"
+        },
+        {
+          "id": 4,
+          "name": "tesuser4",
+          "stdyhour": "40min",
+          "message": "4"
+        }
+      ],
+      "password": null,
+      "time": "2hour",
+      "description": ""
+    },
+    {
+      "name": "fdas",
+      "description": "feaw",
       "members": [
         {
           "id": 1,
@@ -15,7 +60,7 @@
         }
       ],
       "time": 0,
-      "passward": "12134",
+      "passward": "feaw",
       "id": 3
     }
   ]

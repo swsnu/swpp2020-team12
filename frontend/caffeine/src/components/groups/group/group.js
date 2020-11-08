@@ -1,22 +1,22 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
+import './group.css'
 
 const Group = (props) => {
     console.log(props.announcement)
     return (
-        <div className="Group">
-            <div className="name"
-                onClick={props.clickDetail}>
-                <h3>{props.name}</h3>
+        <div id="Group" onClick={props.clickDetail}>
+            <div id="name">
+                {props.name}
             </div>
-            <div className="members">
-                <h4>{props.members} members</h4>
+            <div id="members">
+                {props.members} members
             </div>
-            <div className="studytime">
-                <h4>Average time: {props.averagehours}</h4>
+            <div id="studytime">
+                Average time: {props.averagehours}
             </div>
             {props.announcement!==''&&
-            <div className="announcement">
+            <div id="announcement">
                 Announcement: {props.announcement}
             </div>
             }

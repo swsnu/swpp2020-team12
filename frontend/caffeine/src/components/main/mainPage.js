@@ -1,0 +1,73 @@
+/* eslint react/prop-types: 0 */
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import * as actionCreators from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/store/actions/index.js';
+import "./mainPage.css"
+
+class mainPage extends Component{
+    
+    constructor(props){
+        super(props);
+
+        this.state = {
+            
+        }
+
+    }
+   
+     
+    gotoGroup=()=>{this.props.history.push('/group')}
+
+
+
+    render(){
+        return(
+            <div className="Main">
+               <img src="/images/logo_text.png"></img>
+
+
+               <input type="checkbox" id="menuicon"></input>
+               <label htmlFor="menuicon">
+                   <span></span>
+                   <span></span>
+                   <span></span>
+               </label>
+               <div id="sidebar">
+                   <br></br>
+                   <h1 id="menu">Menu</h1>
+                   <br></br>
+                   <ul>
+                       <li id="id">ID</li>
+                       <br></br>
+                       <li id="mypage">My Page</li>
+                       <br></br>
+                       <li id="subject">Subject</li>
+                       <br></br>
+                       <li id="group" onClick={this.gotoGroup}>Group</li>
+                       <br></br>
+                       <li id="stistics">Statistics</li>
+                       <br></br>
+                       <li id="ranking">Ranking</li>
+                       
+                   </ul>
+               </div>
+            </div>
+        )
+    }
+
+}
+
+const mapStateToProps = state => {
+    return {
+        
+    };
+  }
+  
+const mapDispatchToProps = dispatch => {
+    return {
+        
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(mainPage));

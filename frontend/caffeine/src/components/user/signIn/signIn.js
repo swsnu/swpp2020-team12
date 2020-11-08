@@ -59,7 +59,7 @@ class SignIn extends Component{
 
 const mapStateToProps = state => {
     return {
-        isSignin: state.user.isSignin
+
     };
   }
   

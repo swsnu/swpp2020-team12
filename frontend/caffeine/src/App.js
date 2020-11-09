@@ -3,6 +3,7 @@ import React from 'react';
 import './App.css';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
+import Subjects from './components/subjects/subjects'
 import Group from './components/groups/groups'
 import GroupInfo from './components/groups/GroupInfo/GroupInfo'
 import SignIn from './components/user/signIn/signIn'
@@ -17,7 +18,9 @@ function App(props) {
           <Route path='/signup' exact component={SignUp} />
           <Route path='/group' exact component={Group} />
           <Route path='/group/:group_id' exact component={GroupInfo} />
+          <Route path='/subject' exact component={Subjects} />
           <Route render={() => <h1>Not Found</h1>} />
+
         </Switch>
       </div>
     </ConnectedRouter>

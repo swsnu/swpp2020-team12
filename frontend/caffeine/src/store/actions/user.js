@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { history } from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/store/store.js';
+import { history } from '../../../src/store/store.js';
 
 export const signin_ = (data) =>{
     return { 

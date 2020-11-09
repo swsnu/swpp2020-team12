@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import * as actionCreators from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/store/actions/index.js';
+import * as actionCreators from '../../../store/actions/index.js';
 import "./signUp.css"
 
 class SignUp extends Component{

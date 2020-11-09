@@ -7,8 +7,9 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.GET_SUBJECTS:
+        case actionTypes.GET_SUBJECTS: {
             return {...state, mySubjectList: action.subjects}
+        }
         case actionTypes.GET_SUBJECT:
             return {...state, specificSubjectInfo: action.targetSubject}
         case actionTypes.ADD_SUBJECT:

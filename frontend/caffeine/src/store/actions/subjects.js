@@ -3,6 +3,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 export const getSubjects_ = (subjects) => {
+    //console.log(subjects)
     return {type: actionTypes.GET_SUBJECTS, subjects: subjects};
 }
 export const getSubjects = () => {
@@ -55,15 +56,13 @@ export const editSubject_ = (subject) => {  //TODO: 이거 바꿔야할듯?
         targetID: subject.id,
         name: subject.name,
         description: subject.description,
-        days: [moment.duration.day(subject.day),
-            moment.duration.hours(subject.start_time_hour).minutes(subject.start_time_min),
-            moment.duration.hours(subject.duration_hour)],
+        days: subject.days,
         user: subject.user
     };
 }
 export const editSubject = (data) => {
     return dispatch => {
-        return axios.post('/subject/' + data.id, data)
+        return axios.put('/subject/' + data.id, data)
             .then(res => dispatch(editSubject_(res.data)));
     }
 }

@@ -11,7 +11,7 @@ import isodate
 
 @csrf_exempt
 def subject_list(request):
-    """user가 속한 그룹"""
+    """user의 subject"""
     if request.method == 'GET':
         subjects = [subject for subject in Subject.objects.filter(user=request.user)]
         response_dict = list()
@@ -33,11 +33,15 @@ def subject_list(request):
         subject.save()
         for day in days:
             new_day = Days(day=day['day'], start_time=day['start_time'],
-                           duration=isodate.parse_duration(day['duration']))  # timedelta가 안들어감 ㅠ
+                           duration=isodate.parse_duration(day['duration']))
             new_day.save()
             subject.days.add(new_day)
+
+        day_list = [{'day': day.day, 'start_time': day.start_time,
+                     'duration': day.duration} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name,
-                         'description': subject.description, 'user': subject.user.id}  # TODO: 지금 days 빼고 돌려줌
+                         'description': subject.description, 'user': subject.user.id,
+                         'days': day_list}  # TODO: 지금 days 빼고 돌려줌
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -45,7 +49,7 @@ def subject_list(request):
 
 @csrf_exempt
 def subject_info(request, subject_id):
-    """유저의 자기 그룹을 클릭했을 때"""
+    """유저의 자기 subject을 클릭했을 때"""
     # if subject member에 request.user가 없다면 403
     if request.method == 'GET':
         subject = Subject.objects.filter(id=subject_id).first()
@@ -64,13 +68,23 @@ def subject_info(request, subject_id):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponse(status=400)
         subject = Subject.objects.get(id=subject_id)
+        for origin_day in subject.days.iterator():
+            origin_day.delete()
+        print(days)
+        for day in days:
+            new_day = Days(day=day['day'], start_time=day['start_time'],
+                           duration=isodate.parse_duration(day['duration']))
+            new_day.save()
+            subject.days.add(new_day)
         subject.name = name
-        # subject.days
         subject.description = description
         subject.save()
+        day_list = [{'day': day.day, 'start_time': day.start_time,
+                     'duration': day.duration} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name,
                          'description': subject.description,
-                         'user': request.user.id}
+                         'user': request.user.id, 'days': day_list}
+
         return JsonResponse(response_dict, status=201)
     if request.method == 'DELETE':
         Subject.objects.filter(id=subject_id).delete()

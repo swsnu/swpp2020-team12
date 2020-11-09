@@ -55,7 +55,7 @@ class SubjectTestCase(TestCase):
         client.login(username='id1', password='pw1')
         response = client.post('/subject/', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
-            'days': [{'day': 2, 'duration': 'P0DT00H60M00S',
+            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
                       'start_time': '15:00:00'}]
         }), content_type='application/json')
         self.assertEqual(response.status_code, 201)
@@ -63,7 +63,9 @@ class SubjectTestCase(TestCase):
             'id': 4,
             'description': 'test_descript',
             'name': 'test_subject',
-            'user': 1
+            'user': 1,
+            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+                      'start_time': '15:00:00'}]
         })
 
     def test_get_subject(self):
@@ -85,12 +87,14 @@ class SubjectTestCase(TestCase):
         client.login(username='id1', password='pw1')
         response = client.put('/subject/1', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
-            'days': [{'day': 2, 'duration': 'P0DT00H60M00S',
+            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
                       'start_time': '15:00:00'}]}), content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json(), {'id': 1,
                                            'description': 'test_descript',
                                            'name': 'test_subject',
+                                           'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+                                                     'start_time': '15:00:00'}],
                                            'user': 1})
 
     def test_delete_subject(self):

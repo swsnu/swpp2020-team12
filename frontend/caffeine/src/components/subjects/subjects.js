@@ -19,13 +19,7 @@ import Subject from './subject/subject'
 import CreateSubject from './createSubject/createSubject'
 import UserSubjectInfo from './userSubjectInfo/userSubjectInfo'
 import './subjects.css'
-
-const mockuser = {
-    id: 1,
-    name: "tesuser1",
-    studyhour: "2hour",
-    message: "I'm good"
-}
+import moment from 'moment'
 
 class Subjects extends Component {
     state = {
@@ -72,40 +66,40 @@ class Subjects extends Component {
     onChangeDurationHour = (event) => {
         this.setState({duration_hour: event.target.value})
     }
-    //   onChangeDurMin = (event) => {
-    //       this.setState({duration_min: event.target.value})
-    //   }
     onClickConfirm = () => {
         this.setState({create_show: false})
-        //let start_time = Date()
-        //start_time.setTime(this.state.start_time_hour, this.state.start_time_min)
         this.props.addSubject({
             name: this.state.name,
             description: this.state.description,
-            user: mockuser,
-            //start_time_hour: this.state.start_time_hour,
-           // start_time_min: this.state.start_time_min,
-           // duration_hour: this.state.duration_hour,
-            //           duration_min: this.state.duration_min
-            days: [{day: moment.duration.day(this.state.day),
-            start_time: moment.duration.hours(this.state.start_time_hour).minutes(this.state.start_time_min),
-            duration: moment.duration.hours(this.state.duration_hour)}]
+            days: [{
+                day: this.state.day,
+                start_time: this.state.start_time_hour + ':' + this.state.start_time_min + ':00',
+                duration: 'P0DT' + this.state.duration_hour + 'H00M00S'
+            }]
+        })
+        this.setState({
+            name: '',
+            description: '',
+            start_time_hour: '',
+            start_time_min: '',
+            day: '',
+            duration_hour: '',
         })
     }
     onClickEdit = () => {
         this.setState({detail_show: false})
         //let start_time = Date()
         //start_time.setTime(this.state.start_time_hour, this.state.start_time_min)
+
         this.props.editSubject({
             id: this.props.specificSubjectInfo.id,
             name: this.state.name,
             description: this.state.description,
-            user: mockuser,
-            start_time_hour: this.state.start_time_hour,
-            start_time_min: this.state.start_time_min,
-            duration_hour: this.state.duration_hour,
-            //           duration_min: this.state.duration_min,
-            day: this.state.day
+            days: [{
+                start_time: this.state.start_time_hour + ':' + this.state.start_time_min + ':00',
+                duration: 'P0DT' + this.state.duration_hour + 'H00M00S',
+                day: this.state.day
+            }]
         })
     }
     onClickQuit = () => {
@@ -120,14 +114,13 @@ class Subjects extends Component {
                     key={subject.id}
                     name={subject.name}
                     clickDetail={() => this.clickSubjectHandler(subject)}
-                    clickquit={this.onClickQuit(subject)}
                 />
             );
         });
 
         return (
             <div className='SubjectList'>
-                <h1>I &apos;m in...</h1>
+                <h1>My Subject</h1>
                 <button id='create-subject-button' onClick={() => this.setState({create_show: true})}>Create</button>
                 <CreateSubject
                     name={this.state.name}
@@ -150,14 +143,21 @@ class Subjects extends Component {
                     key={this.props.specificSubjectInfo.id}
                     name={this.props.specificSubjectInfo.name}
                     description={this.props.specificSubjectInfo.description}
-                    days={this.props.specificSubjectInfo.days}
-                    start_time_hour={this.props.specificSubjectInfo.start_time_hour}
-                    start_time_min={this.props.specificSubjectInfo.start_time_min}
-                    duration={this.props.specificSubjectInfo.start_time_min}
+                    day={this.props.specificSubjectInfo.days[0].day}
+                    start_time_hour={this.props.specificSubjectInfo.days[0].start_time.split(':')[0]}
+                    start_time_min={this.props.specificSubjectInfo.days[0].start_time.split(':')[1]}
+                    duration={this.props.specificSubjectInfo.days[0].duration.split('')[6]}
                     show={this.state.detail_show}
+                    onClickConfirm={this.onClickConfirm}
+                    onChangeName={this.onChangeName}
+                    onChangeDescription={this.onChangeDescription}
+                    onChangeStartTimeHour={this.onChangeStartTimeHour}
+                    onChangeStartTimeMin={this.onChangeStartTimeMin}
+                    onChangeDurationHour={this.onChangeDurationHour}
+                    onChangeDay={this.onChangeDay}
                     handleDetailShow={this.handleDetailShow}
-                    onclickEdit={this.onClickEdit}
-                    onClickquit={this.onClickQuit}
+                    onClickEdit={this.onClickEdit}
+                    onClickQuit={this.onClickQuit}
                 />
                 }
                 {subjects}
@@ -189,5 +189,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Subjects));
+
 
 

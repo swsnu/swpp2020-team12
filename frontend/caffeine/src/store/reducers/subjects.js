@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.EDIT_SUBJECT:
             let selected = null;
             const modified = state.mySubjectList.map((sub) => {
-                if (sub.id === action.id) {
+                if (sub.id === action.targetID) {
                     selected = {
                         ...sub, name: action.name,
                         description: action.description,

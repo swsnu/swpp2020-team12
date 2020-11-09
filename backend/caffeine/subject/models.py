@@ -15,16 +15,17 @@ DAYS_OF_WEEK = (
     (6, 'Sunday'),
 )
 
-#days를 만들거면 무조건 starttime, duration 만들어야 함
+
+# null=True가 맞냐?
 class Days(models.Model):
-    days = models.CharField(max_length=1, choices=DAYS_OF_WEEK)
-    start_time = models.TimeField(blank=True, null=False)
-    duration = models.DurationField(blank=True, null=False)
+    day = models.IntegerField(choices=DAYS_OF_WEEK, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    duration = models.DurationField(blank=True, null=True)
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=64, null=False)
-    days = models.ManyToManyField(Days, null=True)
+    days = models.ManyToManyField(Days, related_name='timetable', blank=True)  # null은 써도 효과 없음
     description = models.TextField(blank=True, null=True)
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)

@@ -79,23 +79,25 @@ class Subjects extends Component {
         this.setState({create_show: false})
         //let start_time = Date()
         //start_time.setTime(this.state.start_time_hour, this.state.start_time_min)
-        this.props.addsubject({
+        this.props.addSubject({
             name: this.state.name,
             description: this.state.description,
             user: mockuser,
-            start_time_hour: this.state.start_time_hour,
-            start_time_min: this.state.start_time_min,
-            duration_hour: this.state.duration_hour,
-            //           duration_min: this.state.duration_min,
-            day: this.state.day
+            //start_time_hour: this.state.start_time_hour,
+           // start_time_min: this.state.start_time_min,
+           // duration_hour: this.state.duration_hour,
+            //           duration_min: this.state.duration_min
+            days: [{day: moment.duration.day(this.state.day),
+            start_time: moment.duration.hours(this.state.start_time_hour).minutes(this.state.start_time_min),
+            duration: moment.duration.hours(this.state.duration_hour)}]
         })
     }
     onClickEdit = () => {
         this.setState({detail_show: false})
         //let start_time = Date()
         //start_time.setTime(this.state.start_time_hour, this.state.start_time_min)
-        this.props.editsubject({
-            id: props.specificSubjectInfo.id,
+        this.props.editSubject({
+            id: this.props.specificSubjectInfo.id,
             name: this.state.name,
             description: this.state.description,
             user: mockuser,
@@ -124,7 +126,7 @@ class Subjects extends Component {
         });
 
         return (
-            <div className='Subjectlist'>
+            <div className='SubjectList'>
                 <h1>I &apos;m in...</h1>
                 <button id='create-subject-button' onClick={() => this.setState({create_show: true})}>Create</button>
                 <CreateSubject

@@ -4,10 +4,12 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import groupReducrer from './reducers/groups';
+import subjectReducer from './reducers/subjects';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   group: groupReducrer,
+  subject: subjectReducer,
   router: connectRouter(history),
 });
 

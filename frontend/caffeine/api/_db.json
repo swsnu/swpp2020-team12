@@ -49,8 +49,8 @@
       "description": ""
     },
     {
-      "name": "fdas",
-      "description": "feaw",
+      "name": "test3",
+      "description": "fdsa",
       "members": [
         {
           "id": 1,
@@ -60,7 +60,7 @@
         }
       ],
       "time": 0,
-      "passward": "feaw",
+      "passward": "fdsa",
       "id": 3
     }
   ]

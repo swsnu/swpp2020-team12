@@ -20,13 +20,10 @@ class mainPage extends Component{
     gotoGroup=()=>{this.props.history.push('/group')}
 
 
-
     render(){
         return(
-            <div className="Main">
-               <img src="/images/logo_text.png"></img>
-
-
+            <div id="Main">
+               <span id="logo_text">Caffeine Camera</span>
                <input type="checkbox" id="menuicon"></input>
                <label htmlFor="menuicon">
                    <span></span>
@@ -49,9 +46,14 @@ class mainPage extends Component{
                        <li id="stistics">Statistics</li>
                        <br></br>
                        <li id="ranking">Ranking</li>
-                       
                    </ul>
                </div>
+               <div>
+               <button id="button">
+                   <span id="button">Study</span>
+               </button>
+               </div>
+               
             </div>
         )
     }

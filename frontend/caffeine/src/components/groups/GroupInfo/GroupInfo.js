@@ -19,7 +19,6 @@ class Groups extends Component {
             let password = prompt('enter password');
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': password});
         }
-        this.props.history.push('/group')
     }
     getHours = (duration) => {
         const m = moment.duration(duration);
@@ -47,7 +46,8 @@ class Groups extends Component {
 
 const mapStateToProps = state => {
     return {
-        unenrolledGroupInfo: state.group.unenrolledGroupInfo
+        unenrolledGroupInfo: state.group.unenrolledGroupInfo,
+        myGroupList: state.group.myGroupList
     };
 }
 

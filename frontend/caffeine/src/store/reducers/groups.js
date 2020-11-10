@@ -39,6 +39,7 @@ const reducer =(state=initialState, action)=>{
                 description: action.description,
                 members: action.members
             }
+            console.log(join_group)
             return {...state, unenrolledGroupInfo: null, myGroupList:[...state.myGroupList, join_group]}
         default:
             break;

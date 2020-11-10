@@ -66,17 +66,7 @@ def user_group_info(request, group_id):
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-@csrf_exempt
-def group_search(request, group_name):
-    """검색한 그룹"""
-    if request.method == 'GET':
-        groups = Group.objects.filter(name__contains=group_name)
-        response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
-                          'time': group.time, 'description': group.description, 'password': group.password}
-                         for group in groups.iterator()]
-        return JsonResponse(response_dict, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
+
 
 
 @csrf_exempt
@@ -84,12 +74,20 @@ def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.
     members 정보를 보내지 않음"""
     if request.method == 'GET':
+        group_id=int(group_id)
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
                          'time': group.time, 'description': group.description, 'password': group.password}
         return JsonResponse(response_dict, safe=False)
+    if request.method == 'POST':   # group_id is string
+        groups = Group.objects.filter(name__contains=group_id)
+        response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
+                          'time': group.time, 'description': group.description, 'password': group.password}
+                         for group in groups.iterator()]
+        return JsonResponse(response_dict, safe=False)
     if request.method == 'PUT':
+        group_id = int(group_id)
         try:
             body = request.body.decode()
             password = json.loads(body)['password']
@@ -108,7 +106,7 @@ def search_group_info(request, group_id):
                                  'time': group.time, 'description': group.description,
                                  'members': member_list
                                  }
-                return HttpResponse(response_dict, status=201)
+                return JsonResponse(response_dict, status=201, safe=False)
             else:
                 return HttpResponse(status=403)
     else:

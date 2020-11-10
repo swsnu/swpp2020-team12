@@ -8,5 +8,6 @@ export {
     joinGroup,
 } from './groups';
 export{
-    getmyStudyInfo
+    getmyStudyInfo,
+    postCapturetoServer
 } from './study';

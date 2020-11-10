@@ -22,6 +22,9 @@ class Study extends Component {
     tick = () => {
         const { time } = this.state
         this.setState({time : time.clone().add(1, 'seconds')})
+        if(time.seconds()%10==9){
+            this.capture();
+        }
     };
     startTimer = () => {
         this.interval = setInterval(() => {
@@ -39,6 +42,7 @@ class Study extends Component {
         this.setState({
             last_image : this.webcamRef.current.getScreenshot()
         })
+        console.log("captured")
     }
     render() {
         console.log(moment().hour(0).minute(0).second(3672).format("HH:mm:ss"))
@@ -55,8 +59,8 @@ class Study extends Component {
                 />
                 <button onClick={this.capture}>click</button>
                 <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
-                <img className='test-img' src={this.state.last_image}/>
-                <Studycomp image={this.state.last_image}
+                <img className='test-img' src={this.state.last_image} width="100" height="100"/>
+                <Studycomp 
                     name={'testuser'}
                     state={'study'}
                     rate={0.9}

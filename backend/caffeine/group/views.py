@@ -1,6 +1,6 @@
+import json
 from json import JSONDecodeError
 from django.shortcuts import render
-import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Group
@@ -28,8 +28,8 @@ def user_group_list(request):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponse(status=400)
         group = Group(name=name, password=password, description=description)
-        group.save()
         group.members.add(request.user)
+        group.save()
         response_dict = {'id': group.id, 'name': group.name,
                          'time': group.time, 'description': group.description}
         return JsonResponse(response_dict, status=201)

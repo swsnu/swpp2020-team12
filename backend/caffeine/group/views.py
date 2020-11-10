@@ -87,7 +87,7 @@ def search_group_info(request, group_id):
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
-                         'time': group.time, 'description': group.description
+                         'time': group.time, 'description': group.description, 'password': group.password
                          }
         return JsonResponse(response_dict, safe=False)
     if request.method == 'PUT':
@@ -100,9 +100,10 @@ def search_group_info(request, group_id):
         if group.members.filter(id=request.user.id).exists():  # user already joined the group
             return HttpResponse(status=400)
         else:
-            if password==group.password :
+            if password == group.password:
                 group.members.add(request.user)
                 return HttpResponse(status=201)
-            else : return HttpResponse(status=403)
+            else:
+                return HttpResponse(status=403)
     else:
         return HttpResponseNotAllowed(['GET', 'PUT'])

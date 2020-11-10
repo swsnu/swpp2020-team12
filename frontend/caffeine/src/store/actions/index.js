@@ -11,7 +11,9 @@ export {
 export{
     getmyStudyInfo,
     postCapturetoServer,
-    startStudy
+    startStudy,
+    endStudy,
+    changeSubject
 } from './study';
 
 export {

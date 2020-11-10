@@ -3,13 +3,7 @@ import axios from 'axios'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { history } from '../../../src/store/store.js';
 
-export const signin_ = (data) =>{
-    return { 
-        type: actionTypes.SIGN_IN,
-        username: data.username,
-        password: data.password
-    };
-}
+
 
 export const signin = (data) =>{
     return dispatch =>{
@@ -22,15 +16,7 @@ export const signin = (data) =>{
     }
 }
 
-export const signup_ = (data) =>{
-    return { 
-        type: actionTypes.SIGN_UP,
-        username: data.username,
-        password: data.password,
-        name: data.name,
-        message: data.message
-    };
-}
+
 
 export const signup = (data) =>{
     return dispatch =>{

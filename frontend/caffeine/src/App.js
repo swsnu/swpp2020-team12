@@ -9,6 +9,7 @@ import GroupInfo from './components/groups/GroupInfo/GroupInfo'
 import Study from './components/study/study'
 import SignIn from './components/user/signIn/signIn'
 import SignUp from './components/user/signUp/signUp'
+import mainPage from './components/main/mainPage'
 
 function App(props) {
   return (
@@ -18,6 +19,7 @@ function App(props) {
           <Route path='/signin' exact component={SignIn} />
           <Route path='/signup' exact component={SignUp} />
           <Route path='/group' exact component={Group} />
+          <Route path='/' exact component={mainPage} />
           <Route path='/group/:group_id' exact component={GroupInfo} />
           <Route path='/study/:group_id' exact component={Study}/>
           <Route path='/subject' exact component={Subjects} />

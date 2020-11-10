@@ -17,9 +17,6 @@ class SignIn extends Component{
 
     }
    
-     
-     
-
     handlerSignIn=()=>{
         this.props.signin({username:this.state.username, password:this.state.password})
     }
@@ -30,13 +27,14 @@ class SignIn extends Component{
                 <p className="logo">
                     <img src="/images/logo.png"></img>
                 </p>
-                <p className="logo_text">
-                    <img src="/images/logo_text.png"></img>
-                </p>
+                <span className="logo_text">
+                    Caffeine Camera
+                </span>
                 <p className="Input">
                     <input
                         placeholder="ID"
                         className="Text"
+                        id="username"
                         value={this.state.username}
                         onChange={(e)=>this.setState({username:e.target.value})}
                     />
@@ -44,12 +42,13 @@ class SignIn extends Component{
                     <input
                         placeholder="PW"
                         className="Text"
+                        id="password"
                         value={this.state.password}
                         onChange={(e)=>this.setState({password:e.target.value})}
                     />
                     <br/>
-                    <button className="button" onClick={this.handlerSignIn}>SignIn</button>
-                    <button className="button" onClick={()=> this.props.history.push('/signup')}>SignUp</button>
+                    <button className="button" id="sign-in-button" onClick={this.handlerSignIn}>SignIn</button>
+                    <button className="button" id="sign-up-button" onClick={()=> this.props.history.push('/signup')}>SignUp</button>
                 </p>
             </div>
         )
@@ -59,7 +58,7 @@ class SignIn extends Component{
 
 const mapStateToProps = state => {
     return {
-        isSignin: state.user.isSignin
+
     };
   }
   

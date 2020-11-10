@@ -18,7 +18,7 @@ const mockuser={
 
 class Groups extends Component {
     state = {
-        group_name:'Find groups',
+        group_name:'',
         name: '',
         announcement: '',
         password:'',
@@ -52,9 +52,7 @@ class Groups extends Component {
         this.props.addgroup({
             name: this.state.name,
             description: this.state.announcement,
-            members: [mockuser],
-            time: 0,
-            passward: this.state.password
+            password: this.state.password
         })
     }
     onClickquit=()=>{
@@ -94,40 +92,44 @@ class Groups extends Component {
                     {group.members} members</li>
             );
         });
+        console.log(this.props.specificGroupInfo)
         return(
             <div className='Grouplist'>
-                <h1>I &apos;m in...</h1>
+                <h1 id="head">I &apos;m in...</h1>
                 <button id='create-group-button' onClick={()=>this.setState({Createshow: true})}>Create</button>
-                <CreateGroup
-                    name={this.state.name}
-                    announcement={this.state.announcement}
-                    show={this.state.Createshow}
-                    password={this.state.password}
-                    handlecreateshow={this.handlecreateshow}
-                    onClickconfirm={this.onClickconfirm}
-                    onChangeName={this.onChangeName}
-                    onChangeAnnounce={this.onChangeAnnounce}
-                    onChangepassword={this.onChangepassword}
-                />
-                {this.props.specificGroupInfo&&<UserGroupInfo
-                    key={this.props.specificGroupInfo.id}
-                    Groupname={this.props.specificGroupInfo.name}
-                    show={this.state.Detailshow}
-                    members={this.props.specificGroupInfo.members}
-                    handleDetailShow={this.handleDetailShow}
-                    onClickquit={this.onClickquit}
-                    onClickstudy={this.onClickstudy}
-                />
-                }
-                {groups}
-                <div className='searchgroup'>
-                    <input type='text' id='group-search-input' value={this.state.group_name} 
+                <div id="mygroup">
+                    <CreateGroup
+                        name={this.state.name}
+                        announcement={this.state.announcement}
+                        show={this.state.Createshow}
+                        password={this.state.password}
+                        handlecreateshow={this.handlecreateshow}
+                        onClickconfirm={this.onClickconfirm}
+                        onChangeName={this.onChangeName}
+                        onChangeAnnounce={this.onChangeAnnounce}
+                        onChangepassword={this.onChangepassword}
+                    />
+                    {this.props.specificGroupInfo&&<UserGroupInfo
+                        key={this.props.specificGroupInfo.id}
+                        Groupname={this.props.specificGroupInfo.name}
+                        show={this.state.Detailshow}
+                        members={this.props.specificGroupInfo.members}
+                        handleDetailShow={this.handleDetailShow}
+                        onClickquit={this.onClickquit}
+                    />
+                    }
+                    {groups}
+                </div>
+                <div id='searchgroup'>
+                    <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
                         onChange={(e) => this.setState({group_name: e.target.value})}/>
                     <button id='group-search-button' onClick={this.searchHandler}>Search</button>
                     <ul>
                         {searchedgroups}
                     </ul>
                 </div>
+                <div id='wrap'><button id="home" onClick={()=>{this.props.history.push('/')}}>Home</button></div>
+                
             </div>
         )
     }    

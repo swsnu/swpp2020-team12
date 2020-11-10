@@ -36,6 +36,7 @@ class SignUp extends Component{
                 <br></br>
                 <input
                         placeholder="ID"
+                        id="username"
                         className="text"
                         value={this.state.username}
                         onChange={(e)=>this.setState({username:e.target.value})}
@@ -45,6 +46,7 @@ class SignUp extends Component{
                 <br></br>
                 <input
                         placeholder="NickName"
+                        id="name"
                         className="text"
                         value={this.state.name}
                         onChange={(e)=>this.setState({name:e.target.value})}
@@ -54,6 +56,7 @@ class SignUp extends Component{
                 <br></br>
                 <input
                         placeholder="Password"
+                        id="password"
                         className="text"
                         value={this.state.password}
                         onChange={(e)=>this.setState({password:e.target.value})}
@@ -63,13 +66,14 @@ class SignUp extends Component{
                 <br></br>
                 <input
                         placeholder="Message"
+                        id="message"
                         className="text"
                         value={this.state.message}
                         onChange={(e)=>this.setState({message:e.target.value})}
                     />
                 <br></br>
-                <button className="button" onClick={this.handlerSignUp}>SignUp</button>
-                <button className="button" onClick={this.handlerCancle}>Cancle</button>
+                <button className="button" id="sign-up-button" onClick={this.handlerSignUp}>SignUp</button>
+                <button className="button" id="cancle-button" onClick={this.handlerCancle}>Cancle</button>
             </div>
         )
     }

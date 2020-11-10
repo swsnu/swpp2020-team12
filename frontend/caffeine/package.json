@@ -10,6 +10,7 @@
     "bootstrap": "^4.5.3",
     "connected-react-router": "^6.8.0",
     "json-server": "^0.16.2",
+    "moment": "^2.29.1",
     "react": "16.9.0",
     "react-bootstrap": "^1.4.0",
     "react-dom": "16.9.0",
@@ -17,6 +18,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-webcam": "^5.2.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "web-vitals": "^0.2.4"

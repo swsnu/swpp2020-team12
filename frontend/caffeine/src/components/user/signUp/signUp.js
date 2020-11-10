@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import * as actionCreators from '../../../store/actions/index';
+import * as actionCreators from '../../../store/actions/index.js';
 import "./signUp.css"
 
 class SignUp extends Component{

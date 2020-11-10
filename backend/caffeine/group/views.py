@@ -31,7 +31,8 @@ def user_group_list(request):
         group.save()
         group.members.add(request.user)
         response_dict = {'id': group.id, 'name': group.name,
-                         'time': group.time, 'description': group.description}
+                         'time': group.time, 'description': group.description,
+                         'members': [request.user.id]}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -57,79 +58,27 @@ def user_group_info(request, group_id):
 
 @csrf_exempt
 def group_search(request, group_name):
-    """user가 속한 그룹"""
-    return HttpResponse(status=404)
+    """검색한 그룹"""
+    if request.method == 'GET':
+        groups = Group.objects.filter(name__contains=group_name)
+        response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
+                         'time': group.time, 'description': group.description}
+                         for group in groups.iterator()]
+        return JsonResponse(response_dict, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 
 @csrf_exempt
 def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.
     members 정보를 보내지 않음"""
-    return HttpResponse(status=404)
-
-
-"""
-
-def comment_list(request, article_id):
     if request.method == 'GET':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
-        comment_all_list = [comment for comment in Comment.objects.filter(article=article_id).values()]
-        #     if comment_all_list is None: return HttpResponse("no comment", status=404)
-        for comment in comment_all_list:
-            comment['author'] = comment['author_id']
-            del comment['author_id']
-            comment['article'] = comment['article_id']
-            del comment['article_id']
-        return JsonResponse(comment_all_list, safe=False)  # serailization
-    elif request.method == 'POST':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
-        try:
-            body = request.body.decode()
-            comment_content = json.loads(body)['content']
-        except (KeyError, JSONDecodeError) as e:
-            return HttpResponse(status=400)
-        selected_article = Article.objects.filter(id=article_id).first()
-        comment = Comment(article=selected_article, content=comment_content, author=request.user)
-        comment.save()
-        response_dict = {'id': comment.id, 'content': comment.content, 'author': comment.author.id}
-        return JsonResponse(response_dict, status=201)
+        group = Group.objects.filter(id=group_id).first()
+        count = group.members.count()
+        response_dict = {'id': group.id, 'name': group.name, 'count': count,
+                         'time': group.time, 'description': group.description
+                         }
+        return JsonResponse(response_dict, safe=False)
     else:
-        return HttpResponseNotAllowed(['GET', 'POST', 'DELETE'])
-
-
-def comment_info(request, comment_id):
-    if request.method == 'GET':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
-        comment_all_list = [comment for comment in Comment.objects.filter(id=comment_id).values()]
-        if len(comment_all_list) == 0: return HttpResponse("no comment", status=404)
-        for comment in comment_all_list:
-            comment['author'] = comment['author_id']
-            del comment['author_id']
-            comment['article'] = comment['article_id']
-            del comment['article_id']
-        return JsonResponse(comment_all_list[0], safe=False)  # serailization
-    elif request.method == 'PUT':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
-        try:
-            body = request.body.decode()
-            comment_content = json.loads(body)['content']
-        except (KeyError, JSONDecodeError) as e:
-            return HttpResponse(status=400)
-        selected_comment = Comment.objects.filter(id=comment_id).first()
-        if selected_comment is None: return HttpResponse("no comment", status=404)
-        if request.user.id != selected_comment.author.id: return HttpResponse(status=403)
-        selected_comment.content = comment_content
-        selected_comment.save()
-        response_dict = {'id': selected_comment.id, 'article': selected_comment.article.id,
-                         'content': selected_comment.content, 'author': selected_comment.author.id}
-        return JsonResponse(response_dict, status=201)
-    elif request.method == 'DELETE':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
-        selected_comment = Article.objects.filter(id=comment_id).first()
-        if selected_comment is None: return HttpResponse("no comment", status=404)
-        if request.user.id != selected_comment.author.id: return HttpResponse(status=403)
-        selected_comment.delete()
-        return HttpResponse(status=200)
-    else:
-        return HttpResponseNotAllowed(['GET', 'PUT', 'DELETE'])
-"""
+        return HttpResponseNotAllowed(['GET'])

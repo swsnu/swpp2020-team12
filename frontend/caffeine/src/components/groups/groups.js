@@ -7,6 +7,7 @@ import Group from './group/group'
 import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
 import './groups.css'
+import moment from 'moment'
 
 const mockuser={
     id: 1,
@@ -51,20 +52,26 @@ class Groups extends Component {
         this.props.addgroup({
             name: this.state.name,
             description: this.state.announcement,
-            members: [mockuser],
-            time: 0,
-            passward: this.state.password
+            password: this.state.password
         })
     }
     onClickquit=()=>{
         this.setState({Detailshow: false})
         this.props.quitgroup(this.props.specificGroupInfo.id)
     }
+    onClickstudy=()=>{
+        this.setState({Detailshow: false})
+        this.props.history.push('/study/'+this.props.specificGroupInfo.id)
+    }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/group/'+group.id)
     }
     searchHandler = ()=>{
         this.props.SearchGroups(this.state.group_name)
+    }
+    gethours =(duration)=>{
+        const m=moment.duration(duration);
+        return m.humanize();
     }
     render() {
         const groups = this.props.myGroupList.map(group => {
@@ -73,7 +80,7 @@ class Groups extends Component {
                     key={group.id}
                     name={group.name}
                     members={group.members.length}
-                    averagehours={group.time}
+                    averagehours={this.gethours(group.time)}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
@@ -85,12 +92,12 @@ class Groups extends Component {
                     {group.members} members</li>
             );
         });
+        console.log(this.props.specificGroupInfo)
         return(
             <div className='Grouplist'>
                 <h1 id="head">I &apos;m in...</h1>
                 <button id='create-group-button' onClick={()=>this.setState({Createshow: true})}>Create</button>
                 <div id="mygroup">
-                    
                     <CreateGroup
                         name={this.state.name}
                         announcement={this.state.announcement}

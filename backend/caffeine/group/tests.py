@@ -6,7 +6,6 @@ from .models import Group
 from .models import StudyRoom
 
 
-
 # Create your tests here.
 class GroupTestCase(TestCase):
     def setUp(self):  # beforeeach 같은거
@@ -71,3 +70,49 @@ class GroupTestCase(TestCase):
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
+
+    def test_group_search(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/user/2')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'id': 2,
+            'count': 2,
+            'description': 'this is description2',
+            'name': 'team2',
+            'time': 'P0DT15H20M00S',
+            'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
+                        {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
+        })
+
+    def test_group_search(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/search/eam')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [
+            {'id': 1,
+             'count': 2,
+             'description': 'this is description1',
+             'name': 'team1',
+             'time': 'P0DT10H42M00S'},
+            {'id': 2,
+             'count': 2,
+             'description': 'this is description2',
+             'name': 'team2',
+             'time': 'P0DT15H20M00S'}
+        ])
+
+    def test_search_group_info(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.get('/group/search/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),
+                         {'id': 1,
+                          'count': 2,
+                          'description': 'this is description1',
+                          'name': 'team1',
+                          'time': 'P0DT10H42M00S'}
+                         )

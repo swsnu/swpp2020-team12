@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import * as actionCreators from '../../store/actions/index';
+
 import "./mainPage.css"
 
 class mainPage extends Component{

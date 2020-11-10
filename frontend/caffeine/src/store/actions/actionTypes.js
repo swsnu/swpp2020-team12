@@ -7,6 +7,7 @@ export const GET_UNENROLLED = 'GET_UNENROLLED'
 export const JOIN_GROUP = 'JOIN_GROUP'
 
 export const GET_MY_STUDYINFO = 'GET_MY_STUDYINFO'
+export const INFER_STUDY = 'INFER_STUDY'
 export const START_STUDY = 'START_STUDY'
 export const END_STUDY = 'END_STUDY'
 

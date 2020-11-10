@@ -40,12 +40,12 @@ const UserSubjectInfo = (props) => {
 
                     <div>
                         <label htmlFor="select_start">select start time</label>
-                        <input type='time' id='start_time' value={props.start_time} min='09:00' max='20:00'
+                        <input type='time' id='start_time' defaultValue={props.start_time} min='09:00' max='20:00'
                                onChange={(event) => props.onChangeStartTime(event)}/>
                     </div>
                     <div>
                         <label htmlFor="select_end">select end time</label>
-                        <input type='time' id='end_time' value={props.end_time} min='09:00' max='22:00'
+                        <input type='time' id='end_time' defaultValue={props.end_time} min='09:00' max='22:00'
                                onChange={(event) => props.onChangeEndTime(event)}/>
                     </div>
                 </Form>

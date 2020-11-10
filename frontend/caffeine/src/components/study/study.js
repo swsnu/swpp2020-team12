@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table'
 import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
+import store from '../../store/store';
 
 class Study extends Component {
     state = {
@@ -22,6 +23,9 @@ class Study extends Component {
     tick = () => {
         const { time } = this.state
         this.setState({time : time.clone().add(1, 'seconds')})
+        if(time.seconds()%5==4){
+            this.capture();
+        }
     };
     startTimer = () => {
         this.interval = setInterval(() => {
@@ -39,28 +43,32 @@ class Study extends Component {
         this.setState({
             last_image : this.webcamRef.current.getScreenshot()
         })
+        this.props.postCapturetoServer(this.state.last_image)
+        console.log("captured")
+        console.log()
     }
     render() {
-        console.log(moment().hour(0).minute(0).second(3672).format("HH:mm:ss"))
         return(
             <div className='Studyroom'>
+                <button id='change-subject-button'>Change Subject</button>
+                <button onClick={this.capture}>click</button>
+                <button id='end-study-button'>End</button>
+                <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
                 <Webcam
                     className='invisible-webcam'
                     audio={false}
-                    height={720}
+                    height={200}
                     ref={this.webcamRef}
                     screenshotFormat="image/jpeg"
-                    width={720}
+                    width={200}
                     videoConstraints={this.videoConstraints}
                 />
-                <button onClick={this.capture}>click</button>
-                <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
-                <img className='test-img' src={this.state.last_image}/>
-                <Studycomp image={this.state.last_image}
-                    name={'testuser'}
-                    state={'study'}
-                    rate={0.9}
+                <Studycomp 
+                    name={'demo_user'}
+                    state={this.props.status!==null? this.props.status : 'We believe you are studying'}
+                    rate={this.props.gauge!==null? this.props.gauge : 100}
                     />
+                
             </div>
         )
     }    
@@ -68,11 +76,16 @@ class Study extends Component {
 
 const mapStateToProps = state => {
     return {
+        status: state.study.status,
+        gauge: state.study.gauge
     };
   }
   
 const mapDispatchToProps = dispatch => {
     return {
+        postCapturetoServer: (image)=>{
+            dispatch(actionCreators.postCapturetoServer(image))
+        }
     }
   }
 

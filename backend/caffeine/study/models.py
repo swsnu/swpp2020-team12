@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import timedelta
 from user.models import User
 
 class Daily_study_record(models.Model):
@@ -7,16 +8,17 @@ class Daily_study_record(models.Model):
         on_delete=models.CASCADE,
         related_name='dailyrecord'
     )
-    total_study_time = models.DurationField()
-    total_concentration = models.DurationField()
+    date = models.DateField(auto_now_add=True)
+    total_study_time = models.DurationField(default=timedelta(0))
+    total_concentration = models.DurationField(default=timedelta(0))
     total_gauge = models.FloatField(default=0)
 
 class Daily_study_for_subject(models.Model):
     date = models.DateField(auto_now_add=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True)
-    study_time = models.DurationField()
-    distracted_time = models.DurationField()
+    study_time = models.DurationField(default=timedelta(0))
+    distracted_time = models.DurationField(default=timedelta(0))
     concentration_gauge = models.FloatField(default=0)
     last_updated_time = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)

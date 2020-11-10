@@ -21,7 +21,6 @@ class mainPage extends Component{
     gotoGroup=()=>{this.props.history.push('/group')}
     gotoSubject=()=>{this.props.history.push('/subject')}
 
-
     render(){
         return(
             <div id="Main">
@@ -45,7 +44,7 @@ class mainPage extends Component{
                        <br></br>
                        <li id="group" onClick={this.gotoGroup}>Group</li>
                        <br></br>
-                       <li id="stistics">Statistics</li>
+                       <li id="statistics">Statistics</li>
                        <br></br>
                        <li id="ranking">Ranking</li>
                    </ul>

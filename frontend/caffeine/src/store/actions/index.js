@@ -9,7 +9,9 @@ export {
 } from './groups';
 
 export{
-    getmyStudyInfo
+    getmyStudyInfo,
+    postCapturetoServer,
+    startStudy
 } from './study';
 
 export {

@@ -1,97 +1,52 @@
 {
-  "group": [
-    {
-      "id": 1,
-      "name": "test1",
-      "members": [
+    "group": [
         {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
+            "id": 1,
+            "name": "test1",
+            "members": [
+                {
+                    "id": 1,
+                    "name": "tesuser1",
+                    "studyhour": "P0DT07H42M00S",
+                    "message": "I'm good"
+                },
+                {   
+                    "id": 2,
+                    "name": "tesuser2",
+                    "studyhour": "P0DT10H42M00S",
+                    "message": "2"
+                },
+                {
+                    "id": 3,
+                    "name": "tesuser3",
+                    "studyhour": "P0DT00H42M00S",
+                    "message": ""
+                }
+            ],
+            "password": null,
+            "time": "P0DT08H42M00S",
+            "description": "stduying"
         },
         {
-          "id": 2,
-          "name": "tesuser2",
-          "stdyhour": "1hour",
-          "message": "2"
-        },
-        {
-          "id": 3,
-          "name": "tesuser3",
-          "stdyhour": "3hour",
-          "message": ""
+            "id": 2,
+            "name": "test2",
+            "members": [
+                {
+                    "id": 1,
+                    "name": "tesuser1",
+                    "stdyhour": "2hour",
+                    "message": "I'm good"
+                },
+                {
+                    "id": 4,
+                    "name": "tesuser4",
+                    "stdyhour": "40min",
+                    "message": "4"
+                }
+            ],
+            "password": null,
+            "time": "2hour",
+            "description": ""
         }
-      ],
-      "password": null,
-      "time": "2hour",
-      "description": "stduying"
-    },
-    {
-      "id": 2,
-      "name": "test2",
-      "members": [
-        {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
-        },
-        {
-          "id": 4,
-          "name": "tesuser4",
-          "stdyhour": "40min",
-          "message": "4"
-        }
-      ],
-      "password": null,
-      "time": "2hour",
-      "description": ""
-    },
-    {
-      "name": "test3",
-      "description": "hihihi test4444",
-      "members": [
-        {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
-        }
-      ],
-      "time": 0,
-      "passward": "",
-      "id": 3
-    },
-    {
-      "name": "test3",
-      "description": "hihihi test4444",
-      "members": [
-        {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
-        }
-      ],
-      "time": 0,
-      "passward": "",
-      "id": 4
-    },
-    {
-      "name": "test3",
-      "description": "hihihi test4444",
-      "members": [
-        {
-          "id": 1,
-          "name": "tesuser1",
-          "stdyhour": "2hour",
-          "message": "I'm good"
-        }
-      ],
-      "time": 0,
-      "passward": "",
-      "id": 5
-    }
-  ]
+    ]
 }

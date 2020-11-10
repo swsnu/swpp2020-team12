@@ -64,6 +64,7 @@ class Subjects extends Component {
         this.setState({description: event.target.value})
     }
     onChangeStartTime = (event) => {
+        console.log(event.target.value)
         this.setState({start_time: event.target.value})
     }
     onChangeEndTime = (event) => {
@@ -129,9 +130,19 @@ class Subjects extends Component {
         });
 
         return (
-            <div className='SubjectList'>
+            <div className='SubjectList' id="SubjectList">
                 <h1>My Subject</h1>
-                <button id='create-subject-button' onClick={() => this.setState({create_show: true})}>Create</button>
+                <div className='wrap' id='wrap'>
+                <button id='create-subject-button' onClick={() => this.setState({
+                    create_show: true, name: '',
+                    description: '',
+                    start_time: '00:00',
+                    day: 0,
+                    end_time: '00:00'
+                })}>Create
+                </button>
+                </div>
+                
                 <CreateSubject
                     name={this.state.name}
                     description={this.state.description}
@@ -146,7 +157,6 @@ class Subjects extends Component {
                     onChangeDay={this.onChangeDay}
                     onChangeStartTime={this.onChangeStartTime}
                     onChangeEndTime={this.onChangeEndTime}
-
                 />
                 {this.props.specificSubjectInfo && <UserSubjectInfo
                     key={this.props.specificSubjectInfo.id}
@@ -160,11 +170,13 @@ class Subjects extends Component {
                     onChangeName={this.onChangeName}
                     onChangeDescription={this.onChangeDescription}
                     onChangeDay={this.onChangeDay}
+                    onChangeEndTime={this.onChangeEndTime}
+                    onChangeStartTime={this.onChangeStartTime}
                     handleDetailShow={this.handleDetailShow}
                     onClickEdit={this.onClickEdit}
                     onClickQuit={this.onClickQuit}
                 />
-                }
+                } 
                 {subjects}
             </div>
         )

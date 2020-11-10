@@ -32,7 +32,14 @@ const reducer =(state=initialState, action)=>{
         case actionTypes.GET_UNENROLLED:
             return {...state, unenrolledGroupInfo: action.unenrolled}
         case actionTypes.JOIN_GROUP:
-            return {...state, unenrolledGroupInfo: null}
+            const join_group={
+                id: action.id,
+                name: action.name,
+                time: action.time,
+                description: action.description,
+                members: action.members
+            }
+            return {...state, unenrolledGroupInfo: null, myGroupList:[...state.myGroupList, join_group]}
         default:
             break;
     }

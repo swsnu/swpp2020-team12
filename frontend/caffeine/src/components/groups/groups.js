@@ -88,8 +88,8 @@ class Groups extends Component {
         });
         const searchedgroups = this.props.searchGroupList.map(group => {
             return (
-               <li key={group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>{group.name} 
-                    {group.members} members</li>
+               <li key={group.id} onClick={()=>this.clickSearchedGroupHandelr(group)}>
+                   {group.name}   #members: {group.count} </li>
             );
         });
         console.log(this.props.specificGroupInfo)

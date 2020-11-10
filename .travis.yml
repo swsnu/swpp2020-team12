@@ -13,12 +13,14 @@ matrix:
         - cd frontend/caffeine
       install:
         - yarn install
+        - npm install coveralls
       script:
         #- ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false
         - cd ..
         - cd ..
         - sonar-scanner
+      after_success: ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
     - language: python
       python: '3.7'
@@ -40,3 +42,6 @@ matrix:
         - cd ..
         - cd ..
         - sonar-scanner
+      after_success:
+        - coveralls
+      after_script: cd ..

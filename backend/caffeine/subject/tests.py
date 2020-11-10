@@ -19,9 +19,9 @@ class SubjectTestCase(TestCase):
 
         subject3 = Subject.objects.create(name='subject3', description='this is description3',
                                           user=user1)
-        day1 = Days.objects.create(day=1, start_time='12:00', duration=datetime.timedelta(minutes=60))
-        day2 = Days.objects.create(day=2, start_time='14:00', duration=datetime.timedelta(minutes=90))
-        day3 = Days.objects.create(day=5, start_time='15:00', duration=datetime.timedelta(minutes=50))
+        day1 = Days.objects.create(day=1, start_time='12:00', end_time='13:00')
+        day2 = Days.objects.create(day=2, start_time='14:00', end_time='16:00')
+        day3 = Days.objects.create(day=5, start_time='15:00', end_time='16:00')
 
         subject1.days.add(day1, day2)
         subject3.days.add(day3)
@@ -38,15 +38,15 @@ class SubjectTestCase(TestCase):
                                             'name': 'subject1',
                                             'description': 'this is description1',
                                             'user': 1,
-                                            'days': [{'day': 1, 'duration': 'P0DT01H00M00S',
+                                            'days': [{'day': 1, 'end_time': '13:00:00',
                                                       'start_time': '12:00:00'},
-                                                     {'day': 2, 'duration': 'P0DT01H30M00S',
+                                                     {'day': 2, 'end_time': '16:00:00',
                                                       'start_time': '14:00:00'}]},
                                            {'id': 3,
                                             'name': 'subject3',
                                             'description': 'this is description3',
                                             'user': 1,
-                                            'days': [{'day': 5, 'duration': 'P0DT00H50M00S',
+                                            'days': [{'day': 5, 'end_time': '16:00:00',
                                                       'start_time': '15:00:00'}]
                                             }])
 
@@ -55,7 +55,7 @@ class SubjectTestCase(TestCase):
         client.login(username='id1', password='pw1')
         response = client.post('/subject/', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
-            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+            'days': [{'day': 2, 'end_time': '18:00:00',
                       'start_time': '15:00:00'}]
         }), content_type='application/json')
         self.assertEqual(response.status_code, 201)
@@ -64,7 +64,7 @@ class SubjectTestCase(TestCase):
             'description': 'test_descript',
             'name': 'test_subject',
             'user': 1,
-            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+            'days': [{'day': 2, 'end_time': '18:00:00',
                       'start_time': '15:00:00'}]
         })
 
@@ -77,9 +77,9 @@ class SubjectTestCase(TestCase):
                                            'name': 'subject1',
                                            'description': 'this is description1',
                                            'user': 1,
-                                           'days': [{'day': 1, 'duration': 'P0DT01H00M00S',
+                                           'days': [{'day': 1, 'end_time': '13:00:00',
                                                      'start_time': '12:00:00'},
-                                                    {'day': 2, 'duration': 'P0DT01H30M00S',
+                                                    {'day': 2, 'end_time': '16:00:00',
                                                      'start_time': '14:00:00'}]})
 
     def test_edit_subject(self):
@@ -87,13 +87,13 @@ class SubjectTestCase(TestCase):
         client.login(username='id1', password='pw1')
         response = client.put('/subject/1', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
-            'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+            'days': [{'day': 2, 'end_time': '13:00:00',
                       'start_time': '15:00:00'}]}), content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json(), {'id': 1,
                                            'description': 'test_descript',
                                            'name': 'test_subject',
-                                           'days': [{'day': 2, 'duration': 'P0DT00H45M00S',
+                                           'days': [{'day': 2, 'end_time': '13:00:00',
                                                      'start_time': '15:00:00'}],
                                            'user': 1})
 

@@ -20,7 +20,7 @@ DAYS_OF_WEEK = (
 class Days(models.Model):
     day = models.IntegerField(choices=DAYS_OF_WEEK, null=True)
     start_time = models.TimeField(blank=True, null=True)
-    duration = models.DurationField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
 
 
 class Subject(models.Model):

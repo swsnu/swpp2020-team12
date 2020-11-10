@@ -29,7 +29,7 @@ const CreateSubject = (props) => {
 
                     <div className="form-group">
                         <label htmlFor="select_day">Day of week(sun:0, ..., sat: 6)</label>
-                        <select className="form-control" id="duration_select" value={props.day}
+                        <select className="form-control" id="day_select" value={props.day}
                                 onChange={(event) => props.onChangeDay(event)}>
                             <option></option>
                             <option>0</option>
@@ -41,56 +41,15 @@ const CreateSubject = (props) => {
                             <option>6</option>
                         </select>
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="select_hour">Start time hour</label>
-                        <select className="form-control" id="hour_select" value={props.start_time_hour}
-                                onChange={(event) => props.onChangeStartTimeHour(event)}>
-                            <option></option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                            <option>10</option>
-                            <option>11</option>
-                            <option>12</option>
-                            <option>13</option>
-                            <option>14</option>
-                            <option>15</option>
-                            <option>16</option>
-                            <option>17</option>
-                            <option>18</option>
-                            <option>19</option>
-                            <option>20</option>
-                            <option>21</option>
-                            <option>22</option>
-                            <option>23</option>
-                        </select>
+                    <div>
+                        <label htmlFor="select_start">select start time</label>
+                        <input type='time' id='start_time' value={props.start_time} min='09:00' max='20:00'
+                               onChange={(event) => props.onChangeStartTime(event)}/>
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="select_minute">Start time(minute)</label>
-                        <select className="form-control" id="minute_select" value={props.start_time_min}
-                                onChange={(event) => props.onChangeStartTimeMin(event)}>
-                            <option></option>
-                            <option>00</option>
-                            <option>10</option>
-                            <option>20</option>
-                            <option>30</option>
-                            <option>40</option>
-                            <option>50</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="select_duration">Duration(hour)</label>
-                        <select className="form-control" id="duration_select" value={props.duration_hour}
-                                onChange={(event) => props.onChangeDurationHour(event)}>
-                            <option></option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
+                    <div>
+                        <label htmlFor="select_end">select end time</label>
+                        <input type='time' id='end_time' value={props.end_time} min='09:00' max='22:00'
+                               onChange={(event) => props.onChangeEndTime(event)}/>
                     </div>
                 </Form>
             </Modal.Body>

@@ -3,7 +3,6 @@ from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Subject, Days
-import isodate
 
 
 # Create your views here.
@@ -17,7 +16,7 @@ def subject_list(request):
         response_dict = list()
         for subject in subjects:
             day_list = [{'day': day.day, 'start_time': day.start_time,
-                         'duration': day.duration} for day in subject.days.iterator()]
+                         'end_time': day.end_time} for day in subject.days.iterator()]
             response_dict.append({'id': subject.id, 'name': subject.name, 'user': subject.user.id,
                                   'description': subject.description, 'days': day_list})
         return JsonResponse(response_dict, safe=False)
@@ -33,12 +32,12 @@ def subject_list(request):
         subject.save()
         for day in days:
             new_day = Days(day=day['day'], start_time=day['start_time'],
-                           duration=isodate.parse_duration(day['duration']))
+                           end_time=day['end_time'])
             new_day.save()
             subject.days.add(new_day)
 
         day_list = [{'day': day.day, 'start_time': day.start_time,
-                     'duration': day.duration} for day in subject.days.iterator()]
+                     'end_time': day.end_time} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name,
                          'description': subject.description, 'user': subject.user.id,
                          'days': day_list}  # TODO: 지금 days 빼고 돌려줌
@@ -54,7 +53,7 @@ def subject_info(request, subject_id):
     if request.method == 'GET':
         subject = Subject.objects.filter(id=subject_id).first()
         day_list = [{'day': day.day, 'start_time': day.start_time,
-                     'duration': day.duration} for day in subject.days.iterator()]
+                     'end_time': day.end_time} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name, 'user': subject.user.id,
                          'description': subject.description, 'days': day_list}
         return JsonResponse(response_dict, safe=False)
@@ -73,14 +72,14 @@ def subject_info(request, subject_id):
         print(days)
         for day in days:
             new_day = Days(day=day['day'], start_time=day['start_time'],
-                           duration=isodate.parse_duration(day['duration']))
+                           end_time=day['end_time'])
             new_day.save()
             subject.days.add(new_day)
         subject.name = name
         subject.description = description
         subject.save()
         day_list = [{'day': day.day, 'start_time': day.start_time,
-                     'duration': day.duration} for day in subject.days.iterator()]
+                     'end_time': day.end_time} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name,
                          'description': subject.description,
                          'user': request.user.id, 'days': day_list}

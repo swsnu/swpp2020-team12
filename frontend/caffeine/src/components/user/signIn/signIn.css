@@ -1,0 +1,57 @@
+.logo {
+    position: relative;
+    right: 400px;
+    top: 100px;
+}
+
+.logo_text {
+    position: relative;
+    top: -325px;
+    left: 300px;
+    font-size: 75px;
+    font-weight: bold;
+    margin-top: 50px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-bottom: 50px;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 700px;
+    border-top: 5px solid black;
+    border-bottom: 5px solid black;
+}
+
+.Input {
+    position: relative;
+    top: -300px;
+    left: 300px
+}
+
+.Text {
+    border-radius: 10px;
+    width:600px;
+    height:50px;
+    margin: 10px;
+}
+
+.button {
+    border-radius: 10px;
+    width:295px;
+    height:50px;
+    font-size: 30px;
+    margin: 5px;
+    background: rgb(202, 202, 202);
+    font-size: 30px;
+    border-radius: 10px;
+    transition: all .35s;
+    border: none;
+}
+
+
+.button:hover {
+    color:#fff;
+    background: rgb(54, 54, 54);
+    transform: translateY(-7px);
+}
+
+

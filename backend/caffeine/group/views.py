@@ -31,7 +31,8 @@ def user_group_list(request):
         group.members.add(request.user)
         group.save()
         response_dict = {'id': group.id, 'name': group.name,
-                         'time': group.time, 'description': group.description}
+                         'time': group.time, 'description': group.description,
+                         'members': [request.user.id]}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])

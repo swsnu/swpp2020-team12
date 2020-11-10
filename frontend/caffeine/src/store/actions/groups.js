@@ -69,7 +69,7 @@ export const addGroup_ = (group) =>{
 }
 export const addGroup= (data) =>{
     return dispatch =>{
-        return axios.post('/group', data)
+        return axios.post('/group/', data)
             .then(res => dispatch(addGroup_(res.data)));
     }
 }

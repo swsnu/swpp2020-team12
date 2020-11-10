@@ -1,0 +1,37 @@
+.SignUp {
+    position: relative;
+    top: 150px;
+  }
+
+.text {
+    border-radius: 10px;
+    width:600px;
+    height:50px;
+    margin: 10px;
+}
+
+.button {
+    border-radius: 10px;
+    width:295px;
+    height:50px;
+    font-size: 30px;
+    margin: 5px;
+}
+
+.label {
+    position: relative;
+    right: 240px;
+    font-size: x-large;
+    text-align: left;
+}
+
+.label2 {
+    position: relative;
+    right: 280px;
+    font-size: x-large;
+    text-align: left;
+}
+
+.head {
+    font-weight: bold;
+}

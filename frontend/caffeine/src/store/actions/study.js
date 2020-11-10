@@ -19,13 +19,13 @@ export const postCapturetoServer_ = (data) =>{
 
 export const postCapturetoServer = (image) =>{
     return dispatch =>{
-        return axios.post('/study/infer/', image)
+        return axios.post('/study/infer/', {image: image})
             .then(res => dispatch(postCapturetoServer_(res.data)));
     } 
 }
 export const startStudy = (subject, group_id) =>{
     return dispatch =>{
-        return axios.post('/study/stats/', {subject: subject, group_id: group_id})
+        return axios.post('/study/status/', {subject: subject, group_id: group_id})
             .then(()=>{
                 dispatch(push('/study/'+group_id));
             });

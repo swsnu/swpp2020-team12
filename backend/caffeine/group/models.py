@@ -7,7 +7,7 @@ from user.models import User
 
 class Group(models.Model):
     name = models.CharField(null=False, max_length=64, unique=True)
-    password = models.CharField(null=True, max_length=64)
+    password = models.CharField(null=True, max_length=64, blank=True)
     description = models.TextField(null=True, blank=True)
     time = models.DurationField(default=timedelta())  # sum of all user's daily study time
     members = models.ManyToManyField(User)

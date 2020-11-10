@@ -4,8 +4,8 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 
 const Studycomp = (props) => {
     const bar = props.rate>0.8 ? <ProgressBar striped variant="danger" animated now={props.rate*100} />
-    : props.rate>0.6 ? <ProgressBar variant="warning" now={props.rate*100} /> :
-    <ProgressBar variant="info" now={props.rate*100} />;
+    : props.rate>0.6 ? <ProgressBar variant="warning" animated now={props.rate*100} /> :
+    <ProgressBar variant="info" animated now={props.rate*100} />;
     return (
         <div className="User">
             <div className="img">

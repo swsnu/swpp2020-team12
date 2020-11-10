@@ -8,6 +8,8 @@ from .models import StudyRoom
 
 # Create your tests here.
 class GroupTestCase(TestCase):
+    maxDiff = None
+
     def setUp(self):  # beforeeach 같은거
         user1 = User.objects.create_user(username='id1', name='nickname1', password='pw1', message='message1')
         user2 = User.objects.create_user(username='id2', name='nickname2', password='pw2', message='message2')
@@ -30,22 +32,42 @@ class GroupTestCase(TestCase):
     def test_user_group_list_get(self):
         client = Client()
         client.login(username='id2', password='pw2')
-        response = client.get('/group/user')
+        response = client.get('/group/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [{'description': 'this is description1',
                                             'id': 1,
                                             'name': 'team1',
-                                            'time': 'P0DT10H42M00S'},
+                                            'time': 'P0DT10H42M00S',
+                                            'members': [{
+                                                'id': 1,
+                                                'name': 'nickname1',
+                                                'message': 'message1'
+                                            },
+                                                {
+                                                    'id': 2,
+                                                    'name': 'nickname2',
+                                                    'message': 'message2'
+                                                }
+                                            ]},
                                            {'description': 'this is description2',
                                             'id': 2,
                                             'name': 'team2',
-                                            'time': 'P0DT15H20M00S'}
-                                           ])
+                                            'time': 'P0DT15H20M00S',
+                                            'members': [{
+                                                'id': 2,
+                                                'name': 'nickname2',
+                                                'message': 'message2'
+                                            },
+                                                {'id': 3,
+                                                 'name': 'nickname3',
+                                                 'message': 'message3'
+                                                 }]
+                                            }])
 
     def test_user_group_list_post(self):
         client = Client()
         client.login(username='id2', password='pw2')
-        response = client.post('/group/user', json.dumps({
+        response = client.post('/group/', json.dumps({
             'description': 'test_descript',
             'password': '',
             'name': 'test_team'}), content_type='application/json')
@@ -54,12 +76,13 @@ class GroupTestCase(TestCase):
             'description': 'test_descript',
             'time': 'P0DT00H00M00S',
             'name': 'test_team',
+            'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'}],
             'id': 3})
 
     def test_user_group_get(self):
         client = Client()
         client.login(username='id2', password='pw2')
-        response = client.get('/group/user/2')
+        response = client.get('/group/2/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {
             'id': 2,
@@ -74,7 +97,7 @@ class GroupTestCase(TestCase):
     def test_group_search(self):
         client = Client()
         client.login(username='id2', password='pw2')
-        response = client.get('/group/user/2')
+        response = client.get('/group/2')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {
             'id': 2,
@@ -116,3 +139,10 @@ class GroupTestCase(TestCase):
                           'name': 'team1',
                           'time': 'P0DT10H42M00S'}
                          )
+
+    def test_search_group_info_join(self):
+        client = Client()
+        client.login(username='id3', password='pw3')
+        response = client.put('/group/search/1', {}, content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Group.objects.filter(id=1).first().members.count(), 3)

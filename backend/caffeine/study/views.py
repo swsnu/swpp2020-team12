@@ -12,14 +12,14 @@ import random
 @csrf_exempt
 def studyromm(request):
     if request.method == 'POST':
-        body=request.body.decode()
-        group_id=body['group_id']
+        req_data = json.loads(request.body.decode())
+        group_id=req_data['group_id']
         user=User.objects.get(id=request.user.id)
-        today_study=user.dailyrecord.filter(date=date.today())
+        today_study=user.dailyrecord.filter(date=datetime.date.today())
         if not today_study:
-            today_study=Daily_study_record()
+            today_study=Daily_study_record(user=user)
             today_study.save()
-        subject=body['subject']
+        subject=req_data['subject']
         current_study=Daily_study_for_subject(subject=subject, is_active=True, user=user)
         current_study.save()
         return HttpResponse(status=201)
@@ -34,14 +34,13 @@ def study_infer(request):
     img = req_data['image']
     current_study=Daily_study_for_subject.objects.get(user__id=request.user.id, is_active=True)
     newconcentration=Concentration(concentration=(status==0), image=img, parent_study=current_study)
+    newconcentration.save()
     if status==0:
         current_study.study_time += datetime.timedelta(seconds=10)
-        current_study.concentration_gauge = current_study.study_time / 
-            (current_study.study_time + current_study.distracted_time)
+        current_study.concentration_gauge = current_study.study_time /(current_study.study_time + current_study.distracted_time)
     else:
         current_study.distracted_time += datetime.timedelta(seconds=10)
-        current_study.concentration_gauge = current_study.study_time / 
-            (current_study.study_time + current_study.distracted_time)
+        current_study.concentration_gauge = current_study.study_time / (current_study.study_time + current_study.distracted_time)
     current_study.save()
     return HttpResponse(json.dumps({'status': status, 'gauge': current_study.concentration_gauge}), status=201)
 

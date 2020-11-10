@@ -6,6 +6,7 @@ import * as actionCreators from '../../store/actions/index';
 import Group from './group/group'
 import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
+import Selectsubject from '../study/selectSubject/selectSubject'
 import './groups.css'
 import moment from 'moment'
 
@@ -24,9 +25,12 @@ class Groups extends Component {
         password:'',
         Createshow: false,
         Detailshow: false,
+        Subjectshow: false,
+        subject: null
       }
     componentDidMount(){
-        this.props.getAllGroups()
+        this.props.getAllGroups();
+        this.props.getSubjects();
     }
     clickGroupHandler = (group)=>{
         this.props.getGroup(group.id)
@@ -37,6 +41,9 @@ class Groups extends Component {
     }
     handlecreateshow=()=>{
         this.setState({Createshow: false})
+    }
+    handlesubjectshow=()=>{
+        this.setState({Subjectshow: false})
     }
     onChangeName=(event)=>{
         this.setState({name: event.target.value})
@@ -61,7 +68,7 @@ class Groups extends Component {
     }
     onClickstudy=()=>{
         this.setState({Detailshow: false});
-        this.props.startStudy(this.props.specificGroupInfo.id);
+        this.setState({Subjectshow: true});
     }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/group/'+group.id)
@@ -72,6 +79,12 @@ class Groups extends Component {
     gethours =(duration)=>{
         const m=moment.duration(duration);
         return m.humanize();
+    }
+    onClickcheck=(name)=>{
+        this.setState({subject: name})
+    }
+    onClickchoose=()=>{
+        this.props.startStudy(this.state.subject, this.props.specificGroupInfo.id)
     }
     render() {
         const groups = this.props.myGroupList.map(group => {
@@ -92,7 +105,6 @@ class Groups extends Component {
                     {group.members} members</li>
             );
         });
-        console.log(this.props.specificGroupInfo)
         return(
             <div className='Grouplist'>
                 <h1 id="head">I &apos;m in...</h1>
@@ -108,6 +120,14 @@ class Groups extends Component {
                         onChangeName={this.onChangeName}
                         onChangeAnnounce={this.onChangeAnnounce}
                         onChangepassword={this.onChangepassword}
+                    />
+                    <Selectsubject 
+                        show={this.state.Subjectshow}
+                        handlesubjectshow={this.handlesubjectshow}
+                        mySubjectList={this.props.subjectList}
+                        subject={this.state.subject}
+                        onClickcheck={this.onClickcheck}
+                        onClickchoose={this.onClickchoose}
                     />
                     {this.props.specificGroupInfo&&<UserGroupInfo
                         key={this.props.specificGroupInfo.id}
@@ -140,7 +160,8 @@ const mapStateToProps = state => {
     return {
         myGroupList: state.group.myGroupList,
         searchGroupList: state.group.searchGroupList,
-        specificGroupInfo: state.group.specificGroupInfo
+        specificGroupInfo: state.group.specificGroupInfo,
+        subjectList: state.subject.mySubjectList
     };
   }
   
@@ -156,8 +177,10 @@ const mapDispatchToProps = dispatch => {
             dispatch(actionCreators.addGroup(data)),
         quitgroup: (group_id) =>
             dispatch(actionCreators.deleteGroup(group_id)),
-        startStudy: (group_id) =>
-            dispatch(actionCreators.startStudy('test', group_id))
+        getSubjects: () =>
+            dispatch(actionCreators.getSubjects()),
+        startStudy: (subject, group_id) =>
+            dispatch(actionCreators.startStudy(subject, group_id))
     }
   }
 

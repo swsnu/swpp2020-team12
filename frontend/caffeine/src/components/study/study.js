@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table'
 import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
+import store from '../../store/store';
 
 class Study extends Component {
     state = {
@@ -42,10 +43,10 @@ class Study extends Component {
         this.setState({
             last_image : this.webcamRef.current.getScreenshot()
         })
+        this.props.postCapturetoServer(this.state.last_image)
         console.log("captured")
     }
     render() {
-        console.log(moment().hour(0).minute(0).second(3672).format("HH:mm:ss"))
         return(
             <div className='Studyroom'>
                 <Webcam
@@ -57,14 +58,16 @@ class Study extends Component {
                     width={720}
                     videoConstraints={this.videoConstraints}
                 />
+                <button id='change-subject-button'>Change Subject</button>
                 <button onClick={this.capture}>click</button>
                 <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
                 <img className='test-img' src={this.state.last_image} width="100" height="100"/>
                 <Studycomp 
                     name={'testuser'}
-                    state={'study'}
-                    rate={0.9}
+                    state={this.props.status!==null? this.props.status : 'We believe you are studying'}
+                    rate={this.props.gauge? this.props.gauge : 100}
                     />
+                <button id='end-study-button'>End</button>
             </div>
         )
     }    
@@ -72,11 +75,16 @@ class Study extends Component {
 
 const mapStateToProps = state => {
     return {
+        status: state.study.status,
+        gauge: state.study.gauge
     };
   }
   
 const mapDispatchToProps = dispatch => {
     return {
+        postCapturetoServer: (image)=>{
+            dispatch(actionCreators.postCapturetoServer(image))
+        }
     }
   }
 

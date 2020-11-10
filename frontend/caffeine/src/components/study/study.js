@@ -23,7 +23,7 @@ class Study extends Component {
     tick = () => {
         const { time } = this.state
         this.setState({time : time.clone().add(1, 'seconds')})
-        if(time.seconds()%10==9){
+        if(time.seconds()%5==4){
             this.capture();
         }
     };
@@ -45,27 +45,27 @@ class Study extends Component {
         })
         this.props.postCapturetoServer(this.state.last_image)
         console.log("captured")
+        console.log()
     }
     render() {
         return(
             <div className='Studyroom'>
-                <Webcam
-                    className='invisible-webcam'
-                    audio={false}
-                    height={720}
-                    ref={this.webcamRef}
-                    screenshotFormat="image/jpeg"
-                    width={720}
-                    videoConstraints={this.videoConstraints}
-                />
                 <button id='change-subject-button'>Change Subject</button>
                 <button onClick={this.capture}>click</button>
                 <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
-                <img className='test-img' src={this.state.last_image} width="100" height="100"/>
+                <Webcam
+                    className='invisible-webcam'
+                    audio={false}
+                    height={200}
+                    ref={this.webcamRef}
+                    screenshotFormat="image/jpeg"
+                    width={200}
+                    videoConstraints={this.videoConstraints}
+                />
                 <Studycomp 
-                    name={'testuser'}
+                    name={'demo_user'}
                     state={this.props.status!==null? this.props.status : 'We believe you are studying'}
-                    rate={this.props.gauge? this.props.gauge : 100}
+                    rate={this.props.gauge!==null? this.props.gauge : 100}
                     />
                 <button id='end-study-button'>End</button>
             </div>

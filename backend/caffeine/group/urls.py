@@ -4,6 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.user_group_list),
     path('<int:group_id>/', views.user_group_info),
-    path('search/<int:group_id>/', views.search_group_info),
-    path('search/<str:group_name>/', views.group_search)
+    path('search/<str:group_id>', views.search_group_info),
+    #path('search/<str:group_id>', views.group_search)
 ]

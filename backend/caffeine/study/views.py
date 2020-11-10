@@ -29,7 +29,7 @@ def studyromm(request):
 @csrf_exempt
 def study_infer(request):
     pk = random.randint(1, 100)
-    status = 0 if pk<40 else 1 if pk<60 else 2 if pk<80 else 3
+    status = 0 if pk<70 else 1 if pk<80 else 2 if pk<90 else 3
     req_data = json.loads(request.body.decode())
     img = req_data['image']
     current_study=Daily_study_for_subject.objects.get(user__id=request.user.id, is_active=True)

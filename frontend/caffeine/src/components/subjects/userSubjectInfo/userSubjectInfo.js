@@ -28,14 +28,13 @@ const UserSubjectInfo = (props) => {
                         <label htmlFor="select_day">Day of week(sun:0, ..., sat: 6)</label>
                         <select className="form-control" id="duration_select" defaultValue={props.day}
                                 onChange={(event) => props.onChangeDay(event)}>
-                            <option></option>
-                            <option>0</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
+                            <option value={0}>Sun</option>
+                            <option value={1}>Mon</option>
+                            <option value={2}>Tue</option>
+                            <option value={3}>Wed</option>
+                            <option value={4}>Thu</option>
+                            <option value={5}>Fri</option>
+                            <option value={6}>Tue</option>
                         </select>
                     </div>
 

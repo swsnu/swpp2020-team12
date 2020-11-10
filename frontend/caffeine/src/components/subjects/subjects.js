@@ -32,6 +32,17 @@ class Subjects extends Component {
         detail_show: false,
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.specificSubjectInfo !== this.props.specificSubjectInfo)
+            this.setState({
+                name: this.props.specificSubjectInfo.name,
+                description: this.props.specificSubjectInfo.description,
+                start_time: this.props.specificSubjectInfo.days[0].start_time,
+                day: this.props.specificSubjectInfo.days[0].day,
+                end_time: this.props.specificSubjectInfo.days[0].end_time,
+            })
+    }
+
     componentDidMount() {
         this.props.getAllSubjects()
     }
@@ -85,13 +96,20 @@ class Subjects extends Component {
         //TODO: this.setstate 로 바꿔줘야 함
         this.props.editSubject({
             id: this.props.specificSubjectInfo.id,
-            name: this.state.name,
+            name: this.props.specificSubjectInfo.name,
             description: this.state.description,
             days: [{
                 day: this.state.day,
                 start_time: this.state.start_time,
                 end_time: this.state.end_time,
             }]
+        })
+        this.setState({
+            name: '',
+            description: '',
+            start_time: '00:00',
+            day: 0,
+            end_time: '00:00',
         })
     }
     onClickQuit = () => {

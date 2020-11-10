@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import SignUp from './signUp';
-import { getMockStore } from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/test-utils/mocks.js';
-import { history } from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/store/store.js';
-import * as actionCreators from '/home/harvey/test/swpp2020-team12/frontend/caffeine/src/store/actions/user.js';
+import { getMockStore } from '../../../../src/test-utils/mocks';
+import { history } from '../../../store/store';
+import * as actionCreators from '../../../store/actions/user';
 
 
 const stubInitialState = {

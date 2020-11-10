@@ -58,7 +58,7 @@ def user_group_info(request, group_id):
         return JsonResponse(response_dict, safe=False)
     if request.method == 'DELETE':
         group = Group.objects.get(id=group_id)
-        group.members.filter(id=request.user.id).delete()
+        group.members.remove(group.members.filter(id=request.user.id).first())
         if Group.objects.get(id=group_id).members.count() == 0:
             group.delete()
         return HttpResponse(status=200)
@@ -72,7 +72,7 @@ def group_search(request, group_name):
     if request.method == 'GET':
         groups = Group.objects.filter(name__contains=group_name)
         response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
-                          'time': group.time, 'description': group.description}
+                          'time': group.time, 'description': group.description, 'password': group.password}
                          for group in groups.iterator()]
         return JsonResponse(response_dict, safe=False)
     else:
@@ -87,8 +87,7 @@ def search_group_info(request, group_id):
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
-                         'time': group.time, 'description': group.description, 'password': group.password
-                         }
+                         'time': group.time, 'description': group.description, 'password': group.password}
         return JsonResponse(response_dict, safe=False)
     if request.method == 'PUT':
         try:
@@ -102,7 +101,14 @@ def search_group_info(request, group_id):
         else:
             if password == group.password:
                 group.members.add(request.user)
-                return HttpResponse(status=201)
+                count = group.members.count()
+                member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                               for member in group.members.iterator()]
+                response_dict = {'id': group.id, 'name': group.name, 'count': count,
+                                 'time': group.time, 'description': group.description,
+                                 'members': member_list
+                                 }
+                return HttpResponse(response_dict, status=201)
             else:
                 return HttpResponse(status=403)
     else:

@@ -37,7 +37,7 @@ describe('<Groups />', () => {
 
   it('should render Groups', () => {
     const component = mount(groups);
-    const wrapper = component.find('.name');
+    const wrapper = component.find('#name');
     expect(wrapper.length).toBe(2);
     expect(spygetGroups).toBeCalledTimes(1);
   });
@@ -45,11 +45,11 @@ describe('<Groups />', () => {
     const spygetGroups = jest.spyOn(actionCreators, 'getGroup')
       .mockImplementation(id => {return dispatch => {}; });
     const component = mount(groups);
-    const wrapper = component.find('.name').at(0);
+    const wrapper = component.find('#name').at(0);
     wrapper.simulate('click');
     expect(spygetGroups).toHaveBeenCalledTimes(1);
     const newInstance = component.find(Groups.WrappedComponent).instance();
-    expect(newInstance.state.isDeatilopend).toEqual(true);
+    expect(newInstance.state.Detailshow).toEqual(true);
   });
   it(`should call 'searchHandler'`, () => {
     const spysearchGroups = jest.spyOn(actionCreators, 'SearchGroups')
@@ -59,12 +59,12 @@ describe('<Groups />', () => {
     wrapper.simulate('click');
     expect(spysearchGroups).toHaveBeenCalledTimes(1);
   });
-  it(`should change 'isaddopen' `, () => {
+  it(`should change 'Createshow' `, () => {
     const component = mount(groups);
     const wrapper = component.find('#create-group-button');
     wrapper.simulate('click');
     const newInstance = component.find(Groups.WrappedComponent).instance();
-    expect(newInstance.state.isAddopend).toEqual(true);
+    expect(newInstance.state.Createshow).toEqual(true);
   });
   it(`should call 'clickSearchedGroupHandelr'`, () => {
     const spyHistoryPush = jest.spyOn(history, 'push')
@@ -72,7 +72,7 @@ describe('<Groups />', () => {
     const component = mount(groups);
     const wrapper = component.find('li');
     wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/groups/3');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/group/3');
   });
   it(`should change 'searchinput'`, () => {
     const component = mount(groups);
@@ -80,5 +80,13 @@ describe('<Groups />', () => {
     wrapper.simulate('change', { target: { value: '1234'} });
     const newInstance = component.find(Groups.WrappedComponent).instance();
     expect(newInstance.state.group_name).toEqual('1234');
+  });
+  it(`should redirect to main`, () => {
+    const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation(path => {});
+    const component = mount(groups);
+    const wrapper = component.find('#home');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/');
   });
 });

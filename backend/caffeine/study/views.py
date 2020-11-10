@@ -23,6 +23,18 @@ def studyromm(request):
         current_study=Daily_study_for_subject(subject=subject, is_active=True, user=user)
         current_study.save()
         return HttpResponse(status=201)
+    elif request.method == 'PUT':
+        user=User.objects.get(id=request.user.id)
+        current_study=Daily_study_for_subject.objects.get(user__id=request.user.id, is_active=True)
+        today_study=user.dailyrecord.filter(date=datetime.date.today()).first()
+        today_study.total_study_time+=current_study.study_time
+        today_study.total_study_time+=current_study.distracted_time
+        today_study.total_concentration+=current_study.study_time
+        today_study.total_gauge=today_study.total_concentration/today_study.total_study_time
+        current_study.is_active=False
+        current_study.save()
+        today_study.save()
+        return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
     

@@ -76,7 +76,7 @@ input[id='group-search-input']{
 
 div[id="wrap"] {
     position: absolute;
-    right:75px;
+    right:-730px;
     top:50px;
     display: flex;
     align-items: center;

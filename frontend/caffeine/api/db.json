@@ -7,24 +7,24 @@
                 {
                     "id": 1,
                     "name": "tesuser1",
-                    "stdyhour": "2hour",
+                    "studyhour": "P0DT07H42M00S",
                     "message": "I'm good"
                 },
                 {   
                     "id": 2,
                     "name": "tesuser2",
-                    "stdyhour": "1hour",
+                    "studyhour": "P0DT10H42M00S",
                     "message": "2"
                 },
                 {
                     "id": 3,
                     "name": "tesuser3",
-                    "stdyhour": "3hour",
+                    "studyhour": "P0DT00H42M00S",
                     "message": ""
                 }
             ],
             "password": null,
-            "time": "2hour",
+            "time": "P0DT08H42M00S",
             "description": "stduying"
         },
         {

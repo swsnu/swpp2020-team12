@@ -5,5 +5,8 @@ export {
     addGroup,
     deleteGroup,
     getunEnrolled,
-    joinGroup
+    joinGroup,
 } from './groups';
+export{
+    getmyStudyInfo
+} from './study';

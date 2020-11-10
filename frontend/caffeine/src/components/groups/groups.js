@@ -7,6 +7,7 @@ import Group from './group/group'
 import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
 import './groups.css'
+import moment from 'moment'
 
 const mockuser={
     id: 1,
@@ -60,11 +61,19 @@ class Groups extends Component {
         this.setState({Detailshow: false})
         this.props.quitgroup(this.props.specificGroupInfo.id)
     }
+    onClickstudy=()=>{
+        this.setState({Detailshow: false})
+        this.props.history.push('/study/'+this.props.specificGroupInfo.id)
+    }
     clickSearchedGroupHandelr = (group)=>{
         this.props.history.push('/group/'+group.id)
     }
     searchHandler = ()=>{
         this.props.SearchGroups(this.state.group_name)
+    }
+    gethours =(duration)=>{
+        const m=moment.duration(duration);
+        return m.humanize();
     }
     render() {
         const groups = this.props.myGroupList.map(group => {
@@ -73,7 +82,7 @@ class Groups extends Component {
                     key={group.id}
                     name={group.name}
                     members={group.members.length}
-                    averagehours={group.time}
+                    averagehours={this.gethours(group.time)}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
@@ -107,6 +116,7 @@ class Groups extends Component {
                     members={this.props.specificGroupInfo.members}
                     handleDetailShow={this.handleDetailShow}
                     onClickquit={this.onClickquit}
+                    onClickstudy={this.onClickstudy}
                 />
                 }
                 {groups}

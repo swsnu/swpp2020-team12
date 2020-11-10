@@ -1,13 +1,11 @@
 from json import JSONDecodeError
-from django.shortcuts import render
 import json
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Group
 
 
-# from .serializers import GroupSerializer
-
+# TODO: User가 이미 join 된 그룹에 들어가려 한다면?
 
 # Create your views here.
 
@@ -15,10 +13,14 @@ from .models import Group
 def user_group_list(request):
     """user가 속한 그룹"""
     if request.method == 'GET':
-        user_groups = [group for group in Group.objects.filter(members__id=request.user.id).values()]
-        for group in user_groups:
-            del group['password']
-        return JsonResponse(user_groups, safe=False)
+        groups = [group for group in Group.objects.filter(members__id=request.user.id)]
+        response_dict = list()
+        for group in groups:
+            member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                           for member in group.members.iterator()]
+            response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
+                                  'description': group.description, 'members': member_list})
+        return JsonResponse(response_dict, safe=False)
     if request.method == 'POST':
         try:
             body = request.body.decode()
@@ -30,9 +32,11 @@ def user_group_list(request):
         group = Group(name=name, password=password, description=description)
         group.save()
         group.members.add(request.user)
+        member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                       for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name,
                          'time': group.time, 'description': group.description,
-                         'members': [request.user.id]}
+                         'members': member_list}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -52,6 +56,12 @@ def user_group_info(request, group_id):
                          'members': member_list
                          }
         return JsonResponse(response_dict, safe=False)
+    if request.method == 'DELETE':
+        group = Group.objects.get(id=group_id)
+        group.members.filter(id=request.user.id).delete()
+        if Group.objects.get(id=group_id).members.count() == 0:
+            group.delete()
+        return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
@@ -62,7 +72,7 @@ def group_search(request, group_name):
     if request.method == 'GET':
         groups = Group.objects.filter(name__contains=group_name)
         response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
-                         'time': group.time, 'description': group.description}
+                          'time': group.time, 'description': group.description}
                          for group in groups.iterator()]
         return JsonResponse(response_dict, safe=False)
     else:
@@ -80,5 +90,19 @@ def search_group_info(request, group_id):
                          'time': group.time, 'description': group.description
                          }
         return JsonResponse(response_dict, safe=False)
+    if request.method == 'PUT':
+        try:
+            body = request.body.decode()
+            password = json.loads(body)['password']
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponse(status=400)
+        group = Group.objects.filter(id=group_id).first()
+        if group.members.filter(id=request.user.id).exists():  # user already joined the group
+            return HttpResponse(status=400)
+        else:
+            if password==group.password :
+                group.members.add(request.user)
+                return HttpResponse(status=201)
+            else : return HttpResponse(status=403)
     else:
-        return HttpResponseNotAllowed(['GET'])
+        return HttpResponseNotAllowed(['GET', 'PUT'])

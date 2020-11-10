@@ -15,6 +15,7 @@ export{
 export {
     signin,
     signup,
+    signout,
 } from './user';
 
 export{

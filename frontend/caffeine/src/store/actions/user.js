@@ -32,3 +32,14 @@ export const signup = (data) =>{
             });
     }
 }
+
+export const signout = () =>{
+    return dispatch =>{
+        return axios.get('/user/signout')
+            .then((res) => {
+                if (res.status === 204){
+                    history.push('/signin')
+                }
+            });
+    }
+}

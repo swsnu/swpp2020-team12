@@ -44,7 +44,7 @@ describe('<SignIn />', () => {
       wrapper.simulate('click');
       expect(handlerSignIn).toHaveBeenCalledTimes(1);
     });
-    it(`should call 'handlerSignIn'`, () => {
+    it(`should go to main page`, () => {
       const spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation(path => {});
       const component = mount(signin);

@@ -67,21 +67,18 @@ def user_group_info(request, group_id):
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-
-
-
 @csrf_exempt
 def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.
     members 정보를 보내지 않음"""
     if request.method == 'GET':
-        group_id=int(group_id)
+        group_id = int(group_id)
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
                          'time': group.time, 'description': group.description, 'password': group.password}
         return JsonResponse(response_dict, safe=False)
-    if request.method == 'POST':   # group_id is string
+    if request.method == 'POST':  # group_id is string
         groups = Group.objects.filter(name__contains=group_id)
         response_dict = [{'id': group.id, 'name': group.name, 'count': group.members.count(),
                           'time': group.time, 'description': group.description, 'password': group.password}

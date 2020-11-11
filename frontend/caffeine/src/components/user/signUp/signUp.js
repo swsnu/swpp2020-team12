@@ -73,7 +73,7 @@ class SignUp extends Component{
                     />
                 <br></br>
                 <button className="button" id="sign-up-button" onClick={this.handlerSignUp}>SignUp</button>
-                <button className="button" id="cancle-button" onClick={this.handlerCancle}>Cancle</button>
+                <button className="button" id="cancle-button" onClick={this.handlerCancle}>Cancel</button>
             </div>
         )
     }

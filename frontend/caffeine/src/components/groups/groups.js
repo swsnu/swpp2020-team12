@@ -154,9 +154,10 @@ class Groups extends Component {
                     <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
                            onChange={(e) => this.setState({group_name: e.target.value})}/>
                     <button id='group-search-button' onClick={this.searchHandler}>Search</button>
-                    <ul>
+
+                    <h5 id='search_group_result'>
                         {searchedgroups}
-                    </ul>
+                    </h5>
                 </div>
                 <div id='wrap'>
                     <button id="home" onClick={() => {

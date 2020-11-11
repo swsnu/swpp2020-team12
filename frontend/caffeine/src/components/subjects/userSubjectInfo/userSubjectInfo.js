@@ -25,7 +25,7 @@ const UserSubjectInfo = (props) => {
                     </Form.Group>
 
                     <div className="form-group">
-                        <label htmlFor="select_day">Day of week(sun:0, ..., sat: 6)</label>
+                        <label htmlFor="select_day">Day of week</label>
                         <select className="form-control" id="duration_select" defaultValue={props.day}
                                 onChange={(event) => props.onChangeDay(event)}>
                             <option value={0}>Sun</option>

@@ -72,7 +72,11 @@ input[id='group-search-input']{
     font-size: 30px;
 }
 
-
+h5[id='search_group_result']{
+    position: absolute;
+    left: 300px;
+    top: 120px;
+}
 
 div[id="wrap"] {
     position: absolute;

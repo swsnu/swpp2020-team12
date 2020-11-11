@@ -38,8 +38,8 @@ class Groups extends Component {
                     <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
                             onClick={this.onClickjoin}>Join Group</Button>
-                    <Button variant="outline-dark" size="sm" id="cancle-button"
-                            onClick={()=>this.props.history.push('/group')}>Cancle</Button>
+                    <Button variant="outline-dark" size="sm" id="cancel-button"
+                            onClick={()=>this.props.history.push('/group')}>Cancel</Button>
                 </div>
                 </body>
                 

@@ -28,8 +28,8 @@ class Subjects extends Component {
         start_time: '00:00',
         day: 0,
         end_time: '00:00',
-        create_show: false,
-        detail_show: false,
+        createShow: false,
+        detailShow: false,
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -49,13 +49,13 @@ class Subjects extends Component {
 
     clickSubjectHandler = (subject) => {
         this.props.getSubject(subject.id)
-        this.setState({detail_show: true})
+        this.setState({detailShow: true})
     }
     handleDetailShow = () => {
-        this.setState({detail_show: false})
+        this.setState({detailShow: false})
     }
     handleCreateShow = () => {
-        this.setState({create_show: false})
+        this.setState({createShow: false})
     }
     onChangeName = (event) => {
         this.setState({name: event.target.value})
@@ -74,7 +74,7 @@ class Subjects extends Component {
         this.setState({day: event.target.value})
     }
     onClickConfirm = () => {
-        this.setState({create_show: false})
+        this.setState({createShow: false})
         this.props.addSubject({
             name: this.state.name,
             description: this.state.description,
@@ -93,7 +93,7 @@ class Subjects extends Component {
         })
     }
     onClickEdit = () => {
-        this.setState({detail_show: false})
+        this.setState({detailShow: false})
         //TODO: this.setstate 로 바꿔줘야 함
         this.props.editSubject({
             id: this.props.specificSubjectInfo.id,
@@ -114,7 +114,7 @@ class Subjects extends Component {
         })
     }
     onClickQuit = () => {
-        this.setState({detail_show: false})
+        this.setState({detailShow: false})
         this.props.quitSubject(this.props.specificSubjectInfo.id)
     }
 
@@ -134,7 +134,7 @@ class Subjects extends Component {
                 <h1>My Subject</h1>
                 <div className='wrap' id='wrap'>
                 <button id='create-subject-button' onClick={() => this.setState({
-                    create_show: true, name: '',
+                    createShow: true, name: '',
                     description: '',
                     start_time: '00:00',
                     day: 0,
@@ -149,7 +149,7 @@ class Subjects extends Component {
                     start_time={this.state.start_time}
                     end_time={this.state.end_time}
                     day={this.state.day}
-                    show={this.state.create_show}
+                    show={this.state.createShow}
                     handleCreateShow={this.handleCreateShow}
                     onClickConfirm={this.onClickConfirm}
                     onChangeName={this.onChangeName}
@@ -165,7 +165,7 @@ class Subjects extends Component {
                     day={this.props.specificSubjectInfo.days[0].day}
                     start_time={this.props.specificSubjectInfo.days[0].start_time}
                     end_time={this.props.specificSubjectInfo.days[0].end_time}
-                    show={this.state.detail_show}
+                    show={this.state.detailShow}
                     onClickConfirm={this.onClickConfirm}
                     onChangeName={this.onChangeName}
                     onChangeDescription={this.onChangeDescription}

@@ -6,19 +6,19 @@ import * as actionCreators from '../../../store/actions/index';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
-const Selectsubject=(props)=>{
+const SelectSubject=(props)=>{
     console.log("hi")
     const subjects=props.mySubjectList.map(subject=>{
         return(
             <div className='subject' key={subject.id}>
                 {subject.name}
                 <input type='checkbox' checked={props.subject===subject.name}
-                    onClick={()=>props.onClickcheck(subject.name)}/> 
+                    onClick={()=>props.onClickCheck(subject.name)}/>
             </div>
         )
     })
     return(
-        <Modal show={props.show} onHide={props.handlesubjectshow}>
+        <Modal show={props.show} onHide={props.handleSubjectShow}>
         <Modal.Header closeButton>
             <Modal.Title>Subjects</Modal.Title>
         </Modal.Header>
@@ -27,10 +27,10 @@ const Selectsubject=(props)=>{
         </Modal.Body>
         <Modal.Footer>
             <Button size="sm" disabled={props.subject===null} id="start-study-botton" 
-                onClick={props.onClickchoose}>Choose Subject</Button> 
+                onClick={props.onClickChoose}>Choose Subject</Button>
         </Modal.Footer>
         </Modal>
     )   
 }
 
-export default Selectsubject;
+export default SelectSubject;

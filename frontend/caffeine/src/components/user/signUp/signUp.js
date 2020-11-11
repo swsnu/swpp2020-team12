@@ -23,7 +23,7 @@ class SignUp extends Component{
         this.props.signup({username:this.state.username, password:this.state.password, name:this.state.name, message:this.state.message})
     }
 
-    handlerCancle=(e)=>{
+    handlerCancel=(e)=>{
         e.preventDefault()
         this.props.history.push('/signin')
     }
@@ -73,7 +73,7 @@ class SignUp extends Component{
                     />
                 <br></br>
                 <button className="button" id="sign-up-button" onClick={this.handlerSignUp}>SignUp</button>
-                <button className="button" id="cancle-button" onClick={this.handlerCancle}>Cancel</button>
+                <button className="button" id="cancle-button" onClick={this.handlerCancel}>Cancel</button>
             </div>
         )
     }

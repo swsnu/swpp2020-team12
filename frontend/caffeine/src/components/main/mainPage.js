@@ -25,8 +25,8 @@ class mainPage extends Component{
         return(
             <div id="Main">
                <span id="logo_text">Caffeine Camera</span>
-               <input type="checkbox" id="menuicon"></input>
-               <label htmlFor="menuicon">
+               <input type="checkbox" id="menu-icon"></input>
+               <label htmlFor="menu-icon">
                    <span></span>
                    <span></span>
                    <span></span>

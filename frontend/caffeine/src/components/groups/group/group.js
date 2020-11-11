@@ -12,8 +12,8 @@ const Group = (props) => {
             <div id="members">
                 {props.members} members
             </div>
-            <div id="studytime">
-                Average time: {props.averagehours}
+            <div id="studyTime">
+                Average time: {props.averageHours}
             </div>
             {props.announcement!==''&&
             <div id="announcement">

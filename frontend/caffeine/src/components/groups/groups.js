@@ -6,7 +6,7 @@ import * as actionCreators from '../../store/actions/index';
 import Group from './group/group'
 import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
-import Selectsubject from '../study/selectSubject/selectSubject'
+import SelectSubject from '../study/selectSubject/selectSubject'
 import './groups.css'
 import moment from 'moment'
 
@@ -23,9 +23,9 @@ class Groups extends Component {
         name: '',
         announcement: '',
         password: '',
-        Createshow: false,
-        Detailshow: false,
-        Subjectshow: false,
+        createShow: false,
+        detailShow: false,
+        subjectShow: false,
         subject: null
       }
     componentDidMount(){
@@ -35,16 +35,16 @@ class Groups extends Component {
 
     clickGroupHandler = (group) => {
         this.props.getGroup(group.id)
-        this.setState({Detailshow: true})
+        this.setState({detailShow: true})
     }
     handleDetailShow = () => {
-        this.setState({Detailshow: false})
+        this.setState({detailShow: false})
     }
-    handlecreateshow = () => {
-        this.setState({Createshow: false})
+    handleCreateShow = () => {
+        this.setState({createShow: false})
     }
-    handlesubjectshow=()=>{
-        this.setState({Subjectshow: false})
+    handleSubjectShow=()=>{
+        this.setState({subjectShow: false})
     }
     onChangeName=(event)=>{
         this.setState({name: event.target.value})
@@ -52,39 +52,39 @@ class Groups extends Component {
     onChangeAnnounce = (event) => {
         this.setState({announcement: event.target.value})
     }
-    onChangepassword = (event) => {
+    onChangePassword = (event) => {
         this.setState({password: event.target.value})
     }
-    onClickconfirm = () => {
-        this.setState({Createshow: false})
+    onClickConfirm = () => {
+        this.setState({createShow: false})
         this.props.addgroup({
             name: this.state.name,
             description: this.state.announcement,
             password: this.state.password
         })
     }
-    onClickquit=()=>{
-        this.setState({Detailshow: false});
+    onClickQuit=()=>{
+        this.setState({detailShow: false});
         this.props.quitgroup(this.props.specificGroupInfo.id);
     }
-    onClickstudy=()=>{
-        this.setState({Detailshow: false});
-        this.setState({Subjectshow: true});
+    onClickStudy=()=>{
+        this.setState({detailShow: false});
+        this.setState({subjectShow: true});
     }
-    clickSearchedGroupHandelr = (group) => {
+    clickSearchedGroupHandler = (group) => {
         this.props.history.push('/group/' + group.id)
     }
     searchHandler = () => {
         this.props.SearchGroups(this.state.group_name)
     }
-    gethours = (duration) => {
+    getHours = (duration) => {
         const m = moment.duration(duration);
         return m.humanize();
     }
-    onClickcheck=(name)=>{
+    onClickCheck=(name)=>{
         this.setState({subject: name})
     }
-    onClickchoose=()=>{
+    onClickChoose=()=>{
         this.props.startStudy(this.state.subject, this.props.specificGroupInfo.id)
     }
     render() {
@@ -95,72 +95,69 @@ class Groups extends Component {
                     key={group.id}
                     name={group.name}
                     members={group.members.length}
-                    averagehours={this.gethours(group.time)}
+                    averagehours={this.getHours(group.time)}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
             );
         });
-        const searchedgroups = this.props.searchGroupList.map(group => {
+        const searchedGroups = this.props.searchGroupList.map(group => {
             return (
-                <li id = "searched-group-list" key={group.id} onClick={() => this.clickSearchedGroupHandelr(group)}>
+                <li id = "searched-group-list" key={group.id} onClick={() => this.clickSearchedGroupHandler(group)}>
                     <div id="searched-group-name">{group.name}</div><div id="number-of-member">#members: {group.count}</div></li>
             );
         });
         return (
-            <div className='Grouplist'>
+            <div className='GroupList'>
                 <h1 id="head">I &apos;m in...</h1>
                 <button id='create-group-button' onClick={() => this.setState({
-                    Createshow: true,
+                    createShow: true,
                     group_name: '',
                     name: '',
                     announcement: '',
                     password: '',
                 })}>Create
                 </button>
-                <div id="mygroup">
+                <div id="my-group">
                     <CreateGroup
                         name={this.state.name}
                         announcement={this.state.announcement}
-                        show={this.state.Createshow}
+                        show={this.state.createShow}
                         password={this.state.password}
-                        handlecreateshow={this.handlecreateshow}
-                        onClickconfirm={this.onClickconfirm}
+                        handleCreateShow={this.handleCreateShow}
+                        onClickConfirm={this.onClickConfirm}
                         onChangeName={this.onChangeName}
                         onChangeAnnounce={this.onChangeAnnounce}
-                        onChangepassword={this.onChangepassword}
+                        onChangepassword={this.onChangePassword}
                     />
-                    <Selectsubject 
-                        show={this.state.Subjectshow}
-                        handlesubjectshow={this.handlesubjectshow}
+                    <SelectSubject
+                        show={this.state.subjectShow}
+                        handleSubjectshow={this.handleSubjectShow}
                         mySubjectList={this.props.subjectList}
                         subject={this.state.subject}
-                        onClickcheck={this.onClickcheck}
-                        onClickchoose={this.onClickchoose}
+                        onClickCheck={this.onClickCheck}
+                        onClickChoose={this.onClickChoose}
                     />
                     {this.props.specificGroupInfo && <UserGroupInfo
                         key={this.props.specificGroupInfo.id}
                         Groupname={this.props.specificGroupInfo.name}
-                        show={this.state.Detailshow}
+                        show={this.state.detailShow}
                         members={this.props.specificGroupInfo.members}
                         handleDetailShow={this.handleDetailShow}
-                        onClickquit={this.onClickquit}
-                        onClickstudy={this.onClickstudy}
+                        onClickQuit={this.onClickQuit}
+                        onClickStudy={this.onClickStudy}
                     />
                     }
                     {groups}
                 </div>
-                <div id='searchgroup'>
+                <div id='search-group'>
                     <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
                            onChange={(e) => this.setState({group_name: e.target.value})}/>
                     <button id='group-search-button' onClick={this.searchHandler}>Search</button>
 
-                    <h5 id='search_group_result'>
-                        {searchedgroups}
-                    </h5>
                     <div  id="searched">
                         <ul>
-                            {searchedgroups}
+                            {searchedGroups}
                         </ul>
                     </div>
 

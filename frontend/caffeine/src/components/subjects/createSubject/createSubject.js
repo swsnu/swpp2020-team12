@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button'
 
 const CreateSubject = (props) => {
     return (
-        <Modal show={props.show} onHide={props.handlecreateshow}>
+        <Modal show={props.show} onHide={props.handleCreateShow}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Subject</Modal.Title>
             </Modal.Header>

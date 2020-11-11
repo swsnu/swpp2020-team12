@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button'
 
 const CreateGroup=(props) => {
     return(
-        <Modal show={props.show} onHide={props.handlecreateshow}>
+        <Modal show={props.show} onHide={props.handleCreateShow}>
             <Modal.Header closeButton>
                 <Modal.Title>Add Group</Modal.Title>
             </Modal.Header>
@@ -21,23 +21,23 @@ const CreateGroup=(props) => {
                         <Form.Control type="name" value={props.name} placeholder="Group Name"
                             onChange={(event)=>props.onChangeName(event)} />
                     </Form.Group>
-                    <Form.Group controlId="formannouncement">
+                    <Form.Group controlId="formAnnouncement">
                         <Form.Label>Group Announcement</Form.Label>
                         <Form.Control type="name" value={props.announcement} placeholder="Group Announcement"
                             onChange={(event)=>props.onChangeAnnounce(event)} />
                     </Form.Group>
-                    <Form.Group controlId="formpassword">
+                    <Form.Group controlId="formPassword">
                         <Form.Label>Group Joining Password</Form.Label>
                         <Form.Control type="password" value={props.password} placeholder="it is optional"
-                            onChange={(event)=>props.onChangepassword(event)} />
+                            onChange={(event)=>props.onChangePassword(event)} />
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-dark" size="sm" id="back-newgroup-button" 
-                    onClick={props.handlecreateshow}>back</Button>
+                    onClick={props.handleCreateShow}>back</Button>
                 <Button variant="outline-success" size="sm" id="confirm-newgroup-button" 
-                    onClick={props.onClickconfirm}>confirm</Button>
+                    onClick={props.onClickConfirm}>confirm</Button>
             </Modal.Footer>
         </Modal>
     )

@@ -45,6 +45,24 @@ describe('<mainPage />', () => {
         wrapper.simulate('click');
         expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     });
+    it(`should go to subject page`, () => {
+      const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation(path => {});
+      const component = mount(mainpage);
+      const wrapper = component.find('#subject');
+      wrapper.simulate('click');
+      expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    });
+    it(`should go to group page`, () => {
+      const spyHistoryPush = jest.spyOn(history, 'push')
+      .mockImplementation(path => {});
+      const component = mount(mainpage);
+      const wrapper = component.find('#group');
+      wrapper.simulate('click');
+      expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+    });
+
+
 
 
   });

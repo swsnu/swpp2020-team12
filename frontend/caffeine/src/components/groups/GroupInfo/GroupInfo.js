@@ -5,6 +5,7 @@ import {withRouter} from 'react-router';
 import * as actionCreators from '../../../store/actions/index';
 import Button from 'react-bootstrap/Button'
 import moment from "moment";
+import './GroupInfo.css'
 
 class Groups extends Component {
 
@@ -28,15 +29,20 @@ class Groups extends Component {
     render() {
         if (this.props.unenrolledGroupInfo) {
             return (
-                <div className='GroupInfo'>
-                    <h1>{this.props.unenrolledGroupInfo.name}</h1>
+                <body>
+                    <div className='GroupInfo' id="GroupInfo">
+                    <h1 id="GroupName">{this.props.unenrolledGroupInfo.name}</h1>
                     &nbsp;
                     <h2>Description: {this.props.unenrolledGroupInfo.description}</h2>
                     &nbsp;
                     <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
                             onClick={this.onClickjoin}>Join Group</Button>
+                    <Button variant="outline-dark" size="sm" id="cancle-button"
+                            onClick={()=>this.props.history.push('/group')}>Cancle</Button>
                 </div>
+                </body>
+                
             )
         } else {
             return (<div className='GroupInfo'/>)

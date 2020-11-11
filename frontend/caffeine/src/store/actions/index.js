@@ -11,12 +11,15 @@ export {
 export{
     getmyStudyInfo,
     postCapturetoServer,
-    startStudy
+    startStudy,
+    endStudy,
+    changeSubject
 } from './study';
 
 export {
     signin,
     signup,
+    signout,
 } from './user';
 
 export{

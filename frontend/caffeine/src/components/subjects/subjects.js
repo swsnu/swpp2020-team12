@@ -130,8 +130,9 @@ class Subjects extends Component {
         });
 
         return (
-            <div className='SubjectList'>
+            <div className='SubjectList' id="SubjectList">
                 <h1>My Subject</h1>
+                <div className='wrap' id='wrap'>
                 <button id='create-subject-button' onClick={() => this.setState({
                     create_show: true, name: '',
                     description: '',
@@ -140,6 +141,8 @@ class Subjects extends Component {
                     end_time: '00:00'
                 })}>Create
                 </button>
+                </div>
+                
                 <CreateSubject
                     name={this.state.name}
                     description={this.state.description}
@@ -173,7 +176,7 @@ class Subjects extends Component {
                     onClickEdit={this.onClickEdit}
                     onClickQuit={this.onClickQuit}
                 />
-                }
+                } 
                 {subjects}
             </div>
         )

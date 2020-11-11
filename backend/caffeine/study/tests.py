@@ -1,4 +1,5 @@
-from django.test import TestCase
+import json
+from django.test import TestCase, Client
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from user.models import User
 from datetime import timedelta
@@ -31,3 +32,28 @@ class StudyTestCase(TestCase):
 
     def test_concentration_count(self):
         self.assertEqual(Concentration.objects.count(), 2)
+
+    def test_study_room_post(self):
+        """???"""
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/status', json.dumps({
+            'group_id': 1, 'subject': 'swpp'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+
+    def test_study_infer(self):
+        client = Client()
+        client.login(username='id1', password='pw1')
+
+
+        '''
+        self.assertEqual(response.json(), {
+            'id': 4,
+            'description': 'test_descript',
+            'name': 'test_subject',
+            'user': 1,
+            'days': [{'day': 2, 'end_time': '18:00:00',
+                      'start_time': '15:00:00'}]
+        })
+        '''

@@ -78,6 +78,13 @@ class GroupTestCase(TestCase):
             'name': 'test_team',
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'}],
             'id': 3})
+        response = client.post('/group/', json.dumps({
+            'ww': 'test_descrip',
+            'rr': '',
+            'oo': 'test_team'}), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        response = client.delete('/group/')
+        self.assertEqual(response.status_code, 405)
 
     def test_user_group_get(self):
         client = Client()
@@ -94,10 +101,30 @@ class GroupTestCase(TestCase):
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
 
+    def test_user_group_delete(self):
+        client = Client()
+        client.login(username='id2', password='pw2')
+        response = client.delete('/group/2/')
+        self.assertEqual(response.status_code, 200)
+
     def test_group_search(self):
         client = Client()
         client.login(username='id2', password='pw2')
-        response = client.get('/group/2')
+        response = client.post('/group/search/eam')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [
+            {'id': 1,
+             'count': 2,
+             'description': 'this is description1',
+             'name': 'team1',
+             'time': 'P0DT10H42M00S', 'password': ''},
+            {'id': 2,
+             'count': 2,
+             'description': 'this is description2',
+             'name': 'team2',
+             'time': 'P0DT15H20M00S', 'password': 'pw2'}
+        ])
+        response = client.get('/group/2/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {
             'id': 2,
@@ -109,24 +136,6 @@ class GroupTestCase(TestCase):
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
 
-    def test_group_search(self):
-        client = Client()
-        client.login(username='id2', password='pw2')
-        response = client.get('/group/search/eam')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), [
-            {'id': 1,
-             'count': 2,
-             'description': 'this is description1',
-             'name': 'team1',
-             'time': 'P0DT10H42M00S'},
-            {'id': 2,
-             'count': 2,
-             'description': 'this is description2',
-             'name': 'team2',
-             'time': 'P0DT15H20M00S'}
-        ])
-
     def test_search_group_info(self):
         client = Client()
         client.login(username='id2', password='pw2')
@@ -137,12 +146,19 @@ class GroupTestCase(TestCase):
                           'count': 2,
                           'description': 'this is description1',
                           'name': 'team1',
+                          'password': '',
                           'time': 'P0DT10H42M00S'}
                          )
 
     def test_search_group_info_join(self):
         client = Client()
         client.login(username='id3', password='pw3')
-        response = client.put('/group/search/1', {}, content_type='application/json')
+        response = client.put('/group/search/1', {'password': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Group.objects.filter(id=1).first().members.count(), 3)
+        response = client.put('/group/search/2', {'password': ''}, content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        response = client.put('/group/search/1', {'pass': ''}, content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        response = client.delete('/group/search/1')
+        self.assertEqual(response.status_code, 405)

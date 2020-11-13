@@ -84,6 +84,7 @@ class Study extends Component {
         console.log(this.props.subject)
         return (
             <div className="container">
+                <h1>study room</h1>
                 <div className="row">
                     <div className="col-3">
                         <Webcam

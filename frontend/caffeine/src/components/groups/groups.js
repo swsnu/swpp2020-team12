@@ -95,7 +95,7 @@ class Groups extends Component {
                     key={group.id}
                     name={group.name}
                     members={group.members.length}
-                    averagehours={this.getHours(group.time)}
+                    averageHours={this.getHours(group.time)}
                     announcement={group.description}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
@@ -128,7 +128,7 @@ class Groups extends Component {
                         onClickConfirm={this.onClickConfirm}
                         onChangeName={this.onChangeName}
                         onChangeAnnounce={this.onChangeAnnounce}
-                        onChangepassword={this.onChangePassword}
+                        onChangePassword={this.onChangePassword}
                     />
                     <SelectSubject
                         show={this.state.subjectShow}

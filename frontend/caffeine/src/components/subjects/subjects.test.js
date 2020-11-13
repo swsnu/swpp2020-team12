@@ -7,79 +7,81 @@ import Subjects from './subjects';
 import * as actionCreators from '../../store/actions/subjects';
 import { getMockStore } from '../../test-utils/mocks';
 import { history } from '../../store/store';
-/*
+
 const stubInitialState = {
-  myGroupList: [
-    { id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 2 },
-    { id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 1 }
+  mySubjectList: [
+    { id: 1, name: 'subject1', description: 'ds', days:[{day: 0, start_time: '10:00', end_time: '12:00'}] },
+    { id: 2, name: 'subject2', description: '', days:[{day: 0, start_time: '10:00', end_time: '12:00'}] }
   ],
-  searchGroupList: [{ id: 3, name: 'abcd', description: null, time: 'P0DT10H41M00S', members: 1 }],
+  specificSubjectInfo: { id: 1, name: 'subject1', description: 'ds', days:[{day: 0, start_time: '10:00', end_time: '12:00'}] },
 };
 
 const mockStore = getMockStore(stubInitialState);
 
-describe('<Groups />', () => {
-  let groups, spygetGroups;
+describe('<Subjects />', () => {
+  let subjects, spyGetSubjects;
 
   beforeEach(() => {
-    groups = (
+    subjects = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
         <Switch>
-          <Route path='/' exact component={Groups} />
+          <Route path='/' exact component={Subjects} />
         </Switch>
         </ConnectedRouter>
       </Provider>
     );
-    spygetGroups = jest.spyOn(actionCreators, 'getGroups')
+    spyGetSubjects = jest.spyOn(actionCreators, 'getSubjects')
       .mockImplementation(() => { return dispatch => {}; });
   })
 
-  it('should render Groups', () => {
-    const component = mount(groups);
+  it('should render Subjects', () => {
+    const component = mount(subjects);
     const wrapper = component.find('.name');
     expect(wrapper.length).toBe(2);
-    expect(spygetGroups).toBeCalledTimes(1);
+    expect(spyGetSubjects).toBeCalledTimes(1);
   });
-  it(`should call 'clickGroupHandler'`, () => {
-    const spygetGroups = jest.spyOn(actionCreators, 'getGroup')
+  /*
+  it(`should call 'clickSubjectHandler'`, () => {
+    const spygetSubjects = jest.spyOn(actionCreators, 'getSubject')
       .mockImplementation(id => {return dispatch => {}; });
-    const component = mount(groups);
+    const component = mount(subjects);
     const wrapper = component.find('.name').at(0);
     wrapper.simulate('click');
-    expect(spygetGroups).toHaveBeenCalledTimes(1);
-    const newInstance = component.find(Groups.WrappedComponent).instance();
+    expect(spygetSubjects).toHaveBeenCalledTimes(1);
+    const newInstance = component.find(Subjects.WrappedComponent).instance();
     expect(newInstance.state.isDeatilopend).toEqual(true);
   });
   it(`should call 'searchHandler'`, () => {
-    const spysearchGroups = jest.spyOn(actionCreators, 'SearchGroups')
+    const spysearchSubjects = jest.spyOn(actionCreators, 'SearchSubjects')
       .mockImplementation(id => {return dispatch => {}; });
-    const component = mount(groups);
-    const wrapper = component.find('#group-search-button');
+    const component = mount(subjects);
+    const wrapper = component.find('#subject-search-button');
     wrapper.simulate('click');
-    expect(spysearchGroups).toHaveBeenCalledTimes(1);
+    expect(spysearchSubjects).toHaveBeenCalledTimes(1);
   });
   it(`should change 'isaddopen' `, () => {
-    const component = mount(groups);
-    const wrapper = component.find('#create-group-button');
+    const component = mount(subjects);
+    const wrapper = component.find('#create-subject-button');
     wrapper.simulate('click');
-    const newInstance = component.find(Groups.WrappedComponent).instance();
+    const newInstance = component.find(Subjects.WrappedComponent).instance();
     expect(newInstance.state.isAddopend).toEqual(true);
   });
-  it(`should call 'clickSearchedGroupHandelr'`, () => {
+  it(`should call 'clickSearchedSubjectHandelr'`, () => {
     const spyHistoryPush = jest.spyOn(history, 'push')
       .mockImplementation(path => {});
-    const component = mount(groups);
+    const component = mount(subjects);
     const wrapper = component.find('li');
     wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/groups/3');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/subjects/3');
   });
   it(`should change 'searchinput'`, () => {
-    const component = mount(groups);
-    const wrapper = component.find('#group-search-input');
+    const component = mount(subjects);
+    const wrapper = component.find('#subject-search-input');
     wrapper.simulate('change', { target: { value: '1234'} });
-    const newInstance = component.find(Groups.WrappedComponent).instance();
-    expect(newInstance.state.group_name).toEqual('1234');
+    const newInstance = component.find(Subjects.WrappedComponent).instance();
+    expect(newInstance.state.subject_name).toEqual('1234');
   });
+
+  */
 });
-*/

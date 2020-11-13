@@ -19,6 +19,9 @@ const mockStore = getMockStore(stubInitialState);
 
 describe('<mainPage />', () => {
   let mainpage
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
   beforeEach(() => {
     mainpage = (
       <Provider store={mockStore}>
@@ -61,8 +64,4 @@ describe('<mainPage />', () => {
       wrapper.simulate('click');
       expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     });
-
-
-
-
   });

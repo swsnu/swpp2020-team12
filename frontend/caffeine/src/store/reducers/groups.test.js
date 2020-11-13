@@ -83,4 +83,43 @@ describe('group Reducer', () => {
             myGroupList: [stubGroups[1]]
         });
     });
+    it('should get unenrolled', () => {
+        const newState = reducer(undefined, {
+            type: actionTypes.GET_UNENROLLED,
+            unenrolledGroupInfo: 1,
+          });
+        const unState = {
+            "myGroupList": [],
+            "searchGroupList": [],
+            "specificGroupInfo": null,
+            "unenrolledGroupInfo": undefined
+        }
+          expect(newState).toEqual(unState);
+    })
+    it('should join group', () => {
+        const stubInitialState = {
+            myGroupList: [],
+            unenrolledGroupInfo: null
+          };
+        const join_group = {
+            id: 1,
+            name: "test",
+            time: "P0DT10H42M00S",
+            description: "hi",
+            members: [1,2,3]
+        }
+        
+        const newState = reducer(stubInitialState, {
+            type: actionTypes.JOIN_GROUP,
+            id: 1,
+            name: "test",
+            time: "P0DT10H42M00S",
+            description: "hi",
+            members: [1,2,3]
+          });
+          expect(newState).toEqual({
+            myGroupList: [join_group],
+            unenrolledGroupInfo: null
+        });
+    })
 })

@@ -55,7 +55,6 @@ export const joinGroup_ = (group) => {
     };
 }
 export const joinGroup = (data) => {
-    console.log('join group actions')
     return dispatch => {
         return axios.put('/group/search/' + data.id, data)
             .then(res => {

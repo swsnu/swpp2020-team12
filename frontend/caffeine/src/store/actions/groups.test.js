@@ -113,4 +113,48 @@ describe('ActionCreators', () => {
           done();
         });
     });
+
+    it(`'joinGroup' should join group correctly`, (done) => {
+        const spy = jest.spyOn(axios, 'put')
+            .mockImplementation((url, ar)=> {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+                        data: {
+                            name: "text",
+                            time: 'P0DT10H42M00S',
+                            description: "hi",
+                            members: [1,2,3]
+                        },
+                    };
+                    resolve(result);
+                });
+        })
+        store.dispatch(actionCreators.joinGroup({
+                            name: "text",
+                            time: 'P0DT10H42M00S',
+                            description: "hi",
+                            members: [1,2,3]
+                        })).then(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
+    it(`'getunEnrolled' should join group correctly`, (done) => {
+        const spy = jest.spyOn(axios, 'get')
+            .mockImplementation((url, ar)=> {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+                        data: [1,2,3,4]
+                    };
+                    resolve(result);
+                });
+        })
+        store.dispatch(actionCreators.getunEnrolled(1)).then(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
 })

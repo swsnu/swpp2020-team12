@@ -2,6 +2,9 @@ import axios from 'axios';
 import * as actionCreators from './user';
 import store from '../store';
 
+
+
+
 const stubUser={
     id: 1,
     username: 'test',
@@ -44,7 +47,7 @@ describe('ActionCreators', () => {
             .mockImplementation((url,ar) => {
                 return new Promise((resolve, reject) => {
                     const result = {
-                        status: 204,
+                        status: 500,
                         data: stubsigninUser,
                     };
                     reject(result);
@@ -75,6 +78,7 @@ describe('ActionCreators', () => {
             done();
         });
     });
+
     it(`'signout' should signout correctly`, (done) => {
         const spy = jest.spyOn(axios, 'get')
             .mockImplementation(url => {

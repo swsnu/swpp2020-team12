@@ -166,7 +166,6 @@ class Subjects extends Component {
                     start_time={this.props.specificSubjectInfo.days[0].start_time}
                     end_time={this.props.specificSubjectInfo.days[0].end_time}
                     show={this.state.detailShow}
-                    onClickConfirm={this.onClickConfirm}
                     onChangeName={this.onChangeName}
                     onChangeDescription={this.onChangeDescription}
                     onChangeDay={this.onChangeDay}

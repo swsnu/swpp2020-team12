@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button'
 //TODO: 처음에 원래 값이 render 되는지 보기
 
 const UserSubjectInfo = (props) => {
-    console.log(props.duration)
+   // console.log(props.duration)
     return (
         <Modal show={props.show} onHide={props.handleDetailShow}>
             <Modal.Header closeButton>
@@ -20,13 +20,13 @@ const UserSubjectInfo = (props) => {
                 <Form>
                     <Form.Group controlId="formDescription">
                         <Form.Label>Subject Description</Form.Label>
-                        <Form.Control type="Description" defaultValue={props.description}
+                        <Form.Control id='edit-subject-description-input' type="Description" defaultValue={props.description}
                                       onChange={(event) => props.onChangeDescription(event)}/>
                     </Form.Group>
 
                     <div className="form-group">
                         <label htmlFor="select_day">Day of week</label>
-                        <select className="form-control" id="duration_select" defaultValue={props.day}
+                        <select className="form-control" id="day-select" defaultValue={props.day}
                                 onChange={(event) => props.onChangeDay(event)}>
                             <option value={0}>Sun</option>
                             <option value={1}>Mon</option>
@@ -40,12 +40,12 @@ const UserSubjectInfo = (props) => {
 
                     <div>
                         <label htmlFor="select_start">select start time</label>
-                        <input type='time' id='start_time' defaultValue={props.start_time} min='09:00' max='20:00'
+                        <input type='time' id='start-time' defaultValue={props.start_time} min='09:00' max='20:00'
                                onChange={(event) => props.onChangeStartTime(event)}/>
                     </div>
                     <div>
                         <label htmlFor="select_end">select end time</label>
-                        <input type='time' id='end_time' defaultValue={props.end_time} min='09:00' max='22:00'
+                        <input type='time' id='end-time' defaultValue={props.end_time} min='09:00' max='22:00'
                                onChange={(event) => props.onChangeEndTime(event)}/>
                     </div>
                 </Form>

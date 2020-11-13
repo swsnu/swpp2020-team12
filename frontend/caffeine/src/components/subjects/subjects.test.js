@@ -9,6 +9,21 @@ import {getMockStore} from '../../test-utils/mocks';
 import {history} from '../../store/store';
 
 /*
+jest.mock('./subject/subject', () => {
+    return jest.fn(props => {
+        return (
+            <div className="spySubject">
+            <div className="name"
+                onClick={props.clickDetail}>
+                <h3>{props.name}</h3>
+            </div>
+        </div>
+            );
+    });
+});
+
+ */
+/*
 jest.mock('./createSubject/createSubject', () => {
     return jest.fn(props => {
         return (
@@ -17,17 +32,17 @@ jest.mock('./createSubject/createSubject', () => {
                        onChange={(event) => props.onChangeName(event)}/>
                 <input id='create-subject-description-input' type='text' value={props.description}
                        onChange={(event) => props.onChangeDescription(event)}/>
-                    <select id="day_select" value={props.day}
+                    <select id="day-select" value={props.day}
                             onChange={(event) => props.onChangeDay(event)}>
                         <option value={0}>Sun</option>
                         <option value={1}>Mon</option>
                     </select>
                 <div>
-                    <input type='time' id='start_time' value={props.start_time}
+                    <input type='time' id='start-time' value={props.start_time}
                            onChange={(event) => props.onChangeStartTime(event)}/>
                 </div>
                 <div>
-                    <input type='time' id='end_time' value={props.end_time}
+                    <input type='time' id='end-time' value={props.end_time}
                            onChange={(event) => props.onChangeEndTime(event)}/>
                 </div>
                 <button id="back-new-subject-button"
@@ -46,17 +61,17 @@ jest.mock('./userSubjectInfo/userSubjectInfo', () => {
                 <input type="Description"
                        onChange={(event) => props.onChangeDescription(event)}/>
                 <div className="form-group">
-                    <select id="duration_select"
+                    <select id="day-select"
                             onChange={(event) => props.onChangeDay(event)}>
                         <option value={0}>Sun</option>
                     </select>
                 </div>
                 <div>
-                    <input type='time' id='start_time' min='09:00' max='20:00'
+                    <input type='time' id='start-time' min='09:00' max='20:00'
                            onChange={(event) => props.onChangeStartTime(event)}/>
                 </div>
                 <div>
-                    <input type='time' id='end_time' min='09:00' max='22:00'
+                    <input type='time' id='end-time' min='09:00' max='22:00'
                            onChange={(event) => props.onChangeEndTime(event)}/>
                 </div>
                 <button id="quit-subject-button"
@@ -67,7 +82,7 @@ jest.mock('./userSubjectInfo/userSubjectInfo', () => {
         )
     })
 });
-
+*/
 
 const stubInitialState = {
     mySubjectList: [
@@ -114,6 +129,7 @@ describe(' <Subjects/> ', () => {
         expect(wrapper.length).toBe(2);
         expect(spyGetSubjects).toBeCalledTimes(1);
     });
+
     it(`should call 'clickSubjectHandler'`, () => {
         const spyGetSubject = jest.spyOn(actionCreators, 'getSubject')
             .mockImplementation(id => {
@@ -134,6 +150,25 @@ describe(' <Subjects/> ', () => {
         const newInstance = component.find(Subjects.WrappedComponent).instance();
         expect(newInstance.state.createShow).toEqual(true);
     });
+
+    it(`should call 'component did update'`, () => {
+        const component = mount(subjects);
+        const prevProps = {
+            specificSubjectInfo: null,
+        }
+        const prevInstance = component.find(Subjects.WrappedComponent).instance();
+        prevInstance.componentDidUpdate(prevProps);
+        expect(prevInstance.state.name).toEqual('subject1');
+    });
+
+     /*
+    it('should render Subjects', () => {
+        const component = mount(subjects);
+        const wrapper = component.find('.name');
+        expect(wrapper.length).toBe(2);
+        expect(spyGetSubjects).toBeCalledTimes(1);
+    });
+
     it(`should call 'onClickConfirm'`, (object, method) => {
         const spyNewSubject = jest.spyOn(actionCreators, 'addSubject')
             .mockImplementation(td => {
@@ -163,7 +198,5 @@ describe(' <Subjects/> ', () => {
         const newInstance = component.find(Subjects.WrappedComponent).instance();
         expect(newInstance.state.createShow).toEqual(true);
     });
-
+*/
 });
-
- */

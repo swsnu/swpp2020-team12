@@ -19,7 +19,6 @@ import Subject from './subject/subject'
 import CreateSubject from './createSubject/createSubject'
 import UserSubjectInfo from './userSubjectInfo/userSubjectInfo'
 import './subjects.css'
-import moment from 'moment'
 
 class Subjects extends Component {
     state = {

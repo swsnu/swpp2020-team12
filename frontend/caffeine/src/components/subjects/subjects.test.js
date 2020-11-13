@@ -21,8 +21,7 @@ jest.mock('./subject/subject', () => {
             );
     });
 });
-
- */
+*/
 /*
 jest.mock('./createSubject/createSubject', () => {
     return jest.fn(props => {
@@ -117,6 +116,7 @@ describe(' <Subjects/> ', () => {
                 return dispatch => {
                 };
             });
+
     });
 
     afterEach(() => {

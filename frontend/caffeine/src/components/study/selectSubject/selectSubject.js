@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
 const SelectSubject=(props)=>{
-    console.log("hi")
+    //console.log("hi")
     const subjects=props.mySubjectList.map(subject=>{
         return(
             <div className='subject' key={subject.id}>

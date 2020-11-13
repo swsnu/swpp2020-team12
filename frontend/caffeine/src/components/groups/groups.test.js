@@ -14,6 +14,11 @@ const stubInitialState = {
     { id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 1 }
   ],
   searchGroupList: [{ id: 3, name: 'abcd', description: null, time: 'P0DT10H41M00S', members: 1 }],
+  specificGroupinfo: null,
+  mySubjectList: [
+    { id: 1, name: 'subject1', description: 'ds', days:[{day: 0, start_time: '10:00', end_time: '12:00'}] },
+    { id: 2, name: 'subject2', description: '', days:[{day: 0, start_time: '10:00', end_time: '12:00'}] }
+  ]
 };
 
 const mockStore = getMockStore(stubInitialState);

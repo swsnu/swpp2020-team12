@@ -64,7 +64,7 @@ class Subjects extends Component {
         this.setState({description: event.target.value})
     }
     onChangeStartTime = (event) => {
-        console.log(event.target.value)
+      //  console.log(event.target.value)
         this.setState({start_time: event.target.value})
     }
     onChangeEndTime = (event) => {

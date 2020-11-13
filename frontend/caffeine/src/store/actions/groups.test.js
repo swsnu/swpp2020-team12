@@ -56,7 +56,7 @@ describe('ActionCreators', () => {
     });
     it(`'SearchGroups' should fetch groups correctly`, (done) => {
         const stubgroupList = [stubGroup];
-        const spy = jest.spyOn(axios, 'get')
+        const spy = jest.spyOn(axios, 'post')
             .mockImplementation(url => {
                 return new Promise((resolve, reject) => {
                 const result = {

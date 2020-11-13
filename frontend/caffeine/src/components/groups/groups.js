@@ -88,7 +88,7 @@ class Groups extends Component {
         this.props.startStudy(this.state.subject, this.props.specificGroupInfo.id)
     }
     render() {
-         console.log(this.props.myGroupList)
+      //   console.log(this.props.myGroupList)
         const groups = this.props.myGroupList.map(group => {
             return (
                 <Group

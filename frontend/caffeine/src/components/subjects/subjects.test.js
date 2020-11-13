@@ -17,7 +17,7 @@ const stubInitialState = {
 };
 
 const mockStore = getMockStore(stubInitialState);
-
+/*
 describe('<Subjects />', () => {
   let subjects, spyGetSubjects;
 
@@ -83,5 +83,7 @@ describe('<Subjects />', () => {
     expect(newInstance.state.subject_name).toEqual('1234');
   });
 
-  */
-});
+})
+
+
+ */

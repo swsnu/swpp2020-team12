@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
 import {ConnectedRouter} from 'connected-react-router';
-import mainPage from './mainPage';
+import MainPage from './mainPage';
 import {getMockStore} from '../../test-utils/mocks';
 import {history} from '../../store/store';
 
@@ -28,7 +28,7 @@ describe('<mainPage />', () => {
             <Provider store={mockStore}>
                 <ConnectedRouter history={history}>
                     <Switch>
-                        <Route path='/' exact component={mainPage}/>
+                        <Route path='/' exact component={MainPage}/>
                     </Switch>
                 </ConnectedRouter>
             </Provider>

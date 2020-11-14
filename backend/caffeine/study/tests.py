@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from user.models import User
 from datetime import timedelta
+from datetime import date
 
 
 class StudyTestCase(TestCase):
@@ -11,13 +12,6 @@ class StudyTestCase(TestCase):
                                          password='pw1', message='message1')
         user2 = User.objects.create_user(username='id2', name='nickname2',
                                          password='pw2', message='message2')
-        DailyStudyRecord.objects.create(user=user1,
-                                        total_study_time=timedelta(hours=10, minutes=42),
-                                        total_concentration=timedelta(hours=10, minutes=42), total_gauge=1)
-        DailyStudyRecord.objects.create(user=user2,
-                                        total_study_time=timedelta(minutes=42),
-                                        total_concentration=timedelta(minutes=30),
-                                        total_gauge=timedelta(minutes=30).seconds / timedelta(minutes=42).seconds)
         daily_study_for_subject = DailyStudyForSubject.objects.create(study_time=timedelta(),
                                                                       subject='swpp', distracted_time=timedelta(),
                                                                       user=user1)
@@ -25,7 +19,11 @@ class StudyTestCase(TestCase):
         Concentration.objects.create(parent_study=daily_study_for_subject)
 
     def test_daily_study_record_count(self):
-        self.assertEqual(DailyStudyRecord.objects.all().count(), 2)
+        user1 = User.objects.get(username='id1')
+        DailyStudyRecord.objects.create(user=user1,
+                                        total_study_time=timedelta(hours=10, minutes=42),
+                                        total_concentration=timedelta(hours=10, minutes=42), total_gauge=1)
+        self.assertEqual(DailyStudyRecord.objects.all().count(), 1)
 
     def test_daily_study_for_subject_count(self):
         self.assertEqual(DailyStudyForSubject.objects.count(), 1)

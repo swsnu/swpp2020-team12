@@ -10,12 +10,6 @@ import SelectSubject from '../study/selectSubject/selectSubject'
 import './groups.css'
 import moment from 'moment'
 
-const mockuser = {
-    id: 1,
-    name: "tesuser1",
-    stdyhour: "2hour",
-    message: "I'm good"
-}
 
 class Groups extends Component {
     state = {

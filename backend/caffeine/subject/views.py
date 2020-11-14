@@ -26,7 +26,7 @@ def subject_list(request):
             name = json.loads(body)['name']
             description = json.loads(body)['description']
             days = json.loads(body)['days']
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError):
             return HttpResponse(status=400)
         subject = Subject(name=name, description=description, user=request.user)
         subject.save()
@@ -40,7 +40,7 @@ def subject_list(request):
                      'end_time': day.end_time} for day in subject.days.iterator()]
         response_dict = {'id': subject.id, 'name': subject.name,
                          'description': subject.description, 'user': subject.user.id,
-                         'days': day_list}  # TODO: 지금 days 빼고 돌려줌
+                         'days': day_list}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -64,7 +64,7 @@ def subject_info(request, subject_id):
             name = json.loads(body)['name']
             description = json.loads(body)['description']
             days = json.loads(body)['days']
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError):
             return HttpResponse(status=400)
         subject = Subject.objects.get(id=subject_id)
         for origin_day in subject.days.iterator():

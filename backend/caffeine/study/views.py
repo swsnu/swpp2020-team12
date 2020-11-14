@@ -14,7 +14,7 @@ import random
 def study_room(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
-        group_id = req_data['group_id']
+        #group_id = req_data['group_id']
         user = User.objects.get(id=request.user.id)
         today_study = user.daily_record.filter(date=datetime.date.today())
         if not today_study:
@@ -50,11 +50,12 @@ def study_infer(request):
     current_study.study_time += datetime.timedelta(seconds=10)
     current_study.concentration_gauge = current_study.study_time / (
                 current_study.study_time + current_study.distracted_time)
-    """
-    else:
-        current_study.distracted_time += datetime.timedelta(seconds=10)
-        current_study.concentration_gauge = current_study.study_time / (
-                    current_study.study_time + current_study.distracted_time)
-    """
     current_study.save()
-    return HttpResponse(json.dumps({'status': 0, 'gauge': current_study.concentration_gauge}), status=201)
+    return JsonResponse({'status': 0,
+        'gauge': current_study.concentration_gauge},
+        status=201, safe=False)
+
+#    else:
+#        current_study.distracted_time += datetime.timedelta(seconds=10)
+#        current_study.concentration_gauge = current_study.study_time / (
+#                    current_study.study_time + current_study.distracted_time)

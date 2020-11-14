@@ -12,7 +12,7 @@ const reducer = (state = initialState, action) => {
         }
         case actionTypes.GET_SUBJECT:
             return {...state, specificSubjectInfo: action.targetSubject}
-        case actionTypes.ADD_SUBJECT:
+        case actionTypes.ADD_SUBJECT:{
             const new_subject = {
                 id: action.id,
                 name: action.name,
@@ -22,12 +22,14 @@ const reducer = (state = initialState, action) => {
 
             };
             return {...state, mySubjectList: [...state.mySubjectList, new_subject]};
-        case actionTypes.DELETE_SUBJECT:
+        }
+        case actionTypes.DELETE_SUBJECT:{
             const deleted_subjects = state.mySubjectList.filter((subject) => {
                 return subject.id !== action.targetID;
             });
             return {...state, mySubjectList: deleted_subjects};
-        case actionTypes.EDIT_SUBJECT:
+        }
+        case actionTypes.EDIT_SUBJECT:{
             let selected = null;
             const modified = state.mySubjectList.map((sub) => {
                 if (sub.id === action.targetID) {
@@ -43,6 +45,7 @@ const reducer = (state = initialState, action) => {
                 }
             })
             return {...state, mySubjectList: modified, specificSubjectInfo: selected};
+        }
         default:
             break;
     }

@@ -1,6 +1,4 @@
 import {shallow} from 'enzyme';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 import CreateGroup from './createGroup';
 import React from 'react';
 

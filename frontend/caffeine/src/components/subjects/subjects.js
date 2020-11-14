@@ -11,6 +11,7 @@ create subject이 subcomponenet에 빠져있음
 
  */
 /* eslint react/prop-types: 0 */
+/* eslint-disable no-unused-vars */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -31,7 +32,7 @@ class Subjects extends Component {
         detailShow: false,
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if (prevProps.specificSubjectInfo !== this.props.specificSubjectInfo)
             this.setState({
                 name: this.props.specificSubjectInfo.name,

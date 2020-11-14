@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {shallow} from 'enzyme';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import reducer from './groups';
 import * as actionTypes from '../actions/actionTypes';
 

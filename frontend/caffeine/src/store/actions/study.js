@@ -31,7 +31,7 @@ export const endStudy_ = () =>{
 export const endStudy = () =>{
     return dispatch =>{
         return axios.put('/study/status/')
-            .then(res => dispatch(endStudy_()));
+            .then(() => dispatch(endStudy_()));
     } 
 }
 export const changeSubject_ = (subject) =>{

@@ -15,7 +15,7 @@ const reducer =(state=initialState, action)=>{
             return { ...state, specificGroupInfo: action.targetGroup }
         case actionTypes.SEARCH_GROUP:
             return { ...state, searchGroupList: action.searchedGroups }
-        case actionTypes.ADD_GROUP:
+        case actionTypes.ADD_GROUP: {
             const new_group={
                 id: action.id,
                 name: action.name,
@@ -24,14 +24,16 @@ const reducer =(state=initialState, action)=>{
                 members: action.members
             }
             return{ ...state, myGroupList: [...state.myGroupList, new_group] }
-        case actionTypes.DELETE_GROUP:
+        }
+        case actionTypes.DELETE_GROUP: {
             const deleted_groups = state.myGroupList.filter((group) => {
                 return group.id!==action.targetID;
             });
             return { ...state, myGroupList: deleted_groups}
+        }
         case actionTypes.GET_UNENROLLED:
             return {...state, unenrolledGroupInfo: action.unenrolled}
-        case actionTypes.JOIN_GROUP:
+        case actionTypes.JOIN_GROUP: {
             const join_group={
                 id: action.id,
                 name: action.name,
@@ -40,6 +42,7 @@ const reducer =(state=initialState, action)=>{
                 members: action.members
             }
             return {...state, unenrolledGroupInfo: null, myGroupList:[...state.myGroupList, join_group]}
+        }
         default:
             break;
     }

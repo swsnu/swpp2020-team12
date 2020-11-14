@@ -45,5 +45,6 @@ matrix:
         - cd ..
         - sonar-scanner
       after_success:
+        - cd backend/caffeine
         - coveralls
       after_script: cd ..

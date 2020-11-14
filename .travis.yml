@@ -40,7 +40,7 @@ matrix:
         - pylint **/*.py --load-plugins pylint_django
         - python manage.py migrate  
         - coverage run --source='.' manage.py test
-        - coverage xml -i
+        - coverage xml
         - cd ..
         - cd ..
         - sonar-scanner

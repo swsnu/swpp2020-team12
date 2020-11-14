@@ -3,7 +3,7 @@ import React from 'react';
 import './group.css'
 
 const Group = (props) => {
-    console.log(props.announcement)
+    //console.log(props.announcement)
     return (
         <div id="Group" onClick={props.clickDetail}>
             <div id="name">
@@ -12,8 +12,8 @@ const Group = (props) => {
             <div id="members">
                 {props.members} members
             </div>
-            <div id="studytime">
-                Average time: {props.averagehours}
+            <div id="studyTime">
+                Average time: {props.averageHours}
             </div>
             {props.announcement!==''&&
             <div id="announcement">

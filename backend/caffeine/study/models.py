@@ -1,22 +1,26 @@
 from django.db import models
+from datetime import timedelta
 from user.models import User
 
-class Daily_study_record(models.Model):
+
+class DailyStudyRecord(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='dailyrecord'
+        related_name='daily_record'
     )
-    total_study_time = models.DurationField()
-    total_concentration = models.DurationField()
+    date = models.DateField(auto_now_add=True)
+    total_study_time = models.DurationField(default=timedelta(0))
+    total_concentration = models.DurationField(default=timedelta(0))
     total_gauge = models.FloatField(default=0)
 
-class Daily_study_for_subject(models.Model):
+
+class DailyStudyForSubject(models.Model):
     date = models.DateField(auto_now_add=True)
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(auto_now=True)
-    study_time = models.DurationField()
-    distracted_time = models.DurationField()
+    study_time = models.DurationField(default=timedelta(0))
+    distracted_time = models.DurationField(default=timedelta(0))
     concentration_gauge = models.FloatField(default=0)
     last_updated_time = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=False)
@@ -27,7 +31,8 @@ class Daily_study_for_subject(models.Model):
         related_name='daily_subject_record'
     )
 
-#def user_directory_path(instance, filename):
+
+# def user_directory_path(instance, filename):
 #        return '{0}/{1}'.format(instance.user.id, filename)
 
 class Concentration(models.Model):
@@ -35,8 +40,7 @@ class Concentration(models.Model):
     concentration = models.BooleanField(default=True)
     image = models.ImageField(upload_to='', blank=True)
     parent_study = models.ForeignKey(
-        Daily_study_for_subject,
+        DailyStudyForSubject,
         on_delete=models.CASCADE,
         related_name='concentrations'
     )
-    

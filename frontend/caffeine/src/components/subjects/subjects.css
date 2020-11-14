@@ -1,0 +1,17 @@
+/*div[id="SubjectList"]{
+    position: relative;
+    top: 50px;
+}
+*/
+
+div[id='wrap']{
+    width:150%;
+    height:30px;    
+}
+
+/*
+button[id='create-subject-button']{
+    position: relative;
+    left: 100px;
+}
+*/

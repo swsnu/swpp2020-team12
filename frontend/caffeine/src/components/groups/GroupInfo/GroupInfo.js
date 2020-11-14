@@ -5,21 +5,21 @@ import {withRouter} from 'react-router';
 import * as actionCreators from '../../../store/actions/index';
 import Button from 'react-bootstrap/Button'
 import moment from "moment";
+import './GroupInfo.css'
 
-class Groups extends Component {
+class GroupInfo extends Component {
 
     componentDidMount() {
         this.props.getGroup(this.props.match.params.group_id)
     }
 
-    onClickjoin = () => {
+    onClickJoin = () => {
         if (this.props.unenrolledGroupInfo.password === '' || this.props.unenrolledGroupInfo.password === undefined)
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': ''});
         else {
             let password = prompt('enter password');
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': password});
         }
-        this.props.history.push('/group')
     }
     getHours = (duration) => {
         const m = moment.duration(duration);
@@ -29,15 +29,20 @@ class Groups extends Component {
     render() {
         if (this.props.unenrolledGroupInfo) {
             return (
-                <div className='GroupInfo'>
-                    <h1>{this.props.unenrolledGroupInfo.name}</h1>
+                <body>
+                    <div className='GroupInfo' id="GroupInfo">
+                    <h1 id="GroupName">{this.props.unenrolledGroupInfo.name}</h1>
                     &nbsp;
                     <h2>Description: {this.props.unenrolledGroupInfo.description}</h2>
                     &nbsp;
                     <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
-                            onClick={this.onClickjoin}>Join Group</Button>
+                            onClick={this.onClickJoin}>Join Group</Button>
+                    <Button variant="outline-dark" size="sm" id="cancel-button"
+                            onClick={()=>this.props.history.push('/group')}>Cancel</Button>
                 </div>
+                </body>
+                
             )
         } else {
             return (<div className='GroupInfo'/>)
@@ -47,7 +52,8 @@ class Groups extends Component {
 
 const mapStateToProps = state => {
     return {
-        unenrolledGroupInfo: state.group.unenrolledGroupInfo
+        unenrolledGroupInfo: state.group.unenrolledGroupInfo,
+        myGroupList: state.group.myGroupList
     };
 }
 
@@ -60,4 +66,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Groups));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GroupInfo));

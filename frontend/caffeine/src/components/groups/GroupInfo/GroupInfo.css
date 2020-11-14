@@ -1,0 +1,26 @@
+h1[id="Groupname"]{
+    margin: 100px;
+}
+
+div[id="GroupInfo"]{
+    position: absolute;
+    top:200px;
+    width:700px;
+    right:35%;
+    border-radius: 10;
+    border: 4px dashed #bcbcbc;
+    padding: 20px;
+}
+
+Button[id="join-group-button"]{
+    position: relative;
+    right: -440px;
+    width:100px;
+}
+
+Button[id="cancle-button"]{
+    position: relative;
+    right: -460px;
+    margin-right:10px;
+    width: 100px;
+}

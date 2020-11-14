@@ -19,11 +19,11 @@ div[id="Main"]{
     margin-top:100px;
 }
 
-input[id="menuicon"]{
+input[id="menu-icon"]{
     display: none;
 }
 
-input[id="menuicon"] + label {
+input[id="menu-icon"] + label {
     display:block;
     width:60px;
     height:40px;
@@ -34,12 +34,12 @@ input[id="menuicon"] + label {
     cursor:pointer;
 }
 
-input[id="menuicon"]:checked + label {
+input[id="menu-icon"]:checked + label {
     z-index:2;
     right:300px;
 }
 
-input[id="menuicon"] + label span{
+input[id="menu-icon"] + label span{
     display:block;
     position:absolute;
     width:100%;
@@ -49,26 +49,26 @@ input[id="menuicon"] + label span{
     transition:all .35s;
 }
 
-input[id="menuicon"] + label span:nth-child(1){
+input[id="menu-icon"] + label span:nth-child(1){
     top:0;
 }
-input[id="menuicon"] + label span:nth-child(2){
+input[id="menu-icon"] + label span:nth-child(2){
     top:50%;
     transform:translateY(-50%);
 }
-input[id="menuicon"] + label span:nth-child(3){
+input[id="menu-icon"] + label span:nth-child(3){
     bottom:0;
 }
 
-input[id="menuicon"]:checked + label span:nth-child(1){
+input[id="menu-icon"]:checked + label span:nth-child(1){
     top:50%;
     transform:translateY(-50%) rotate(45deg);
 }
 
-input[id="menuicon"]:checked + label span:nth-child(2){
+input[id="menu-icon"]:checked + label span:nth-child(2){
     opacity:0;
 }
-input[id="menuicon"]:checked + label span:nth-child(3){
+input[id="menu-icon"]:checked + label span:nth-child(3){
     bottom:50%;
     transform:translateY(50%) rotate(-45deg);
 }
@@ -84,7 +84,7 @@ div[id="sidebar"]{
     transition:all .35s;
 }
 
-input[id="menuicon"]:checked + label + div {
+input[id="menu-icon"]:checked + label + div {
     right:0;
 }
 

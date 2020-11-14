@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import './App.css';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch} from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import Subjects from './components/subjects/subjects'
 import Group from './components/groups/groups'

@@ -6,13 +6,14 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class MyUserAdmin(UserAdmin):
     model = User
-    list_display = ['username', 'name','message']
+    list_display = ['username', 'name', 'message']
 
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('name','message')}),
+        (None, {'fields': ('name', 'message')}),
     )
 
-admin.site.register(User, MyUserAdmin)
 
+admin.site.register(User, MyUserAdmin)

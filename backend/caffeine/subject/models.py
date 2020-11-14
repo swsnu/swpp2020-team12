@@ -1,7 +1,7 @@
 from django.db import models
+from django import forms
 from user.models import User
 from datetime import timedelta
-from django import forms
 
 # Create your models here.
 

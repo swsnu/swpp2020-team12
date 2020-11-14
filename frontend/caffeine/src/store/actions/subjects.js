@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
-import moment from 'moment'
 
 export const getSubjects_ = (subjects) => {
     //console.log(subjects)

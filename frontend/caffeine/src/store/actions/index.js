@@ -9,12 +9,16 @@ export {
 } from './groups';
 
 export{
-    getmyStudyInfo
+    postCapturetoServer,
+    startStudy,
+    endStudy,
+    changeSubject
 } from './study';
 
 export {
     signin,
     signup,
+    signout,
 } from './user';
 
 export{

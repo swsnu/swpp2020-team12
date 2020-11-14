@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 import Webcam from 'react-webcam'
-import Table from 'react-bootstrap/Table'
 import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
@@ -27,11 +26,12 @@ class Study extends Component {
     tick = () => {
         const {time} = this.state
         this.setState({time: time.clone().add(1, 'seconds')})
-        if (time.seconds() % 5 === 4) {
+        if (time.seconds() % 10 === 9) {
             this.capture();
         }
     };
     startTimer = () => {
+        console.log("started")
         this.interval = setInterval(() => {
             this.tick();
         }, 1000);
@@ -42,9 +42,12 @@ class Study extends Component {
         this.props.getSubjects()
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.currentSubject !== prevProps.currentSubject)
+    componentDidUpdate(prevProps) {
+        if (this.props.currentSubject !== prevProps.currentSubject){
+            console.log('this.props.currentSubject')
             this.startTimer();
+            this.setState({last_image: null})
+        }
     }
 
     componentWillUnmount() {
@@ -76,12 +79,8 @@ class Study extends Component {
             last_image: this.webcamRef.current.getScreenshot()
         })
         this.props.postCapturetoServer(this.state.last_image)
-        console.log("captured")
-        console.log()
     }
-
     render() {
-        console.log(this.props.subject)
         return (
             <div className="container">
                 <h1>study room</h1>

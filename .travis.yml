@@ -20,7 +20,7 @@ matrix:
         - cd ..
         - cd ..
         - sonar-scanner
-      after_success: ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      after_success: cd frontend/caffeine | ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
     - language: python
       python: '3.7'
@@ -44,5 +44,5 @@ matrix:
         - cd ..
         - sonar-scanner
       after_success:
-        - coveralls
+        - cd backend/caffeine | coveralls
       after_script: cd ..

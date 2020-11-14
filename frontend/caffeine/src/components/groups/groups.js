@@ -140,7 +140,7 @@ class Groups extends Component {
                     />
                     {this.props.specificGroupInfo && <UserGroupInfo
                         key={this.props.specificGroupInfo.id}
-                        Groupname={this.props.specificGroupInfo.name}
+                        group_name={this.props.specificGroupInfo.name}
                         show={this.state.detailShow}
                         members={this.props.specificGroupInfo.members}
                         handleDetailShow={this.handleDetailShow}

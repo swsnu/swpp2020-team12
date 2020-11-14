@@ -1,9 +1,5 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import * as actionCreators from '../../../store/actions/index';
-
 import Modal from 'react-bootstrap/Modal'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button' 
@@ -15,7 +11,6 @@ const UserGroupInfo=(props) => {
             const m=moment.duration(duration);
             return m.humanize();
         }
-        console.log(user.studyhour)
         return(
             <ListGroup.Item key={user.id}>
                 <div className="name"><h3>{user.name}</h3><h4>{getHours(user.studyhour)}</h4></div>

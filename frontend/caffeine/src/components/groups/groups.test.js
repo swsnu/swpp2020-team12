@@ -79,7 +79,7 @@ describe('<Groups />', () => {
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/group/3');
   });
-  it(`should change 'search-nput'`, () => {
+  it(`should change 'search-input'`, () => {
     const component = mount(groups);
     const wrapper = component.find('#group-search-input');
     wrapper.simulate('change', { target: { value: '1234'} });

@@ -5,7 +5,7 @@ import React from 'react';
 
 describe('<UserSubjectInfo/>', () => {
     let component;
-    const onChangeName = jest.fn();
+//    const onChangeName = jest.fn();
     const onClickEdit = jest.fn();
     const onClickQuit = jest.fn();
     const handleDetailShow = jest.fn();
@@ -21,6 +21,8 @@ describe('<UserSubjectInfo/>', () => {
             end_time='00:00'
             day={0}
             show={true}
+            onClickEdit={onClickEdit}
+            onClickQuit={onClickQuit}
             handleDetailShow={handleDetailShow}
             onChangeDescription={onChangeDescription}
             onChangeDay={onChangeDay}

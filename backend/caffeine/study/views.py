@@ -42,20 +42,19 @@ def study_room(request):
 
 @csrf_exempt
 def study_infer(request):
-    pk = random.randint(1, 100)
-    status = 0 if pk < 50 else 1 if pk < 60 else 2 if pk < 80 else 3
     req_data = json.loads(request.body.decode())
     img = req_data['image']
     current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
-    new_concentration = Concentration(concentration=(status == 0), image=img, parent_study=current_study)
+    new_concentration = Concentration(concentration=True, image=img, parent_study=current_study)
     new_concentration.save()
-    if status == 0:
-        current_study.study_time += datetime.timedelta(seconds=10)
-        current_study.concentration_gauge = current_study.study_time / (
-                    current_study.study_time + current_study.distracted_time)
+    current_study.study_time += datetime.timedelta(seconds=10)
+    current_study.concentration_gauge = current_study.study_time / (
+                current_study.study_time + current_study.distracted_time)
+    """
     else:
         current_study.distracted_time += datetime.timedelta(seconds=10)
         current_study.concentration_gauge = current_study.study_time / (
                     current_study.study_time + current_study.distracted_time)
+    """
     current_study.save()
-    return HttpResponse(json.dumps({'status': status, 'gauge': current_study.concentration_gauge}), status=201)
+    return HttpResponse(json.dumps({'status': 0, 'gauge': current_study.concentration_gauge}), status=201)

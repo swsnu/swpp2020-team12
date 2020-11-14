@@ -9,7 +9,6 @@ export {
 } from './groups';
 
 export{
-    getmyStudyInfo,
     postCapturetoServer,
     startStudy,
     endStudy,

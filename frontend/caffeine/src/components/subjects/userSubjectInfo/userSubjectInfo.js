@@ -1,8 +1,5 @@
 /* eslint react/prop-types: 0 */
 import React from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router';
-import * as actionCreators from '../../../store/actions/index';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'

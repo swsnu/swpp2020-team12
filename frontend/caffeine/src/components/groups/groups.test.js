@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
@@ -125,7 +126,7 @@ describe('<Groups />', () => {
         );
         spygetGroups = jest.spyOn(actionCreators, 'getGroups')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             });
     })
@@ -140,8 +141,8 @@ describe('<Groups />', () => {
     });
     it(`should call 'clickGroupHandler'`, () => {
         const spygetGroups = jest.spyOn(actionCreators, 'getGroup')
-            .mockImplementation(id => {
-                return dispatch => {
+            .mockImplementation(() => {
+                return () => {
                 };
             });
         const component = mount(groups);
@@ -154,7 +155,7 @@ describe('<Groups />', () => {
     it(`should call 'searchHandler'`, () => {
         const spysearchGroups = jest.spyOn(actionCreators, 'SearchGroups')
             .mockImplementation(id => {
-                return dispatch => {
+                return () => {
                 };
             });
         const component = mount(groups);

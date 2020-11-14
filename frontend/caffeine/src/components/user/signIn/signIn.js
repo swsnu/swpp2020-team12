@@ -56,12 +56,6 @@ class SignIn extends Component{
     }
 
 }
-
-const mapStateToProps = state => {
-    return {
-
-    };
-  }
   
 const mapDispatchToProps = dispatch => {
     return {
@@ -70,4 +64,4 @@ const mapDispatchToProps = dispatch => {
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignIn));
+export default connect(null, mapDispatchToProps)(withRouter(SignIn));

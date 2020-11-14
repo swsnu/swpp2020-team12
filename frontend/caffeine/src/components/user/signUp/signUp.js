@@ -79,11 +79,6 @@ class SignUp extends Component{
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        
-    };
-  }
   
 const mapDispatchToProps = dispatch => {
     return {
@@ -92,4 +87,4 @@ const mapDispatchToProps = dispatch => {
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));
+export default connect(null, mapDispatchToProps)(withRouter(SignUp));

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import * as actionCreators from './study';
 import store from '../store';
@@ -26,7 +27,7 @@ describe('ActionCreators', () => {
         });
     });
 
-    it(`'startStudy' should start study`, () => {
+    it(`'startStudy' should start study`, (done) => {
         const spy = jest.spyOn(axios, 'post')
         .mockImplementation((url, ar) => {
             return new Promise((resolve, reject) => {
@@ -43,7 +44,7 @@ describe('ActionCreators', () => {
         });
     })
 
-    it(`'endStudy' should end study`, () => {
+    it(`'endStudy' should end study`, (done) => {
         const spy = jest.spyOn(axios, 'put')
         .mockImplementation((url, ar) => {
             return new Promise((resolve, reject) => {
@@ -60,7 +61,7 @@ describe('ActionCreators', () => {
     });
     })
 
-    it(`'changeStudy' should change study`, () => {
+    it(`'changeStudy' should change study`, (done) => {
         const spy = jest.spyOn(axios, 'put')
         .mockImplementation((url, ar) => {
             return new Promise((resolve, reject) => {

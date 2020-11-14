@@ -1,6 +1,5 @@
 /* eslint react/prop-types: 0 */
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import "./mainPage.css"
 
@@ -60,13 +59,4 @@ class mainPage extends Component {
     }
 
 }
-
-const mapStateToProps = state => {
-    return {};
-}
-
-const mapDispatchToProps = dispatch => {
-    return {}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(mainPage));
+export default withRouter(mainPage);

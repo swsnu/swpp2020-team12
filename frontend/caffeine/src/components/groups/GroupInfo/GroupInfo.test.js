@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
@@ -59,7 +60,7 @@ describe('<GroupInfo />', () => {
         );
         spyGetGroup = jest.spyOn(actionCreators, 'getunEnrolled')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             });
     })
@@ -77,7 +78,7 @@ describe('<GroupInfo />', () => {
 
     it('should goto group when click cancel button', () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
+            .mockImplementation(() => {
             });
         const component = mount(groups);
         const wrapper = component.find('#cancel-button');
@@ -88,7 +89,7 @@ describe('<GroupInfo />', () => {
     it('should join group when click join button', () => {
         const spyJoinGroup = jest.spyOn(actionCreators, 'joinGroup')
             .mockImplementation( () => {
-                return dispatch => {
+                return () => {
                 };
             });
         window.prompt = jest.fn().mockImplementation(() => 'pw');
@@ -111,7 +112,7 @@ const stubInitialState2 = {
 const mockStore2 = getMockStore(stubInitialState2);
 
 describe('<GroupInfo />', () => {
-    let groups, spyGetGroup;
+    let groups
     beforeEach(() => {
         groups = (
             <Provider store={mockStore2}>

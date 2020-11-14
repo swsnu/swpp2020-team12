@@ -68,6 +68,7 @@ describe('ActionCreators', () => {
 
 
     it(`'signup' should signin correctly`, (done) => {
+        window.alert = jest.fn().mockImplementation();
         const spy = jest.spyOn(axios, 'post')
             .mockImplementation((url, ar) => {
                 return new Promise((resolve, reject) => {

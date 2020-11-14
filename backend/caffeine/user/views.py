@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -16,7 +15,8 @@ def sign_up(request):
         password = req_data['password']
         name = req_data['name']
         message = req_data['message']
-        user = User.objects.create_user(username=username, password=password, name=name, message=message)
+        user = User.objects.create_user(username=username,
+            password=password, name=name, message=message)
         user.save()
         return HttpResponse(status=201)
     else:

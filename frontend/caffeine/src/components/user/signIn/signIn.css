@@ -41,8 +41,6 @@
     font-size: 30px;
     margin: 5px;
     background: rgb(202, 202, 202);
-    font-size: 30px;
-    border-radius: 10px;
     transition: all .35s;
     border: none;
 }

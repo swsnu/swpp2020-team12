@@ -13,7 +13,7 @@ class Groups extends Component {
         this.props.getGroup(this.props.match.params.group_id)
     }
 
-    onClickjoin = () => {
+    onClickJoin = () => {
         if (this.props.unenrolledGroupInfo.password === '' || this.props.unenrolledGroupInfo.password === undefined)
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': ''});
         else {
@@ -37,7 +37,7 @@ class Groups extends Component {
                     &nbsp;
                     <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
-                            onClick={this.onClickjoin}>Join Group</Button>
+                            onClick={this.onClickJoin}>Join Group</Button>
                     <Button variant="outline-dark" size="sm" id="cancel-button"
                             onClick={()=>this.props.history.push('/group')}>Cancel</Button>
                 </div>

@@ -80,7 +80,7 @@ jest.mock('../study/selectSubject/selectSubject', () => {
             <div className="spysubject">
                 <button id='closeButton' onClick={props.handleSubjectShow}></button>
                 {subjects}
-                <button size="sm" disabled={props.subject === null} id="start-study-botton"
+                <button size="sm" disabled={props.subject === null} id="start-study-button"
                         onClick={props.onClickChoose}>Choose Subject
                 </button>
             </div>
@@ -289,7 +289,7 @@ describe('<Groups />', () => {
         wrapper = component.find('.subject input').at(0);
         wrapper.simulate('click');
         expect(newInstance.state.subject).toEqual('subject1');
-        wrapper = component.find('#start-study-botton');
+        wrapper = component.find('#start-study-button');
         wrapper.simulate('click');
         expect(spystartStudy).toHaveBeenCalledTimes(1);
     });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import StudyComp from './studyComp';
+import StudyComp from './studycomp';
 
 describe('<StudyComp />', () => {
     it('should render without errors', () => {

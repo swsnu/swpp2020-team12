@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button'
 import moment from "moment";
 import './GroupInfo.css'
 
-class Groups extends Component {
+class GroupInfo extends Component {
 
     componentDidMount() {
         this.props.getGroup(this.props.match.params.group_id)
@@ -66,4 +66,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Groups));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(GroupInfo));

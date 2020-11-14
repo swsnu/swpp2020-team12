@@ -3,9 +3,8 @@ import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {Route, Switch} from 'react-router-dom';
 import {ConnectedRouter} from 'connected-react-router';
-import GroupInfo from './groupInfo';
+import GroupInfo from './GroupInfo';
 import * as actionCreators from '../../../store/actions/groups';
-import * as actionStudy from '../../../store/actions/study';
 import {getMockStore} from '../../../test-utils/mocks';
 import {history} from '../../../store/store';
 

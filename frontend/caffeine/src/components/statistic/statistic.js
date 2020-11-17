@@ -46,7 +46,10 @@ class Statistic extends Component{
                         <span id="label" onClick={this.gotoGroup}>Group</span>
                         <span id="label" onClick={this.gotoStatistic}>Statistic</span>
                         <span id="label" onClick={this.gotoRanking}>Ranking</span>
-                        <span id="label">SignOut</span>
+                        <span id="label" onClick={(e)=>{
+                            e.preventDefault()
+                            this.props.signout()
+                            }}>SignOut</span>
                     </nav>
                     <div id='leftup'>
                         <h1>Daily</h1>
@@ -119,7 +122,8 @@ class Statistic extends Component{
   
 const mapDispatchToProps = dispatch => {
     return {
-        
+        signout: ()=>
+        dispatch(actionCreators.signout()),
     }
   }
 

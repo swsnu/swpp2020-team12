@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import timedelta
+from datetime import timedelta, date
 from user.models import User
 
 
@@ -9,7 +9,7 @@ class DailyStudyRecord(models.Model):
         on_delete=models.CASCADE,
         related_name='daily_record'
     )
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=date.today)
     total_study_time = models.DurationField(default=timedelta(0))
     total_concentration = models.DurationField(default=timedelta(0))
     total_gauge = models.FloatField(default=0)

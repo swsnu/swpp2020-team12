@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import {connectRouter, routerMiddleware} from 'connected-react-router';
 import {createBrowserHistory} from 'history';
 
+import rankReducer from './reducers/ranking';
 import groupReducer from './reducers/groups';
 import studyReducer from './reducers/study';
 import userReducer from './reducers/user';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     study: studyReducer,
     user: userReducer,
     subject: subjectReducer,
+    rank: rankReducer,
     router: connectRouter(history)
 });
 

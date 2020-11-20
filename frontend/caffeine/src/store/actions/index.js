@@ -15,6 +15,13 @@ export{
     changeSubject
 } from './study';
 
+export{
+    getUserDayRank,
+    getUserTotalRank,
+    getGroupDayRank,
+    getGroupTotalRank
+} from './ranking';
+
 export {
     signin,
     signup,

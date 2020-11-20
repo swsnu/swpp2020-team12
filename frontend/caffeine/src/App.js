@@ -10,6 +10,7 @@ import Study from './components/study/study'
 import SignIn from './components/user/signIn/signIn'
 import SignUp from './components/user/signUp/signUp'
 import mainPage from './components/main/mainPage'
+import Ranking from './components/rank/ranking'
 
 function App(props) {
   return (
@@ -23,6 +24,7 @@ function App(props) {
           <Route path='/group/:group_id' exact component={GroupInfo} />
           <Route path='/study/:group_id' exact component={Study}/>
           <Route path='/subject' exact component={Subjects} />
+          <Route path='/ranking' exact component={Ranking} />
           <Route render={() => <h1>Not Found</h1>} />
         </Switch>
       </div>

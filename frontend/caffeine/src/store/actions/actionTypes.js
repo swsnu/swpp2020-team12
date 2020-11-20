@@ -11,6 +11,11 @@ export const START_STUDY = 'START_STUDY'
 export const END_STUDY = 'END_STUDY'
 export const CHANGE_SUBJECT = 'CHANGE_SUBJECT'
 
+export const USER_DAY_RANK = 'USER_DAY_RANK'
+export const GROUP_DAY_RANK = 'GROUP_DAY_RANK'
+export const USER_TOTAL_RANK = 'USER_TOTAL_RANK'
+export const GROUP_TOTAL_RANK = 'GROUP_TOTAL_RANK'
+
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_OUT = 'SIGN_OUT'

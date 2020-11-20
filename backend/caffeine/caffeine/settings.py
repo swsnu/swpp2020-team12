@@ -77,10 +77,10 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default' : {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'team12',
-        'USER': 'root',                          
+        'USER': 'root',
         'PASSWORD': 'team12_caffeine',
         'HOST': 'localhost',
         'PORT': '3306',

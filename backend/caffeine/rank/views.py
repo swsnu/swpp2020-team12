@@ -50,6 +50,8 @@ def user_rank(request):
 @csrf_exempt
 def group_rank(request, group_id):
     """should constrain group member's max length"""
+    if group_id == -1:
+        return HttpResponse(status=400)
     if request.method == 'GET':
         group_members = Group.objects.get(id=group_id).members
         records = DailyStudyRecord.objects.filter(date=datetime.date.today())

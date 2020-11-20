@@ -44,7 +44,7 @@ export const getUserDayRank = () => {
     }
 }
 
-export const getUserTotalRank_ = () => {
+export const getUserTotalRank_ = (records) => {
     return {
         type: actionTypes.USER_TOTAL_RANK, rank: records.records,
         myRank: {'rank': records.user_ranking, 'record': records.user_record}

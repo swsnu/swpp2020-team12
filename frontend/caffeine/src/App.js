@@ -23,6 +23,9 @@ class App extends React.Component {
     LogoutHandler = () => {
         this.props.signout();
     }
+    homeHandler = () => {
+        this.props.history.push('/');
+    }
 
     render() {
 
@@ -30,7 +33,8 @@ class App extends React.Component {
         const userTools = this.props.isLoggedIn ?
             <div>
                 <button id='logout-button' onClick={this.LogoutHandler}>logout</button>
-              {this.props.user&& <div id='user-info'>Hello, {this.props.user.name}</div>}
+                <button id='home-button' onClick={this.homeHandler}>HOME</button>
+                {this.props.user && <div id='user-info'>Hello, {this.props.user.name}</div>}
             </div>
             : null;
 
@@ -47,7 +51,6 @@ class App extends React.Component {
                             <Route path='/subject' exact component={Subjects}/>
                             <Route path='/ranking' exact component={Ranking}/>
                             <Redirect exact to="/"/>
-                            <Route render={() => <h1>Not Found</h1>}/>
                         </Switch>
                     </div>) : (
                         <div className="App">

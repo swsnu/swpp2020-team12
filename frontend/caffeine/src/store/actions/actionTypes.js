@@ -19,7 +19,7 @@ export const GROUP_TOTAL_RANK = 'GROUP_TOTAL_RANK'
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_OUT = 'SIGN_OUT'
-
+export const GET_LOGIN = 'GET_LOGIN'
 
 export const GET_SUBJECT = 'GET_SUBJECT';
 export const GET_SUBJECTS = 'GET_SUBJECTS';

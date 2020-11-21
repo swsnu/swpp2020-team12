@@ -26,6 +26,7 @@ export {
     signin,
     signup,
     signout,
+    getLogin,
 } from './user';
 
 export{

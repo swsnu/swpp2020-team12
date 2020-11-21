@@ -15,7 +15,7 @@ const UserSubjectInfo = (props) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group controlId="formDescription">
+                    <Form.Group>
                         <Form.Label>Subject Description</Form.Label>
                         <Form.Control id='edit-subject-description-input' type="Description" defaultValue={props.description}
                                       onChange={(event) => props.onChangeDescription(event)}/>

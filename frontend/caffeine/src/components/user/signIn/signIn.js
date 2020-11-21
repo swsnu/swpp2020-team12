@@ -40,7 +40,6 @@ class SignIn extends Component{
                     />
                     <br/>
                     <input
-                        type="password"
                         placeholder="PW"
                         className="Text"
                         id="password"

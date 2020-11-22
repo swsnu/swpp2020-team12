@@ -39,7 +39,9 @@ class Statistic extends Component{
     gotoRanking = () => {
         this.props.history.push('/ranking')
     }
-
+    gotoMain = () => {
+        this.props.history.push('/')
+    }
     
     
 
@@ -48,6 +50,7 @@ class Statistic extends Component{
             <div className="static">
                 <div className = "container">
                     <nav>
+                        <span id="label" onClick={this.gotoMain}>Main</span>
                         <span id="label">MyPage</span>
                         <span id="label" onClick={this.gotoSubject}>Subject</span>
                         <span id="label" onClick={this.gotoGroup}>Group</span>

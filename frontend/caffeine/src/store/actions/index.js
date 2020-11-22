@@ -28,3 +28,9 @@ export{
     deleteSubject,
     editSubject
 } from './subjects'
+
+export{
+    getMonthlydata,
+    getWeeklydata,
+    getDailySubject
+} from './statistic'

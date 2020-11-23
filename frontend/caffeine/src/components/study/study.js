@@ -13,7 +13,6 @@ const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
 class Study extends Component {
     state = {
-        last_image: null,
         time: moment.duration(0),
         subjectShow: false,
         subject: null
@@ -46,20 +45,19 @@ class Study extends Component {
         if (this.props.currentSubject !== prevProps.currentSubject){
             console.log('this.props.currentSubject')
             this.startTimer();
-            this.setState({last_image: null})
         }
     }
 
     componentWillUnmount() {
         clearInterval(this.interval);
+        this.props.endStudy();
     }
 
     onClickEnd = () => {
-        this.props.endStudy();
         this.props.history.push('/');
     }
     handleSubjectShow = () => {
-        this.setState({subjectShow: false})
+        this.setState({npm: false})
     }
     onClickCheck = (name) => {
         this.setState({subject: name})
@@ -75,10 +73,7 @@ class Study extends Component {
     }
     webcamRef = createRef()
     capture = () => {
-        this.setState({
-            last_image: this.webcamRef.current.getScreenshot()
-        })
-        this.props.postCapturetoServer(this.state.last_image)
+        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot())
     }
     render() {
         return (

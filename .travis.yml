@@ -2,7 +2,9 @@ matrix:
   include:
     - language: node_js
       node_js: '12'
-      python: 3.7
+      python: '3.7'
+      cache:
+        - pip: true
       addons:
         sonarcloud:
           organization: "swsnu"

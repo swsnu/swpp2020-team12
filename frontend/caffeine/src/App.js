@@ -11,6 +11,7 @@ import Study from './components/study/study'
 import SignIn from './components/user/signIn/signIn'
 import SignUp from './components/user/signUp/signUp'
 import mainPage from './components/main/mainPage'
+import Statistic from './components/statistic/statistic'
 import Ranking from './components/rank/ranking'
 import * as actionCreators from './store/actions/index';
 

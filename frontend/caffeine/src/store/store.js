@@ -8,6 +8,7 @@ import groupReducer from './reducers/groups';
 import studyReducer from './reducers/study';
 import userReducer from './reducers/user';
 import subjectReducer from './reducers/subjects';
+import statisticReducer from './reducers/statistic';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     study: studyReducer,
     user: userReducer,
     subject: subjectReducer,
+    statistic: statisticReducer,
     rank: rankReducer,
     router: connectRouter(history)
 });

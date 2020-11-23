@@ -1,6 +1,8 @@
 matrix:
   include:
-    - language: node_js
+    - language:
+        - node_js
+        - python
       node_js: '12'
       python: '3.7'
       cache:

@@ -24,7 +24,7 @@ export const signin = (data) => {
     return dispatch => {
         return axios.post('/user/signin', data)
             .then(res => {
-                dispatch(signin_(res.data));
+                dispatch(signin_());
                 dispatch(push('/'));
             })
             .catch(err => {

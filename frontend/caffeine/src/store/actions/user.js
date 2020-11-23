@@ -54,7 +54,7 @@ export const signout = () => {
     return dispatch => {
         return axios.get('/user/signout')
             .then((res) => {
-                dispatch(signout_(res.data));
+                dispatch(signout_());
                 dispatch(push('/'));
             });
     }

@@ -16,7 +16,7 @@ def sign_up(request):
         name = req_data['name']
         message = req_data['message']
         user = User.objects.create_user(username=username,
-            password=password, name=name, message=message)
+                                        password=password, name=name, message=message)
         user.save()
         return HttpResponse(status=201)
     else:
@@ -38,13 +38,25 @@ def sign_in(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 @csrf_exempt
 def sign_out(request):
-    if request.method == "GET":
-        if request.user.is_authenticated:
-            logout(request)
-            return HttpResponse(status=204)
-        else:
-            return HttpResponse(status=401)
+    if request.method == 'GET':
+        if not request.user.is_authenticated: return HttpResponse(status=401)
+        logout(request)
+        return HttpResponse(status=204)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+@csrf_exempt
+def get_user(request):
+    if request.method == 'GET':
+        is_logged_in = request.user.is_authenticated
+        response_dict = {'isLoggedIn': is_logged_in}
+        if is_logged_in:
+            response_dict['name'] = request.user.name,
+            response_dict['message'] = request.user.message
+        return JsonResponse(response_dict, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])

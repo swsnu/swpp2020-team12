@@ -19,6 +19,9 @@ class mainPage extends Component {
     gotoSubject = () => {
         this.props.history.push('/subject')
     }
+    gotoRank = () => {
+        this.props.history.push('/ranking')
+    }
 
     render() {
         return (
@@ -45,7 +48,7 @@ class mainPage extends Component {
                         <br></br>
                         <li id="statistics">Statistics</li>
                         <br></br>
-                        <li id="ranking">Ranking</li>
+                        <li id="ranking" onClick={this.gotoRank}>Ranking</li>
                     </ul>
                 </div>
                 <div>

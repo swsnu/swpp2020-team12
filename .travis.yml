@@ -13,8 +13,8 @@ matrix:
         - cd frontend/caffeine
       install:
         - yarn install
-        - yarn global add coveralls-lcov
-        - pip install coveralls
+        - yarn global add coveralls
+        - gem install coveralls-lcov
       script:
         - ./node_modules/.bin/eslint src/
         - yarn test --coverage --watchAll=false

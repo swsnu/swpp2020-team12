@@ -1,8 +1,6 @@
 matrix:
   include:
-    - language:
-        - node_js
-        - python
+    - language: node_js
       node_js: '12'
       python: '3.7'
       cache:
@@ -19,6 +17,7 @@ matrix:
         - gem install coveralls-lcov
         - cd ../../
         - cd backend/caffeine
+        - source ~/virtualenv/python3.7/bin/activate
         - pip install -r requirements.txt
         - pip install coveralls
         - cd ../../

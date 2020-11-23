@@ -30,6 +30,9 @@ class MainPage extends Component {
     gotoRank = () => {
         this.props.history.push('/ranking')
     }
+    gotoStat = () => {
+        this.props.history.push('/statistic')
+    }
     handleSubjectShow = () => {
         this.setState({subjectShow: false})
     }
@@ -72,7 +75,7 @@ class MainPage extends Component {
                         <br></br>
                         <li id="group" onClick={this.gotoGroup}>Group</li>
                         <br></br>
-                        <li id="statistics">Statistics</li>
+                        <li id="statistics" onClick={this.gotoStat}>Statistic</li>
                         <br></br>
                         <li id="ranking" onClick={this.gotoRank}>Ranking</li>
                     </ul>

@@ -51,6 +51,7 @@ class App extends React.Component {
                             <Route path='/study/:group_id' exact component={Study}/>
                             <Route path='/subject' exact component={Subjects}/>
                             <Route path='/ranking' exact component={Ranking}/>
+                            <Route path='/statistic' exact component={Statistic}/>
                             <Redirect exact to="/"/>
                         </Switch>
                     </div>) : (

@@ -26,7 +26,7 @@ class Days(models.Model):
 class Subject(models.Model):
     name = models.CharField(max_length=64, null=False)
     days = models.ManyToManyField(Days, related_name='timetable', blank=True)  # null은 써도 효과 없음
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True) #textfield에서 null 쓰지 말라고 권고
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE)
 

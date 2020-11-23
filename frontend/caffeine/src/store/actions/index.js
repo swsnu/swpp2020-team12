@@ -26,6 +26,7 @@ export {
     signin,
     signup,
     signout,
+    getLogin,
 } from './user';
 
 export{
@@ -35,3 +36,9 @@ export{
     deleteSubject,
     editSubject
 } from './subjects'
+
+export{
+    getMonthlydata,
+    getWeeklydata,
+    getDailySubject
+} from './statistic'

@@ -23,7 +23,7 @@ const SelectSubject=(props)=>{
                 {subjects}
         </Modal.Body>
         <Modal.Footer>
-            <Button size="sm" disabled={props.subject===null} id="start-study-botton" 
+            <Button size="sm" disabled={props.subject===null} id="start-study-button"
                 onClick={props.onClickChoose}>Choose Subject</Button>
         </Modal.Footer>
         </Modal>

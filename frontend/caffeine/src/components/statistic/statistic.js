@@ -94,7 +94,8 @@ class Statistic extends Component{
                                 this.props.getMonthlydata(moment(value))
                                 this.props.getWeeklydata(moment(value))
                                 this.props.getDailySubject(moment(value))
-                                console.log(this.props.monthlyData)
+                                console.log(this.props.dailyData)
+                                console.log(this.props.weeklyData)
                             }} 
                             value={this.state.date}
                         />

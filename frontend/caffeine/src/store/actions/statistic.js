@@ -1,13 +1,15 @@
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
-
+import moment from 'moment'
 
 export const getMonthlydata_ = (response_list) => {
     return {type: actionTypes.GET_MONTHLYDATA, monthlyData: response_list};
 }
 export const getMonthlydata = (date) => {
     return dispatch => {
-        return axios.get('/statistic/' + date.year() + '/' + date.month())
+        var year=moment(date).year()
+        var month=moment(date).month()
+        return axios.get('/statistic/' + year + '/' + month)
             .then(res => dispatch(getMonthlydata_(res.data)));
     }
 }
@@ -17,7 +19,10 @@ export const getWeeklydata_ = (response) => {
 }
 export const getWeeklydata = (date) => {
     return dispatch => {
-        return axios.get('/statistic/' + date.year() +'/'+ date.month() +'/'+ date.date())
+        var year=moment(date).year()
+        var month=moment(date).month()
+        var day=moment(date).date()
+        return axios.get('/statistic/' + year +'/'+ month +'/'+ day)
             .then(res => dispatch(getWeeklydata_(res.data)));
     }
 }
@@ -27,7 +32,10 @@ export const getDailySubject_ = (response) => {
 }
 export const getDailySubject = (date) => {
     return dispatch => {
-        return axios.get('/statistic/' + date.year() +'/'+ date.month() +'/'+ date.date() + '/subjects')
+        var year=moment(date).year()
+        var month=moment(date).month()
+        var day=moment(date).date()
+        return axios.get('/statistic/' + year +'/'+ month +'/'+ day + '/subjects')
             .then(res => dispatch(getDailySubject_(res.data)));
     }
 }

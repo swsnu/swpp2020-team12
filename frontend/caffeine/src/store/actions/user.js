@@ -3,7 +3,6 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import {history} from '../store';
 import {push} from "connected-react-router";
-import {joinGroup_} from "./groups";
 
 export const getLogin_ = (user) => {
     return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name:user.name, message: user.message};

@@ -9,7 +9,7 @@ import moment from 'moment'
 class Ranking extends Component {
     state = {
         dayShow: true,
-        selectedGroupId: -1
+        selectedGroupId: 0
     }
 
     componentDidMount() {
@@ -35,6 +35,7 @@ class Ranking extends Component {
     }
     getHours = (duration) => {
         const m = moment.duration(duration);
+        //return m;
         return m.humanize();
     }
 

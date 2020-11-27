@@ -60,7 +60,6 @@ class App extends React.Component {
                                 <Route path='/signin' exact component={SignIn}/>
                                 <Route path='/signup' exact component={SignUp}/>
                                 <Redirect exact to="/signin"/>
-                                <Route render={() => <h1>Not Found</h1>}/>
                             </Switch>
                         </div>
                     )
@@ -82,8 +81,7 @@ const mapDispatchToProps = dispatch => {
         getLogin: () =>
             dispatch(actionCreators.getLogin()),
         signout: () =>
-            dispatch(actionCreators.signout())
-        ,
+            dispatch(actionCreators.signout()),
     };
 };
 

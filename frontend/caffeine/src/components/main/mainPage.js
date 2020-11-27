@@ -75,14 +75,14 @@ class MainPage extends Component {
                         <br></br>
                         <li id="group" onClick={this.gotoGroup}>Group</li>
                         <br></br>
-                        <li id="statistics" onClick={this.gotoStat}>Statistic</li>
+                        <li id="statistic" onClick={this.gotoStat}>Statistic</li>
                         <br></br>
                         <li id="ranking" onClick={this.gotoRank}>Ranking</li>
                     </ul>
                 </div>
                 <div>
-                    <button id="button">
-                        <span id="button" onClick={() => {
+                    <button id="study-button">
+                        <span id="study-button" onClick={() => {
                             this.setState({subjectShow: true})
                         }}>Study</span>
                     </button>

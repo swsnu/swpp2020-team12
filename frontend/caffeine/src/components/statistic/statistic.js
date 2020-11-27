@@ -50,13 +50,13 @@ class Statistic extends Component{
             <div className="static">
                 <div className = "container">
                     <nav>
-                        <span id="label" onClick={this.gotoMain}>Main</span>
-                        <span id="label">MyPage</span>
-                        <span id="label" onClick={this.gotoSubject}>Subject</span>
-                        <span id="label" onClick={this.gotoGroup}>Group</span>
-                        <span id="label" onClick={this.gotoStatistic}>Statistic</span>
-                        <span id="label" onClick={this.gotoRanking}>Ranking</span>
-                        <span id="label" onClick={(e)=>{
+                        <span className="gotoMainbutton" id="label" onClick={this.gotoMain}>Main</span>
+                        <span className="gotoMyPagebutton" id="label">MyPage</span>
+                        <span className="gotoSubjectbutton" id="label" onClick={this.gotoSubject}>Subject</span>
+                        <span className="gotoGroupbutton" id="label" onClick={this.gotoGroup}>Group</span>
+                        <span className="gotoStatisticbutton" id="label" onClick={this.gotoStatistic}>Statistic</span>
+                        <span className="gotoRankingbutton" id="label" onClick={this.gotoRanking}>Ranking</span>
+                        <span className="Signoutbutton" id="label" onClick={(e)=>{
                             e.preventDefault()
                             this.props.signout()
                             }}>SignOut</span>

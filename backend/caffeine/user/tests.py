@@ -19,14 +19,16 @@ class UserTestCase(TestCase):
     def test_signup(self):
         client = Client()
         #        client.login(username='id1', password='pw1')
-        response = client.post('/user/signup', json.dumps({'username': 'test_user',
-                                                           'name': 'test_name',
-                                                           'password': 'test_pw', 'message': 'test_message'}),
+        response = client.post('/user/signup', json.dumps({
+            'username': 'test_user',
+            'name': 'test_name',
+            'password': 'test_pw', 'message': 'test_message'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
-        response = client.put('/user/signup', json.dumps({'username': 'test_user',
-                                                          'name': 'test_name',
-                                                          'password': 'test_pw', 'message': 'test_message'}),
+        response = client.put('/user/signup', json.dumps({
+            'username': 'test_user',
+            'name': 'test_name',
+            'password': 'test_pw', 'message': 'test_message'}),
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)
 

@@ -23,7 +23,7 @@ class Ranking extends Component {
         if (this.state.dayShow) this.props.groupDayRank(event.target.value)
         else this.props.groupTotalRank(event.target.value)
     }
-    onChangeDuration = (event) => {
+    onChangeDuration = () => {
         this.setState({dayShow: !this.state.dayShow})
         if (this.state.dayShow) {
             this.props.userTotalRank()

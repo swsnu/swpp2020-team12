@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
@@ -5,7 +6,6 @@ import * as actionCreators from './store/actions/user';
 import App from './App';
 import {getMockStore} from './test-utils/mocks';
 import {history} from './store/store';
-import * as actionStudy from "./store/actions/study";
 
 
 const stubInitialState1 = {
@@ -32,7 +32,7 @@ describe('App', () => {
         );
         spyGetLogin = jest.spyOn(actionCreators, 'getLogin')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             })
     });
@@ -46,7 +46,7 @@ describe('App', () => {
     it('should signout when click logoutHandler', () => {
         const spySignout = jest.spyOn(actionCreators, 'signout')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             });
         const component = mount(app);
@@ -56,7 +56,7 @@ describe('App', () => {
     });
     it('should redirect to home when click homeHandler', () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
+            .mockImplementation(() => {
             });
         const component = mount(app);
         const wrapper = component.find('#home-button')
@@ -82,8 +82,7 @@ describe('App', () => {
         );
         spyGetLogin = jest.spyOn(actionCreators, 'getLogin')
             .mockImplementation(() => {
-                return dispatch => {
-
+                return () => {
                 };
             })
     });

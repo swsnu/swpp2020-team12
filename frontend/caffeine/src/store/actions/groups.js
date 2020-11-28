@@ -25,7 +25,7 @@ export const getunEnrolled = (group_id) => {
     return dispatch => {
         return axios.get('/group/search/' + group_id)
             .then(res => dispatch(getunEnrolled_(res.data)))
-            .catch(err=> {
+            .catch(()=> {
                 alert("you already joined this group");
                 dispatch(push('/group'));
             });

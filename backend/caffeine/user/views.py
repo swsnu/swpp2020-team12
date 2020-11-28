@@ -42,7 +42,8 @@ def sign_in(request):
 @csrf_exempt
 def sign_out(request):
     if request.method == 'GET':
-        if not request.user.is_authenticated: return HttpResponse(status=401)
+        if not request.user.is_authenticated:
+            return HttpResponse(status=401)
         logout(request)
         return HttpResponse(status=204)
     else:

@@ -26,7 +26,8 @@ def getMonthlydata(request, year, month):
                            dailyRecord.total_study_time.total_seconds() * 4)
              }
             for dailyRecord in dailyRecord.iterator() if
-            (str(dailyRecord.date.year) + str(dailyRecord.date.month)) == (str(year) + str(month + 1))
+            (str(dailyRecord.date.year) + str(dailyRecord.date.month)) ==
+            (str(year) + str(month + 1))
         ]
         return JsonResponse(response_list, safe=False)
     else:

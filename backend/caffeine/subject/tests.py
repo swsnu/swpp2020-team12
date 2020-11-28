@@ -14,13 +14,16 @@ class SubjectTestCase(TestCase):
                                          password='pw2', message='message2')
         User.objects.create_user(username='id3', name='nickname3',
                                  password='pw3', message='message3')
-        subject1 = Subject.objects.create(name='subject1', description='this is description1',
+        subject1 = Subject.objects.create(name='subject1',
+                                          description='this is description1',
                                           user=user1)
 
-        Subject.objects.create(name='subject2', description='this is description2',
+        Subject.objects.create(name='subject2',
+                               description='this is description2',
                                user=user2)
 
-        subject3 = Subject.objects.create(name='subject3', description='this is description3',
+        subject3 = Subject.objects.create(name='subject3',
+                                          description='this is description3',
                                           user=user1)
         day1 = Days.objects.create(day=1, start_time='12:00', end_time='13:00')
         day2 = Days.objects.create(day=2, start_time='14:00', end_time='16:00')

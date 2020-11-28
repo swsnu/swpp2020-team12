@@ -56,7 +56,7 @@ def get_user(request):
         is_logged_in = request.user.is_authenticated
         response_dict = {'isLoggedIn': is_logged_in}
         if is_logged_in:
-            response_dict['name'] = request.user.name,
+            response_dict['name'] = request.user.name
             response_dict['message'] = request.user.message
         return JsonResponse(response_dict, safe=False)
     else:

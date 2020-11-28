@@ -10,10 +10,12 @@ class StatisticTestCase(TestCase):
     def setUp(self):  # beforeeach 같은거
         user1 = User.objects.create_user(username='id1', name='nickname1',
                                          password='pw1', message='message1')
-        DailyStudyRecord.objects.create(user=user1, total_study_time=timedelta(seconds=1), date=datetime(2020, 11, 25),
-                                        total_concentration=timedelta(0))
-        DailyStudyForSubject.objects.create(date=datetime(2020, 11, 25), study_time=timedelta(seconds=1),
-                                            subject='swpp', distracted_time=timedelta(0), user=user1)
+        DailyStudyRecord.objects.create(
+            user=user1, total_study_time=timedelta(seconds=1),
+            date=datetime(2020, 11, 25), total_concentration=timedelta(0))
+        DailyStudyForSubject.objects.create(
+            date=datetime(2020, 11, 25), study_time=timedelta(seconds=1),
+            subject='swpp', distracted_time=timedelta(0), user=user1)
 
     def test_getMonthlyData(self):
         client = Client()

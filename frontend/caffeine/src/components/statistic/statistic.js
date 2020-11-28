@@ -1,4 +1,5 @@
 /* eslint react/prop-types: 0 */
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';

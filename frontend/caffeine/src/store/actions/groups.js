@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
 

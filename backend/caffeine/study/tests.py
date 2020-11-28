@@ -13,9 +13,10 @@ class StudyTestCase(TestCase):
                                          password='pw1', message='message1')
         User.objects.create_user(username='id2', name='nickname2',
                                  password='pw2', message='message2')
-        daily_study_for_subject = DailyStudyForSubject.objects.create(study_time=timedelta(),
-                                                                      subject='swpp', distracted_time=timedelta(),
-                                                                      user=user1)
+        daily_study_for_subject = DailyStudyForSubject.objects.create(
+            study_time=timedelta(),
+            subject='swpp', distracted_time=timedelta(),
+            user=user1)
         Concentration.objects.create(parent_study=daily_study_for_subject)
         Concentration.objects.create(parent_study=daily_study_for_subject)
 

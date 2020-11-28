@@ -4,3 +4,4 @@ pylint==2.6.0
 pylint-django==2.3.0
 pillow==8.0.1
 coveralls==2.1.2
+Mysqlclient==2.0.1

@@ -1,5 +1,6 @@
 from django.db import models
-from datetime import timedelta
+from django.utils import timezone
+from datetime import timedelta, date
 from user.models import User
 
 
@@ -9,20 +10,20 @@ class DailyStudyRecord(models.Model):
         on_delete=models.CASCADE,
         related_name='daily_record'
     )
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=date.today)
     total_study_time = models.DurationField(default=timedelta(0))
     total_concentration = models.DurationField(default=timedelta(0))
     total_gauge = models.FloatField(default=0)
 
 
 class DailyStudyForSubject(models.Model):
-    date = models.DateField(auto_now_add=True)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True)
+    date = models.DateField(default=date.today)
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(default=timezone.now)
     study_time = models.DurationField(default=timedelta(0))
     distracted_time = models.DurationField(default=timedelta(0))
     concentration_gauge = models.FloatField(default=0)
-    last_updated_time = models.DateTimeField(auto_now=True)
+    last_updated_time = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=False)
     subject = models.CharField(max_length=64)
     user = models.ForeignKey(
@@ -38,7 +39,6 @@ class DailyStudyForSubject(models.Model):
 class Concentration(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     concentration = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='', blank=True)
     parent_study = models.ForeignKey(
         DailyStudyForSubject,
         on_delete=models.CASCADE,

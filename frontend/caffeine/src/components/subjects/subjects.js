@@ -74,27 +74,32 @@ class Subjects extends Component {
         this.setState({day: event.target.value})
     }
     onClickConfirm = () => {
-        this.setState({createShow: false})
-        this.props.addSubject({
-            name: this.state.name,
-            description: this.state.description,
-            days: [{
-                day: this.state.day,
-                start_time: this.state.start_time,
-                end_time: this.state.end_time,
-            }]
-        })
-        this.setState({
-            name: '',
-            description: '',
-            start_time: '00:00',
-            day: 0,
-            end_time: '00:00',
-        })
+        if (this.state.name===''){
+            alert('subject name cannot be an empty string')
+            return;
+        }
+        else {
+            this.setState({createShow: false})
+            this.props.addSubject({
+                name: this.state.name,
+                description: this.state.description,
+                days: [{
+                    day: this.state.day,
+                    start_time: this.state.start_time,
+                    end_time: this.state.end_time,
+                }]
+            })
+            this.setState({
+                name: '',
+                description: '',
+                start_time: '00:00',
+                day: 0,
+                end_time: '00:00',
+            })
+        }
     }
     onClickEdit = () => {
         this.setState({detailShow: false})
-        //TODO: this.setstate 로 바꿔줘야 함
         this.props.editSubject({
             id: this.props.specificSubjectInfo.id,
             name: this.props.specificSubjectInfo.name,

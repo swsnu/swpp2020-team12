@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'group.apps.GroupConfig',
     'user.apps.UserConfig',
     'study.apps.StudyConfig',
-    'subject.apps.SubjectConfig'
+    'subject.apps.SubjectConfig',
+    'statistic.apps.StatisticConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,14 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
 
 DATABASES = {
     'default': {

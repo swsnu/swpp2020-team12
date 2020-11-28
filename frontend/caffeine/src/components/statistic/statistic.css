@@ -1,0 +1,100 @@
+.container{
+    position: relative;
+    display:grid;
+    height:100vh;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 60px 1fr 1fr;
+    background:whitesmoke;
+    grid-template-areas:
+        "header header"
+        "leftup rightup"
+        "leftdown rightdown" ;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+
+div span[id="label"]{
+    font-size:30px;
+    margin-top:40ox;
+    margin-bottom: none;
+    color: rgb(255, 255, 255);
+    padding: 16px;
+    /*margin:10px;*/
+    cursor: pointer;
+}
+
+nav{
+    background: rgb(179, 174, 168);
+    grid-area: header;
+    width: auto;
+}
+
+#leftup{
+    position: relative;
+    grid-area:leftup;
+}
+#leftdown{
+    position: relative;
+    grid-area:leftdown;
+}
+#rightup{
+    grid-area:rightup;
+}
+
+#rightdown{
+    grid-area:rightdown;
+}
+
+
+.react-calendar-heatmap .color-scale-1 { fill: #d6e685; }
+.react-calendar-heatmap .color-scale-2 { fill: #8cc665; }
+.react-calendar-heatmap .color-scale-3 { fill: #44a340; }
+.react-calendar-heatmap .color-scale-4 { fill: #1e6823; }
+
+
+#total{
+    position: absolute;
+    top: 40%;
+    right:15%;
+    font-size:25px;
+}
+
+#study{
+    position: absolute;
+    top: 55%;
+    right:15%;
+    font-size:25px;
+}
+
+#total2{
+    position: absolute;
+    top: 40%;
+    right:15%;
+    font-size:25px;
+}
+
+#study2{
+    position: absolute;
+    top: 55%;
+    right:15%;
+    font-size:25px;
+}
+
+
+
+
+div.react-calendar.calendar{
+    position: absolute;
+    top:10%;
+    width: 555px;
+    background: #eeeeee;
+}
+
+svg.react-calendar-heatmap {
+    top:10%;
+}
+
+svg.react-calendar-heatmap text{
+    fill: black
+}

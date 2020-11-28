@@ -12,7 +12,7 @@ const stubUser = {
     message: 'hi'
 };
 
-const stubsigninUser = {
+const stubSigninUser = {
     username: 'test',
     password: 'test1234',
 }
@@ -31,7 +31,7 @@ describe('ActionCreators', () => {
                 return new Promise((resolve, reject) => {
                     const result = {
                         status: 204,
-                        data: stubsigninUser,
+                        data: stubSigninUser,
                     };
                     resolve(result);
                 });
@@ -55,7 +55,7 @@ describe('ActionCreators', () => {
                 return new Promise((resolve, reject) => {
                     const result = {
                         status: 500,
-                        data: stubsigninUser,
+                        data: stubSigninUser,
                     };
                     reject(result);
                 });
@@ -98,6 +98,25 @@ describe('ActionCreators', () => {
                 });
             })
         store.dispatch(actionCreators.signout()).then(() => {
+            expect(spy).toHaveBeenCalledTimes(1);
+            done();
+        });
+    });
+    it(`should get login correctly`, (done) => {
+        const spy = jest.spyOn(axios, 'get')
+            .mockImplementation(url => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        data: {
+                            isLoggedIn: true,
+                            name: 'NAME',
+                            message: 'MESSAGE'
+                        },
+                    };
+                    resolve(result);
+                });
+            })
+        store.dispatch(actionCreators.getLogin()).then(() => {
             expect(spy).toHaveBeenCalledTimes(1);
             done();
         });

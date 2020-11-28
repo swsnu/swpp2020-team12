@@ -39,7 +39,6 @@ class DailyStudyForSubject(models.Model):
 class Concentration(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     concentration = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='', blank=True)
     parent_study = models.ForeignKey(
         DailyStudyForSubject,
         on_delete=models.CASCADE,

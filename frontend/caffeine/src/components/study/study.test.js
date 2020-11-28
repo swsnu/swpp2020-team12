@@ -98,9 +98,6 @@ const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 
 describe('<Study />', () => {
     let study, spygetSubjects;
-    /*let spystart =jest.spyOn(Study.WrappedComponent.prototype, 'startTimer');
-    let spytick =jest.spyOn(Study.WrappedComponent.prototype, 'tick');
-    let spycapture =jest.spyOn(Study.WrappedComponent.prototype, 'capture');*/
     beforeEach(() => {
         jest.useFakeTimers();
         history.push('/1')
@@ -217,9 +214,7 @@ describe('<Study />', () => {
         wrapper.simulate('click');
         component.update();
         expect(spychangesubject).toBeCalledTimes(1);
-        expect(newstudyinstance.state.last_image).toBe(null);
         expect(newstudyinstance.state.subjectShow).toBe(false);
-        expect(newstudyinstance.state.last_image).toBe(null);
         component.unmount();
     });
     it('should restart study only when new subject is clicked', () => {
@@ -255,8 +250,17 @@ describe('<Study />', () => {
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#end-study-button')
         wrapper.simulate('click');
-        expect(spyendstudy).toBeCalledTimes(1);
         expect(spyHistoryPush).toHaveBeenCalledWith('/');
         component.unmount();
+    });
+    it('should call endstudy and component is unmounted', () => {
+        const spyendstudy = jest.spyOn(actionStudy, 'endStudy')
+            .mockImplementation(() => {
+                return dispatch => {
+                };
+            });
+        const component = mount(study);
+        component.unmount();
+        expect(spyendstudy).toBeCalledTimes(1);
     });
 });

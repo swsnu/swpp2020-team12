@@ -103,7 +103,7 @@ class GroupTestCase(TestCase):
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
-
+    
     def test_user_group_delete(self):
         client = Client()
         client.login(username='id2', password='pw2')

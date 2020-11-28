@@ -51,7 +51,7 @@ class Groups extends Component {
     }
     onClickConfirm = () => {
         this.setState({createShow: false})
-        this.props.addgroup({
+        this.props.addGroup({
             name: this.state.name,
             description: this.state.announcement,
             password: this.state.password
@@ -59,7 +59,7 @@ class Groups extends Component {
     }
     onClickQuit=()=>{
         this.setState({detailShow: false});
-        this.props.quitgroup(this.props.specificGroupInfo.id);
+        this.props.quitGroup(this.props.specificGroupInfo.id);
     }
     onClickStudy=()=>{
         this.setState({detailShow: false});
@@ -185,9 +185,9 @@ const mapDispatchToProps = dispatch => {
             dispatch(actionCreators.getGroups()),
         getGroup: (group_id) =>
             dispatch(actionCreators.getGroup(group_id)),
-        addgroup: (data) =>
+        addGroup: (data) =>
             dispatch(actionCreators.addGroup(data)),
-        quitgroup: (group_id) =>
+        quitGroup: (group_id) =>
             dispatch(actionCreators.deleteGroup(group_id)),
         getSubjects: () =>
             dispatch(actionCreators.getSubjects()),

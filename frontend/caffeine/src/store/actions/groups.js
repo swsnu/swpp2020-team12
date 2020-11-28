@@ -24,7 +24,11 @@ export const getGroups = () => {
 export const getunEnrolled = (group_id) => {
     return dispatch => {
         return axios.get('/group/search/' + group_id)
-            .then(res => dispatch(getunEnrolled_(res.data)));
+            .then(res => dispatch(getunEnrolled_(res.data)))
+            .catch(err=> {
+                alert("you already joined this group");
+                dispatch(push('/group'));
+            });
     }
 }
 export const getunEnrolled_ = (groups) => {
@@ -36,7 +40,7 @@ export const getGroup_ = (group) => {
 export const getGroup = (group_id) => {
     return dispatch => {
         return axios.get('/group/' + group_id)
-            .then(res => dispatch(getGroup_(res.data)));
+            .then(res => dispatch(getGroup_(res.data)))
     }
 }
 export const deleteGroup_ = (group_id) => {
@@ -60,6 +64,9 @@ export const joinGroup = (data) => {
             .then(res => {
                 dispatch(joinGroup_(res.data));
                 dispatch(push('/group'));
+            })
+            .catch(err => {
+                alert("password is wrong")
             })
         }
     }

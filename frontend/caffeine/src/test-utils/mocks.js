@@ -43,16 +43,40 @@ const getMockStudyReducer = jest.fn(
     }
 );
 
+const getMockStatisticReducer = jest.fn(
+    initialState => (state = initialState, action) => {
+        switch (action.type) {
+            default:
+                break;
+        }
+        return state;
+    }
+);
+
+const getMockRankReducer = jest.fn(
+    initialState => (state = initialState, action) => {
+        switch (action.type) {
+            default:
+                break;
+        }
+        return state;
+    }
+);
+
 export const getMockStore = (initialState) => {
     const mockGroupReducer = getMockGroupReducer(initialState);
     const mockStudyReducer = getMockStudyReducer(initialState);
     const mockUserReducer = getMockUserReducer(initialState);
     const mockSubjectReducer = getMockSubjectReducer(initialState);
+    const mockStatisticReducer = getMockStatisticReducer(initialState);
+    const mockRankReducer = getMockRankReducer(initialState);
     const rootReducer = combineReducers({
         group: mockGroupReducer,
         subject: mockSubjectReducer,
         study: mockStudyReducer,
         user: mockUserReducer,
+        rank: mockRankReducer,
+        statistic: mockStatisticReducer,
         router: connectRouter(history),
     });
     const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

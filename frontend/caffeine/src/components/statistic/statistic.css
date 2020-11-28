@@ -20,7 +20,7 @@ div span[id="label"]{
     margin-bottom: none;
     color: rgb(255, 255, 255);
     padding: 16px;
-    margin:10px;
+    /*margin:10px;*/
     cursor: pointer;
 }
 

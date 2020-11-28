@@ -45,6 +45,7 @@ def getWeeklydata(request, year, month, date):
              'distracted_time': dailySubjectRecord.distracted_time
              }
             for dailySubjectRecord in dailySubjectRecord.iterator() if
+            dailySubjectRecord.date.year == year and
             dailySubjectRecord.date.month == month + 1 and
             6 >= (date - dailySubjectRecord.date.day) >= 0]
         total = timedelta(0)

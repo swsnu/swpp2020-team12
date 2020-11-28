@@ -103,7 +103,7 @@ class GroupTestCase(TestCase):
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
-
+    
     def test_user_group_delete(self):
         client = Client()
         client.login(username='id2', password='pw2')
@@ -143,15 +143,7 @@ class GroupTestCase(TestCase):
         client = Client()
         client.login(username='id2', password='pw2')
         response = client.get('/group/search/1')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(),
-                         {'id': 1,
-                          'count': 2,
-                          'description': 'this is description1',
-                          'name': 'team1',
-                          'password': '',
-                          'time': 'P0DT10H42M00S'}
-                         )
+        self.assertEqual(response.status_code, 400)
 
     def test_search_group_info_join(self):
         client = Client()
@@ -160,7 +152,7 @@ class GroupTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Group.objects.filter(id=1).first().members.count(), 3)
         response = client.put('/group/search/2', {'password': ''}, content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
         response = client.put('/group/search/1', {'pass': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 400)
         response = client.delete('/group/search/1')

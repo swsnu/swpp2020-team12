@@ -96,10 +96,16 @@ class StudyTestCase(TestCase):
                                                        {'name': 'nickname4', 'time': 'P0DT00H00M00S'}],
                                            "user_ranking": 3,
                                            "user_record": {'name': 'nickname1', 'time': 'P0DT06H30M00S'}})
+        response = client.put('/rank/user')
+        self.assertEqual(response.status_code, 405)
 
     def test_group_rank_get(self):
         client = Client()
         client.login(username='id1', password='pw1')
+        response = client.get('/rank/group/0')
+        self.assertEqual(response.status_code, 400)
+        response = client.put('/rank/group/1')
+        self.assertEqual(response.status_code, 405)
         response = client.get('/rank/group/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"records": [{'name': 'nickname2', 'time': 'P0DT01H42M00S'},
@@ -111,10 +117,13 @@ class StudyTestCase(TestCase):
     def test_group_rank_post(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/rank/group/1',)
+        response = client.post('/rank/group/0')
+        self.assertEqual(response.status_code, 400)
+'''        response = client.post('/rank/group/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"records": [{'name': 'nickname2', 'time': 'P0DT06H42M00S'},
                                                        {'name': 'nickname1', 'time': 'P0DT06H30M00S'},
                                                        {'name': 'nickname4', 'time': 'P0DT00H00M00S'}],
                                            "user_ranking": 2,
                                            "user_record": {'name': 'nickname1', 'time': 'P0DT06H30M00S'}})
+'''

@@ -25,7 +25,7 @@ def user_group_list(request):
             name = json.loads(body)['name']
             password = json.loads(body)['password']
             description = json.loads(body)['description']
-        except (KeyError, JSONDecodeError) :
+        except (KeyError, JSONDecodeError):
             return HttpResponse(status=400)
         group = Group(name=name, password=password, description=description)
         group.save()
@@ -71,9 +71,11 @@ def search_group_info(request, group_id):
     if request.method == 'GET':
         group_id = int(group_id)
         group = Group.objects.filter(id=group_id).first()
+        if group.members.filter(id=request.user.id).exists():  # user already joined the group
+            return HttpResponse(status=400)
         count = group.members.count()
         response_dict = {'id': group.id, 'name': group.name, 'count': count, 'time': group.time,
-            'description': group.description, 'password': group.password}
+                         'description': group.description, 'password': group.password}
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'POST':  # group_id is string
         groups = Group.objects.filter(name__contains=group_id)
@@ -89,20 +91,17 @@ def search_group_info(request, group_id):
         except (KeyError, JSONDecodeError):
             return HttpResponse(status=400)
         group = Group.objects.filter(id=group_id).first()
-        if group.members.filter(id=request.user.id).exists():  # user already joined the group
-            return HttpResponse(status=400)
+        if password == group.password:
+            group.members.add(request.user)
+            count = group.members.count()
+            member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                           for member in group.members.iterator()]
+            response_dict = {'id': group.id, 'name': group.name, 'count': count,
+                             'time': group.time, 'description': group.description,
+                             'members': member_list
+                             }
+            return JsonResponse(response_dict, status=201, safe=False)
         else:
-            if password == group.password:
-                group.members.add(request.user)
-                count = group.members.count()
-                member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
-                               for member in group.members.iterator()]
-                response_dict = {'id': group.id, 'name': group.name, 'count': count,
-                                 'time': group.time, 'description': group.description,
-                                 'members': member_list
-                                 }
-                return JsonResponse(response_dict, status=201, safe=False)
-            else:
-                return HttpResponse(status=403)
+            return HttpResponse(status=403)
     else:
         return HttpResponseNotAllowed(['GET', 'PUT'])

@@ -57,7 +57,7 @@ class Study extends Component {
         this.props.history.push('/');
     }
     handleSubjectShow = () => {
-        this.setState({npm: false})
+        this.setState({subjectShow: false})
     }
     onClickCheck = (name) => {
         this.setState({subject: name})

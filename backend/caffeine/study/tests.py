@@ -4,6 +4,7 @@ from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from user.models import User
 from datetime import timedelta
 from datetime import date
+from unittest.mock import patch
 
 
 class StudyTestCase(TestCase):
@@ -99,21 +100,262 @@ class StudyTestCase(TestCase):
         response = client.delete('/study/status/')
         self.assertEqual(response.status_code, 405)
 
-    def test_study_infer_0(self):
+    @patch("requests.post")
+    def test_study_infer_1(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {}
+            ]
+        }
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
         study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
-        # with status 0
+        # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
-            'image': 'b123sfad'
+            'image': 'img/,b123sfad'
+        }), content_type='application/json')
+        self.assertJSONEqual(response.content,
+                             {'status': 1,
+                             'gauge': study1.study_time /
+                            (study1.study_time + study1.distracted_time +
+                            timedelta(seconds=10))})
+
+    @patch("requests.post")
+    def test_study_infer_2(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {
+                    "faceAnnotations":[
+                        {
+                            "landmarks":{
+
+                            },
+                            "panAngle": 35,
+                            "tiltAngle": 2
+                        }
+                    ]
+                }
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=32),
+            user=user1, is_active=True)
+        # with status 1
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/infer/', json.dumps({
+            'image': 'img/,b123sfad'
+        }), content_type='application/json')
+        self.assertJSONEqual(response.content,
+                             {'status': 2,
+                             'gauge': study1.study_time /
+                            (study1.study_time + study1.distracted_time +
+                            timedelta(seconds=10))})
+
+    @patch("requests.post")
+    def test_study_infer_3(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {
+                    "faceAnnotations":[
+                        {
+                            "landmarks":[
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type':'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 72.62827, 'y': 64.66847, 'z': -2.5742698}}, 
+                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 83.162415, 'y': 69.53085, 'z': -0.2833072}}, 
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 72.54645, 'y': 72.7361, 'z': -0.6251203}}, 
+                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 63.052597, 'y': 69.7298, 'z': 4.5587893}}, 
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 118.87221, 'y': 60.081333, 'z': -3.2206633}}, 
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 129.94545, 'y': 65.620705, 'z': 3.272311}}, 
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 118.60211, 'y': 68.69534, 'z': -1.4409065}}, 
+                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 107.855835, 'y': 64.51412, 'z': -0.5179331}}
+                            ],
+                            "panAngle": 2,
+                            "tiltAngle": 2
+                        }
+                    ]
+                }
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=32),
+            user=user1, is_active=True)
+        # with status 1
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/infer/', json.dumps({
+            'image': 'img/,b123sfad'
+        }), content_type='application/json')
+        self.assertJSONEqual(response.content,
+                             {'status': 3,
+                             'gauge': study1.study_time /
+                            (study1.study_time + study1.distracted_time +
+                            timedelta(seconds=10))})
+
+    @patch("requests.post")
+    def test_study_infer_2_label(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {
+                    "faceAnnotations":[
+                        {
+                            "landmarks":[
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                            ],
+                            "panAngle": 2,
+                            "tiltAngle": 2
+                        }
+                    ],
+                    "labelAnnotations":[
+                        {
+                            "description": 'Smartphone'
+                        }
+                    ]
+                }
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=32),
+            user=user1, is_active=True)
+        # with status 1
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/infer/', json.dumps({
+            'image': 'img/,b123sfad'
+        }), content_type='application/json')
+        self.assertJSONEqual(response.content,
+                             {'status': 2,
+                             'gauge': study1.study_time /
+                            (study1.study_time + study1.distracted_time +
+                            timedelta(seconds=10))})
+
+    @patch("requests.post")
+    def test_study_infer_2_label2(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {
+                    "faceAnnotations":[
+                        {
+                            "landmarks":[
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                            ],
+                            "panAngle": 2,
+                            "tiltAngle": 2
+                        }
+                    ],
+                    "labelAnnotations":[
+                        {
+                            "description": 'Electronic device'
+                        }
+                    ]
+                }
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=32),
+            user=user1, is_active=True)
+        # with status 1
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/infer/', json.dumps({
+            'image': 'img/,b123sfad'
+        }), content_type='application/json')
+        self.assertJSONEqual(response.content,
+                             {'status': 2,
+                             'gauge': study1.study_time /
+                            (study1.study_time + study1.distracted_time +
+                            timedelta(seconds=10))})
+
+    @patch("requests.post")          
+    def test_study_infer_0(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses":[
+                {
+                    "faceAnnotations":[
+                        {
+                            "landmarks":[
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                            ],
+                            "panAngle": 2,
+                            "tiltAngle": 2
+                        }
+                    ],
+                    "labelAnnotations":[
+                    ]
+                }
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=32),
+            user=user1, is_active=True)
+        # with status 1
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/infer/', json.dumps({
+            'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 0,
-                             'gauge': (study1.study_time + timedelta(seconds=10)) /
+                             'gauge': (study1.study_time+timedelta(seconds=10)) /
                             (study1.study_time + study1.distracted_time +
                             timedelta(seconds=10))})

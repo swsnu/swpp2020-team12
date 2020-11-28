@@ -82,7 +82,7 @@ def study_infer(request):
     ]
     _features_label=[{
           "type":"LABEL_DETECTION",
-          "maxResults":20
+          "maxResults":10
         },
     ]
     _image={
@@ -100,7 +100,7 @@ def study_infer(request):
     data['requests'][0]['features']=[_features_label]
     response_label=requests.post(api_url, json=data)
     print("time :", time.time() - start)
-    print(response_label.json()['responses'])
+    #print(response_label.json()['responses'])
     response=response.json()
     if response['responses'][0]=={}:
         state=1
@@ -123,8 +123,18 @@ def study_infer(request):
             ear=(left_ear+right_ear)/2.0
             print(ear)
             if ear<0.4:
-                state=3
-
+                state=3           
+            else:
+                labels=response_label.json()['responses'][0]['labelAnnotations']
+                #iselectric=False
+                for label in labels:
+                    if label['description']=='Smartphone' or label['description']=='Mobile phone':
+                        state=2
+                        break
+                    if label['description']=='Electronic device':
+                        state=2
+                        break
+                    # what about television? 
     current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
     new_concentration = Concentration(concentration=(state==0), parent_study=current_study)
     new_concentration.save()

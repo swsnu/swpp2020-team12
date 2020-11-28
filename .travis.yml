@@ -28,7 +28,11 @@ matrix:
         - cd ../../
         - cd backend/caffeine
         - pylint **/*.py --load-plugins pylint_django
+<<<<<<< HEAD
         - python manage.py migrate  
+=======
+        - python manage.py migrate
+>>>>>>> dc2e36b8eaa1b78c06ff9f04a6ce892a7ff028d5
         - coverage run --source='.' manage.py test
         - coverage xml
         - cd ../../
@@ -62,6 +66,12 @@ matrix:
         - pip install -r requirements.txt
       script:
         - pylint **/*.py --load-plugins pylint_django
+<<<<<<< HEAD
         - python manage.py migrate  
         - coverage run --branch --source='.' manage.py test
         - coverage report -m
+=======
+        - python manage.py migrate
+        - coverage run --branch --source='.' manage.py test
+        - coverage report -m
+>>>>>>> dc2e36b8eaa1b78c06ff9f04a6ce892a7ff028d5

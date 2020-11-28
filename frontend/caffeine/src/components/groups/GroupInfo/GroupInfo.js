@@ -27,6 +27,7 @@ class GroupInfo extends Component {
     }
 
     render() {
+        console.log("i'm in groupinfo page")
         if (this.props.unenrolledGroupInfo) {
             return (
                 <body>

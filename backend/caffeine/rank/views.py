@@ -60,10 +60,9 @@ def user_rank(request):
 @csrf_exempt
 def group_rank(request, group_id):
     """should constrain group member's max length"""
-    if group_id == -1:
-        return HttpResponse(status=400)
-
-    elif request.method == 'GET':
+    if request.method == 'GET':
+        if group_id == 0:
+            return HttpResponse(status=400)
         group_members = Group.objects.get(id=group_id).members
         records = User.objects.annotate(
             today_time=Coalesce(Sum('daily_record__total_concentration',
@@ -81,8 +80,9 @@ def group_rank(request, group_id):
             record.pop('id')
         response_dict = {'records': records_sorted, 'user_ranking': user_ranking, 'user_record': user_record}
         return JsonResponse(response_dict, safe=False)
-
     elif request.method == 'POST':
+        if group_id == 0:
+            return HttpResponse(status=400)
         group_members = Group.objects.get(id=group_id).members
         records = User.objects.annotate(total_time=Coalesce(Sum('daily_record__total_concentration'), 0)) \
             .order_by('-total_time')

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'group.apps.GroupConfig',
     'user.apps.UserConfig',
     'study.apps.StudyConfig',
-    'subject.apps.SubjectConfig'
+    'subject.apps.SubjectConfig',
+    'statistic.apps.StatisticConfig'
 ]
 
 MIDDLEWARE = [
@@ -78,12 +79,8 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'team12',
-        'USER': 'caffeine',
-        'PASSWORD': 'camera',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

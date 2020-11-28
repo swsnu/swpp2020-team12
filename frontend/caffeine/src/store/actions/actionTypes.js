@@ -19,10 +19,14 @@ export const GROUP_TOTAL_RANK = 'GROUP_TOTAL_RANK'
 export const SIGN_IN = 'SIGN_IN'
 export const SIGN_UP = 'SIGN_UP'
 export const SIGN_OUT = 'SIGN_OUT'
-
+export const GET_LOGIN = 'GET_LOGIN'
 
 export const GET_SUBJECT = 'GET_SUBJECT';
 export const GET_SUBJECTS = 'GET_SUBJECTS';
 export const ADD_SUBJECT = 'ADD_SUBJECT';
 export const DELETE_SUBJECT = 'DELETE_SUBJECT';
 export const EDIT_SUBJECT = 'EDIT_SUBJECT';
+
+export const GET_MONTHLYDATA = 'GET_MONTHLYDATA';
+export const GET_WEEKLYDATA = 'GET_WEEKLYDATA';
+export const GET_DAILYSUBJECT = 'GET_DAILYSUBJECT';

@@ -2,6 +2,9 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import moment from 'moment'
 
+axios.defaults.xsrfCookieName= 'csrftoken';
+axios.defaults.xsrfHeaderName='X-CSRFToken';
+
 export const getMonthlydata_ = (response_list) => {
     return {type: actionTypes.GET_MONTHLYDATA, monthlyData: response_list};
 }

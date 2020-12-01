@@ -7,7 +7,6 @@ from .models import Group
 
 # Create your views here.
 
-@csrf_exempt
 def user_group_list(request):
     """user가 속한 그룹"""
     if request.method == 'GET':
@@ -40,7 +39,6 @@ def user_group_list(request):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-@csrf_exempt
 def user_group_info(request, group_id):
     """유저의 자기 그룹을 클릭했을 때"""
     # if group member에 request.user가 없다면 403
@@ -64,7 +62,6 @@ def user_group_info(request, group_id):
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-@csrf_exempt
 def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.
     members 정보를 보내지 않음"""

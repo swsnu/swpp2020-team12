@@ -8,7 +8,6 @@ from user.models import User
 from group.models import Group
 
 
-@csrf_exempt
 def user_rank(request):
     """get: 그 user 의 rank를 돌려줌, post: 전"""
     if request.method == 'GET':
@@ -62,7 +61,6 @@ def user_rank(request):
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-@csrf_exempt
 def group_rank(request, group_id):
     """should constrain group member's max length"""
     if request.method == 'GET':

@@ -7,7 +7,6 @@ from .models import User
 from django.contrib.auth import authenticate, login, logout
 
 
-@csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -23,7 +22,6 @@ def sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def sign_in(request):
     if request.method == "POST":
         req_data = json.loads(request.body.decode())
@@ -39,7 +37,6 @@ def sign_in(request):
         return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def sign_out(request):
     if request.method == 'GET':
         if not request.user.is_authenticated:
@@ -50,7 +47,6 @@ def sign_out(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def get_user(request):
     if request.method == 'GET':
         is_logged_in = request.user.is_authenticated
@@ -59,5 +55,13 @@ def get_user(request):
             response_dict['name'] = request.user.name
             response_dict['message'] = request.user.message
         return JsonResponse(response_dict, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+@ensure_csrf_cookie
+def token(request):
+    if request.method == 'GET':
+        return HttpResponse(status=204)
     else:
         return HttpResponseNotAllowed(['GET'])

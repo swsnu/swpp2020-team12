@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 
 class StudyTestCase(TestCase):
+
     def setUp(self):
         user1 = User.objects.create_user(username='id1', name='nickname1',
                                          password='pw1', message='message1')

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -88,7 +88,6 @@ DATABASES = {
     }
 }
 '''
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -97,14 +96,29 @@ DATABASES = {
         'PASSWORD': 'camera',
         'HOST': 'localhost',
         'PORT': '3306',
-    }
+#        'TEST_NAME': 'test_team12'
+    },
+#    'TEST': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#        },
+   # 'replica': {
+   #     'ENGINE': 'django.db.backends.mysql',
+   #     'NAME': 'team12',
+   #     'USER': 'caffeine',
+   #     'PASSWORD': 'camera',
+   #     'HOST': 'localhost',
+   #     'PORT': '3306',
+   #     'TEST': {
+   #         'MIRROR': 'default',
+   #     },
+   # }
 }
-'''
-'''
+
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://localhost:6379/1',
+        'LOCATION': 'redis://localhost:6379/0',
         'TIMEOUT': 604800,  # 7 days
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
@@ -112,7 +126,7 @@ CACHES = {
         }
     }
 }
-'''
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -148,3 +162,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_CACHE_ALIAS = 'default'

@@ -6,3 +6,6 @@ pillow==8.0.1
 coveralls==2.1.2
 Mysqlclient==2.0.1
 requests==2.24.0
+django-redis==3.5.3
+
+

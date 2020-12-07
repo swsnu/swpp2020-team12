@@ -102,3 +102,4 @@ def search_group_info(request, group_id):
             return HttpResponse(status=403)
     else:
         return HttpResponseNotAllowed(['GET', 'PUT'])
+

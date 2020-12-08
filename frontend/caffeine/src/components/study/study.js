@@ -1,5 +1,5 @@
 /* eslint react/prop-types: 0 */
-import React, {Component, createRef} from 'react';
+import React, {Component, createRef, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import * as actionCreators from '../../store/actions/index';
@@ -22,6 +22,8 @@ class Study extends Component {
         height: 720,
         facingMode: "user"
     }
+    webcamRef = createRef()
+    socketRef = createRef()
     tick = () => {
         const {time} = this.state
         this.setState({time: time.clone().add(1, 'seconds')})
@@ -39,6 +41,14 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
+        this.socketRef.current=new WebSocket('ws://localhost:8000/ws/study/'+
+            this.props.match.params.group_id+'/')
+        this.socketRef.current.onopen = e => {
+            console.log('open', e)
+        }
+        this.socketRef.current.onmessage = e => {
+           console.log(e)
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -50,7 +60,8 @@ class Study extends Component {
 
     componentWillUnmount() {
         clearInterval(this.interval);
-        this.props.endStudy();
+        this.socketRef.current.close();
+        this.props.endStudy(this.props.match.params.group_id);
     }
 
     onClickEnd = () => {
@@ -71,23 +82,23 @@ class Study extends Component {
         } else
             this.setState({subjectShow: false});
     }
-    webcamRef = createRef()
     capture = () => {
-        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot())
+        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
     render() {
+        console.log(this.props.members)
         return (
             <div className="container">
                 <h1>study room</h1>
                 <div className="row">
                     <div className="col-3">
                         <Webcam
-                            className='invisible-webcam'
+                            className='user_webcam'
                             audio={false}
-                            height={200}
+                            height={360}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={200}
+                            width={720}
                             videoConstraints={this.videoConstraints}
                         />
                         <SelectSubject
@@ -124,16 +135,17 @@ const mapStateToProps = state => {
         status: state.study.status,
         gauge: state.study.gauge,
         currentSubject: state.study.subject,
-        subjectList: state.subject.mySubjectList
+        subjectList: state.subject.mySubjectList,
+        members: state.study.members
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postCapturetoServer: (image) =>
-            dispatch(actionCreators.postCapturetoServer(image)),
-        endStudy: () =>
-            dispatch(actionCreators.endStudy()),
+        postCapturetoServer: (image, group_id) =>
+            dispatch(actionCreators.postCapturetoServer(image, group_id)),
+        endStudy: (group_id) =>
+            dispatch(actionCreators.endStudy(group_id)),
         getSubjects: () =>
             dispatch(actionCreators.getSubjects()),
         changeSubject: (subject, group_id) =>

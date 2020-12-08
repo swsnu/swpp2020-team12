@@ -26,7 +26,9 @@ class Groups extends Component {
         this.props.getAllGroups();
         this.props.getSubjects();
     }
-
+    onSubjectShow = () => {
+        this.setState({subjectShow: false})
+    }
     clickGroupHandler = (group) => {
         this.props.getGroup(group.id)
         this.setState({detailShow: true})
@@ -36,9 +38,6 @@ class Groups extends Component {
     }
     handleCreateShow = () => {
         this.setState({createShow: false})
-    }
-    handleSubjectShow=()=>{
-        this.setState({subjectShow: false})
     }
     onChangeName=(event)=>{
         this.setState({name: event.target.value})
@@ -126,9 +125,9 @@ class Groups extends Component {
                     />
                     <SelectSubject
                         show={this.state.subjectShow}
-                        handleSubjectshow={this.handleSubjectShow}
                         mySubjectList={this.props.subjectList}
                         subject={this.state.subject}
+                        handleSubjectshow={this.onSubjectShow}
                         onClickCheck={this.onClickCheck}
                         onClickChoose={this.onClickChoose}
                     />

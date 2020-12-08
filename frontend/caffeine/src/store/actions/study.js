@@ -6,21 +6,21 @@ export const postCapturetoServer_ = (data) =>{
     return { type: actionTypes.INFER_STUDY, inferred: data};
 }
 
-export const postCapturetoServer = (image) =>{
+export const postCapturetoServer = (image, id) =>{
     return dispatch =>{
-        return axios.post('/study/infer/', {image: image})
+        return axios.post('/study/infer/', {image: image, id: id})
             .then(res => dispatch(postCapturetoServer_(res.data)));
     } 
 }
-export const startStudy_ = (subject) =>{
-    return { type: actionTypes.START_STUDY, subject: subject};
+export const startStudy_ = (subject, members) =>{
+    return { type: actionTypes.START_STUDY, subject: subject, members: members};
 }
 
 export const startStudy = (subject, group_id) =>{
     return dispatch =>{
         return axios.post('/study/status/', {subject: subject, group_id: group_id})
             .then(()=>{
-                dispatch(startStudy_(subject));
+                dispatch(res =>startStudy_(subject, res.data));
                 dispatch(push('/study/'+group_id));
             });
     } 
@@ -28,9 +28,9 @@ export const startStudy = (subject, group_id) =>{
 export const endStudy_ = () =>{
     return {type: actionTypes.END_STUDY}
 }
-export const endStudy = () =>{
+export const endStudy = (group_id) =>{
     return dispatch =>{
-        return axios.put('/study/status/')
+        return axios.put('/study/status/',{group_id: group_id})
             .then(() => dispatch(endStudy_()));
     } 
 }
@@ -39,7 +39,7 @@ export const changeSubject_ = (subject) =>{
 }
 export const changeSubject = (subject, group_id) =>{
     return dispatch =>{
-        return axios.put('/study/status/')
+        return axios.put('/study/status/', {group_id: group_id})
             .then(() => {
                 axios.post('/study/status/', {subject: subject, group_id: group_id})
                     .then(dispatch(changeSubject_(subject)));

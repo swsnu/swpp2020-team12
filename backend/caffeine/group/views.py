@@ -2,7 +2,7 @@ import json
 from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Group
+from .models import Group, StudyRoom
 
 
 # Create your views here.
@@ -30,6 +30,8 @@ def user_group_list(request):
         group = Group(name=name, password=password, description=description)
         group.save()
         group.members.add(request.user)
+        studyroom = StudyRoom(group=group)
+        studyroom.save()
         member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                        for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name,

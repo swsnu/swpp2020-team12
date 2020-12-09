@@ -9,6 +9,7 @@ import CreateGroup from './createGroup/createGroup'
 import SelectSubject from '../study/selectSubject/selectSubject'
 import './groups.css'
 import moment from 'moment'
+import { Container , Row, Col, Button } from 'react-bootstrap';
 
 
 class Groups extends Component {
@@ -98,21 +99,34 @@ class Groups extends Component {
         const searchedGroups = this.props.searchGroupList.map(group => {
             return (
                 <li id = "searched-group-list" key={group.id} onClick={() => this.clickSearchedGroupHandler(group)}>
-                    <div id="searched-group-name">{group.name}</div><div id="number-of-member">#members: {group.count}</div></li>
+                    <div id="searched-group-name"><span>{group.name}</span></div>
+                    <div id="number-of-member"><span>#members: {group.count}</span></div>
+                </li>
             );
         });
         return (
-            <div className='GroupList'>
-                <h1 id="head">I &apos;m in...</h1>
-                <button id='create-group-button' onClick={() => this.setState({
-                    createShow: true,
-                    group_name: '',
-                    name: '',
-                    announcement: '',
-                    password: '',
-                })}>Create
-                </button>
-                <div id="my-group">
+            <Container className='GroupList' id='GroupList'>
+                <Row>
+                    <Col id='left-col'>
+                        <span id="head">I &apos;m in...</span>
+                        <Button id='create-group-button' onClick={() => this.setState({
+                            createShow: true,
+                            group_name: '',
+                            name: '',
+                            announcement: '',
+                            password: '',
+                        })}>Create
+                        </Button>
+                    </Col>
+                    <Col>
+                        <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
+                            onChange={(e) => this.setState({group_name: e.target.value})}/>
+                        <Button id='group-search-button' onClick={this.searchHandler}>Search</Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col id='left-col'>
+                    <div id="my-group">
                     <CreateGroup
                         name={this.state.name}
                         announcement={this.state.announcement}
@@ -144,26 +158,16 @@ class Groups extends Component {
                     }
                     {groups}
                 </div>
-                <div id='search-group'>
-                    <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
-                           onChange={(e) => this.setState({group_name: e.target.value})}/>
-                    <button id='group-search-button' onClick={this.searchHandler}>Search</button>
-
-                    <div  id="searched">
-                        <ul>
-                            {searchedGroups}
-                        </ul>
-                    </div>
-
-                </div>
-                <div id='wrap'>
-                    <button id="home" onClick={() => {
-                        this.props.history.push('/')
-                    }}>Home
-                    </button>
-                </div>
-
-            </div>
+                    </Col>
+                    <Col>
+                        <div  id="searched">
+                            <ul id="searched-group-ul">
+                                {searchedGroups}
+                            </ul>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }

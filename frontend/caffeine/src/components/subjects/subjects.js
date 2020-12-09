@@ -19,6 +19,7 @@ import * as actionCreators from '../../store/actions/index';
 import Subject from './subject/subject'
 import CreateSubject from './createSubject/createSubject'
 import UserSubjectInfo from './userSubjectInfo/userSubjectInfo'
+import { Container, Col, Row, Button } from 'react-bootstrap'
 import './subjects.css'
 
 class Subjects extends Component {
@@ -135,53 +136,59 @@ class Subjects extends Component {
         });
 
         return (
-            <div className='SubjectList' id="SubjectList">
-                <div className='wrap' id='wrap'>
-                    <h1>My Subject</h1>
-                    <button id='create-subject-button' onClick={() => this.setState({
-                        createShow: true, name: '',
-                        description: '',
-                        start_time: '00:00',
-                        day: 0,
-                        end_time: '00:00'
-                    })}>Create
-                </button>
-                </div>
-                <CreateSubject
-                    name={this.state.name}
-                    description={this.state.description}
-                    start_time={this.state.start_time}
-                    end_time={this.state.end_time}
-                    day={this.state.day}
-                    show={this.state.createShow}
-                    handleCreateShow={this.handleCreateShow}
-                    onClickConfirm={this.onClickConfirm}
-                    onChangeName={this.onChangeName}
-                    onChangeDescription={this.onChangeDescription}
-                    onChangeDay={this.onChangeDay}
-                    onChangeStartTime={this.onChangeStartTime}
-                    onChangeEndTime={this.onChangeEndTime}
-                />
-                {this.props.specificSubjectInfo && <UserSubjectInfo
-                    key={this.props.specificSubjectInfo.id}
-                    name={this.props.specificSubjectInfo.name}
-                    description={this.props.specificSubjectInfo.description}
-                    day={this.props.specificSubjectInfo.days[0].day}
-                    start_time={this.props.specificSubjectInfo.days[0].start_time}
-                    end_time={this.props.specificSubjectInfo.days[0].end_time}
-                    show={this.state.detailShow}
-                    onChangeName={this.onChangeName}
-                    onChangeDescription={this.onChangeDescription}
-                    onChangeDay={this.onChangeDay}
-                    onChangeEndTime={this.onChangeEndTime}
-                    onChangeStartTime={this.onChangeStartTime}
-                    handleDetailShow={this.handleDetailShow}
-                    onClickEdit={this.onClickEdit}
-                    onClickQuit={this.onClickQuit}
-                />
-                } 
-                {subjects}
-            </div>
+            <Container className='SubjectList' id="SubjectList">
+                <Row id="row1">
+                    <Col>
+                        <span id="mysubject">My Subject</span>
+                        <Button id='create-subject-button' onClick={() => this.setState({
+                            createShow: true, name: '',
+                            description: '',
+                            start_time: '00:00',
+                            day: 0,
+                            end_time: '00:00'
+                        })}>Create
+                        </Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col > 
+                        <CreateSubject
+                            name={this.state.name}
+                            description={this.state.description}
+                            start_time={this.state.start_time}
+                            end_time={this.state.end_time}
+                            day={this.state.day}
+                            show={this.state.createShow}
+                            handleCreateShow={this.handleCreateShow}
+                            onClickConfirm={this.onClickConfirm}
+                            onChangeName={this.onChangeName}
+                            onChangeDescription={this.onChangeDescription}
+                            onChangeDay={this.onChangeDay}
+                            onChangeStartTime={this.onChangeStartTime}
+                            onChangeEndTime={this.onChangeEndTime}
+                        />
+                    {this.props.specificSubjectInfo && <UserSubjectInfo
+                        key={this.props.specificSubjectInfo.id}
+                        name={this.props.specificSubjectInfo.name}
+                        description={this.props.specificSubjectInfo.description}
+                        day={this.props.specificSubjectInfo.days[0].day}
+                        start_time={this.props.specificSubjectInfo.days[0].start_time}
+                        end_time={this.props.specificSubjectInfo.days[0].end_time}
+                        show={this.state.detailShow}
+                        onChangeName={this.onChangeName}
+                        onChangeDescription={this.onChangeDescription}
+                        onChangeDay={this.onChangeDay}
+                        onChangeEndTime={this.onChangeEndTime}
+                        onChangeStartTime={this.onChangeStartTime}
+                        handleDetailShow={this.handleDetailShow}
+                        onClickEdit={this.onClickEdit}
+                        onClickQuit={this.onClickQuit}
+                    />
+                    } 
+                    {subjects}
+                </Col>
+            </Row>
+        </Container>
         )
     }
 }

@@ -1,0 +1,19 @@
+#mysubject {
+    margin:50px;
+}
+
+#SubjectList {
+    position: relative;
+    top: 50px;
+    border-style: dashed;
+    border-width: 7px;
+    width: 500px;
+}
+
+#creat-subject-button {
+    margin: 30px;
+}
+
+#row1 {
+    border: 2px 
+}

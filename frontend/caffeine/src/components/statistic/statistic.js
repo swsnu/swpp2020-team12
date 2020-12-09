@@ -10,7 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import moment from 'moment'
-import {Button, Modal} from 'react-bootstrap'
+import {Button, Container, Row, Col} from 'react-bootstrap'
 import {VictoryPie, VictoryContainer} from 'victory'
 import TimeLine from './timeline/timeline'
 
@@ -56,28 +56,45 @@ class Statistic extends Component{
 
     render(){
         return(
-            <div className="static">
-                <div className = "container">
+            <Container id="statistic">
+                <Row>
+                    <Col>
                     <Button id="timeline-button" onClick={() => {if (this.props.timelineData !== []){this.setState({timelineShow: true})}}}>TimeLine</Button>
                     <TimeLine
                         show={this.state.timelineShow}
                         handletimelineShow={this.handletimelineShow}
                         timelineData={this.props.timelineData}
                     />
-                    <div id='leftup'>
                         <h1>Daily</h1>
-                        <VictoryPie 
-                            containerComponent={<VictoryContainer padding={0} responsive={false}/>}
-                            width={350}
-                            height={350}
-                            data={this.props.dailyData}
-                            labelRadius={({ innerRadius }) => innerRadius + 35 }
-                            style={{ labels: { fill: "white", fontSize: 25, fontWeight: "bold" } }}
-                        ></VictoryPie>
-                        <span id="total">Total: {this.props.daily_total}</span>
-                        <span id="study">Study: {this.props.daily_study_time}</span>
-                    </div>
-                    <div id='leftdown'>
+                            <VictoryPie 
+                                containerComponent={<VictoryContainer padding={0} responsive={false}/>}
+                                width={350}
+                                height={350}
+                                data={this.props.dailyData}
+                                labelRadius={({ innerRadius }) => innerRadius + 35 }
+                                style={{ labels: { fill: "white", fontSize: 25, fontWeight: "bold" } }}
+                            ></VictoryPie>
+                            <span id="total">Total: {this.props.daily_total}</span>
+                            <span id="study">Study: {this.props.daily_study_time}</span>
+                    </Col>
+                    <Col>
+                        <h1>Calendar</h1>
+                        <div id="calendar">
+                            <Calendar
+                                className="calendar"
+                                onChange={(value, event) => {
+                                    this.props.getMonthlydata(moment(value))
+                                    this.props.getWeeklydata(moment(value))
+                                    this.props.getDailySubject(moment(value))
+                                    console.log(this.props.monthlyData)
+                                }} 
+                                value={this.state.date}
+                            />
+                        </div>
+                        </Col>
+                </Row>
+                <Row>
+                    <Col>
                         <h1>Weekly</h1>
                         <VictoryPie 
                             containerComponent={<VictoryContainer padding={0} responsive={false}/>}
@@ -89,37 +106,22 @@ class Statistic extends Component{
                         ></VictoryPie>
                         <span id="total2">Total: {this.props.weekly_total}</span>
                         <span id="study2">Study: {this.props.weekly_study_time}</span>
-                    </div>
-                    <h1>Calendar</h1>
-                    <div id="rightup">
-                        <Calendar
-                            className="calendar"
-                            onChange={(value, event) => {
-                                this.props.getMonthlydata(moment(value))
-                                this.props.getWeeklydata(moment(value))
-                                this.props.getDailySubject(moment(value))
-                                console.log(this.props.daily_total)
-                                console.log(this.props.dailyData)
-                                console.log(this.props.timelineData)
-                            }} 
-                            value={this.state.date}
+                    </Col>
+                    <Col>
+                        <CalendarHeatmap
+                            startDate={moment().add(-92, 'days').format("YYYY-MM-DD")}
+                            endDate={moment().format("YYYY-MM-DD")}
+                            values={this.props.monthlyData}
+                            classForValue={(value) => {
+                                if (!value) {
+                                return 'color-empty';
+                                }
+                                return `color-scale-${value.count}`;
+                            }}
                         />
-                    </div>
-                    <div id="rightdown">
-                    <CalendarHeatmap
-                        startDate={moment().add(-92, 'days').format("YYYY-MM-DD")}
-                        endDate={moment().format("YYYY-MM-DD")}
-                        values={this.props.monthlyData}
-                        classForValue={(value) => {
-                            if (!value) {
-                              return 'color-empty';
-                            }
-                            return `color-scale-${value.count}`;
-                          }}
-                    />
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
             
         )
     }

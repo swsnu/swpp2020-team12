@@ -21,18 +21,6 @@ class MainPage extends Component {
         this.props.getSubjects();
     }
 
-    gotoGroup = () => {
-        this.props.history.push('/group')
-    }
-    gotoSubject = () => {
-        this.props.history.push('/subject')
-    }
-    gotoRank = () => {
-        this.props.history.push('/ranking')
-    }
-    gotoStat = () => {
-        this.props.history.push('/statistic')
-    }
     handleSubjectShow = () => {
         this.setState({subjectShow: false})
     }
@@ -56,37 +44,12 @@ class MainPage extends Component {
         return (
             <div id="Main">
                 <span id="logo_text">Caffeine Camera</span>
-                <input type="checkbox" id="menu-icon"></input>
-                <label htmlFor="menu-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-                <div id="sidebar">
-                    <br></br>
-                    <h1 id="menu">Menu</h1>
-                    <br></br>
-                    <ul>
-                        <li id="id">ID</li>
-                        <br></br>
-                        <li id="mypage">My Page</li>
-                        <br></br>
-                        <li id="subject" onClick={this.gotoSubject}>Subject</li>
-                        <br></br>
-                        <li id="group" onClick={this.gotoGroup}>Group</li>
-                        <br></br>
-                        <li id="statistic" onClick={this.gotoStat}>Statistic</li>
-                        <br></br>
-                        <li id="ranking" onClick={this.gotoRank}>Ranking</li>
-                    </ul>
-                </div>
                 <div>
                     <button id="study-button">
                         <span id="study-button" onClick={() => {
                             this.setState({subjectShow: true})
                         }}>Study</span>
                     </button>
-
                     <SelectSubject
                         show={this.state.subjectShow}
                         handleSubjectShow={this.handleSubjectShow}

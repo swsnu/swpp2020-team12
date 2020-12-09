@@ -1,13 +1,21 @@
-.logo {
-    position: relative;
-    right: 400px;
-    top: 100px;
+.jumbotron {
+    background-image: url("../../../images/background.png");
+    background-size: cover;
+    height: 90vh;
 }
 
-.logo_text {
+
+.Signin {
     position: relative;
-    top: -325px;
-    left: 300px;
+    top: 10%;
+    left: 29%;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0px;
+    padding: 80px;
+    width: 780px;
+    border-radius: 30px;
+}
+.logo_text {
     font-size: 75px;
     font-weight: bold;
     margin-top: 50px;
@@ -19,12 +27,6 @@
     width: 700px;
     border-top: 5px solid black;
     border-bottom: 5px solid black;
-}
-
-.Input {
-    position: relative;
-    top: -300px;
-    left: 300px
 }
 
 .Text {
@@ -51,5 +53,3 @@
     background: rgb(54, 54, 54);
     transform: translateY(-7px);
 }
-
-

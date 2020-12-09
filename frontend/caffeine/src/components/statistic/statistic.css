@@ -24,11 +24,6 @@ div span[id="label"]{
     cursor: pointer;
 }
 
-nav{
-    background: rgb(179, 174, 168);
-    grid-area: header;
-    width: auto;
-}
 
 #leftup{
     position: relative;

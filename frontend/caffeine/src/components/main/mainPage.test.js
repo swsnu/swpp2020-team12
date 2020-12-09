@@ -105,42 +105,6 @@ describe('<mainPage />', () => {
         wrapper.simulate('click');
         expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     });
-    it(`should go to subject page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
-            });
-        const component = mount(mainPage);
-        const wrapper = component.find('#subject');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to group page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
-            });
-        const component = mount(mainPage);
-        const wrapper = component.find('#group');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to ranking page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
-            });
-        const component = mount(mainPage);
-        const wrapper = component.find('#ranking');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to statistic page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
-            });
-        const component = mount(mainPage);
-        const wrapper = component.find('#statistic');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
     it('should call show subject -> group modal if study button is clicked', () => {
         const spyStartStudy = jest.spyOn(actionStudy, 'startStudy')
             .mockImplementation(id => {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import * as actionCreators from '../../../store/actions/index.js';
 import "./signIn.css"
+import { Jumbotron } from 'react-bootstrap'
 
 class SignIn extends Component{
     
@@ -23,35 +24,34 @@ class SignIn extends Component{
 
     render(){
         return(
+            <Jumbotron>
             <div className="Signin">
-                <p className="logo">
-                    <img src="/images/logo.png"></img>
-                </p>
-                <span className="logo_text">
-                    Caffeine Camera
-                </span>
-                <p className="Input">
-                    <input
-                        placeholder="ID"
-                        className="Text"
-                        id="username"
-                        value={this.state.username}
-                        onChange={(e)=>this.setState({username:e.target.value})}
-                    />
-                    <br/>
-                    <input
-                        type="password"
-                        placeholder="PW"
-                        className="Text"
-                        id="password"
-                        value={this.state.password}
-                        onChange={(e)=>this.setState({password:e.target.value})}
-                    />
-                    <br/>
-                    <button className="button" id="sign-in-button" onClick={this.handlerSignIn}>SignIn</button>
-                    <button className="button" id="sign-up-button" onClick={()=> this.props.history.push('/signup')}>SignUp</button>
-                </p>
+                    <span className="logo_text">
+                        Caffeine Camera
+                    </span>
+                    <p className="Input">
+                        <input
+                            placeholder="ID"
+                            className="Text"
+                            id="username"
+                            value={this.state.username}
+                            onChange={(e)=>this.setState({username:e.target.value})}
+                        />
+                        <br/>
+                        <input
+                            type="password"
+                            placeholder="PW"
+                            className="Text"
+                            id="password"
+                            value={this.state.password}
+                            onChange={(e)=>this.setState({password:e.target.value})}
+                        />
+                        <br/>
+                        <button className="button" id="sign-in-button" onClick={this.handlerSignIn}>SignIn</button>
+                        <button className="button" id="sign-up-button" onClick={()=> this.props.history.push('/signup')}>SignUp</button>
+                    </p>
             </div>
+            </Jumbotron>
         )
     }
 

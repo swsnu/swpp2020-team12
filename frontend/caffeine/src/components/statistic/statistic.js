@@ -58,7 +58,7 @@ class Statistic extends Component{
         return(
             <div className="static">
                 <div className = "container">
-                    <Button id="timeline-button" onClick={() => {this.setState({timelineShow: true})}}>TimeLine</Button>
+                    <Button id="timeline-button" onClick={() => {if (this.props.timelineData !== []){this.setState({timelineShow: true})}}}>TimeLine</Button>
                     <TimeLine
                         show={this.state.timelineShow}
                         handletimelineShow={this.handletimelineShow}

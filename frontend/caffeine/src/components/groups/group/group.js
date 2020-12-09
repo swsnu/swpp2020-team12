@@ -6,19 +6,19 @@ const Group = (props) => {
     //console.log(props.announcement)
     return (
         <div id="Group" onClick={props.clickDetail}>
-            <div id="name">
+            <span id="name">
                 {props.name}
-            </div>
-            <div id="members">
+            </span>
+            <span id="members">
                 {props.members} members
-            </div>
-            <div id="studyTime">
+            </span>
+            <span id="studyTime">
                 Average time: {props.averageHours}
-            </div>
+            </span>
             {props.announcement!==''&&
-            <div id="announcement">
+            <span id="announcement">
                 Announcement: {props.announcement}
-            </div>
+            </span>
             }
         </div>
     );

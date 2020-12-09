@@ -103,7 +103,7 @@ class GroupTestCase(TestCase):
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
-    
+
     def test_user_group_delete(self):
         client = Client()
         client.login(username='id2', password='pw2')
@@ -141,7 +141,18 @@ class GroupTestCase(TestCase):
 
     def test_search_group_info(self):
         client = Client()
-        client.login(username='id2', password='pw2')
+        client.login(username='id3', password='pw3')
+        response = client.get('/group/search/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),
+                         {'id': 1,
+                          'count': 2,
+                          'description': 'this is description1',
+                          'name': 'team1',
+                          'password': '',
+                          'time': 'P0DT10H42M00S'}
+                         )
+        client.login(username='id1', password='pw1')
         response = client.get('/group/search/1')
         self.assertEqual(response.status_code, 400)
 

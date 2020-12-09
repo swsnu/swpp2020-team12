@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 import * as actionTypes from './actionTypes'
 import axios from 'axios'
-
 import {push} from 'connected-react-router'
+
+axios.defaults.xsrfCookieName= 'csrftoken';
+axios.defaults.xsrfHeaderName='X-CSRFToken';
 
 export const SearchGroups_ = (groups) => {
     return {type: actionTypes.SEARCH_GROUP, searchedGroups: groups};
@@ -25,7 +28,7 @@ export const getunEnrolled = (group_id) => {
     return dispatch => {
         return axios.get('/groups/search/' + group_id)
             .then(res => dispatch(getunEnrolled_(res.data)))
-            .catch(err=> {
+            .catch(()=> {
                 alert("you already joined this group");
                 dispatch(push('/group'));
             });

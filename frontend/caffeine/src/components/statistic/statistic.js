@@ -1,4 +1,5 @@
 /* eslint react/prop-types: 0 */
+/* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -50,13 +51,13 @@ class Statistic extends Component{
             <div className="static">
                 <div className = "container">
                     <nav>
-                        <span id="label" onClick={this.gotoMain}>Main</span>
-                        <span id="label">MyPage</span>
-                        <span id="label" onClick={this.gotoSubject}>Subject</span>
-                        <span id="label" onClick={this.gotoGroup}>Group</span>
-                        <span id="label" onClick={this.gotoStatistic}>Statistic</span>
-                        <span id="label" onClick={this.gotoRanking}>Ranking</span>
-                        <span id="label" onClick={(e)=>{
+                        <span className="gotoMainbutton" id="label" onClick={this.gotoMain}>Main</span>
+                        <span className="gotoMyPagebutton" id="label">MyPage</span>
+                        <span className="gotoSubjectbutton" id="label" onClick={this.gotoSubject}>Subject</span>
+                        <span className="gotoGroupbutton" id="label" onClick={this.gotoGroup}>Group</span>
+                        <span className="gotoStatisticbutton" id="label" onClick={this.gotoStatistic}>Statistic</span>
+                        <span className="gotoRankingbutton" id="label" onClick={this.gotoRanking}>Ranking</span>
+                        <span className="Signoutbutton" id="label" onClick={(e)=>{
                             e.preventDefault()
                             this.props.signout()
                             }}>SignOut</span>
@@ -94,7 +95,8 @@ class Statistic extends Component{
                                 this.props.getMonthlydata(moment(value))
                                 this.props.getWeeklydata(moment(value))
                                 this.props.getDailySubject(moment(value))
-                                console.log(this.props.monthlyData)
+                                console.log(this.props.dailyData)
+                                console.log(this.props.weeklyData)
                             }} 
                             value={this.state.date}
                         />

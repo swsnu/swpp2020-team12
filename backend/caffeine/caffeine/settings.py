@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,8 +23,12 @@ SECRET_KEY = '=-g%30li8p%n-w26e_&j=_6_3^c-2yhm1^)8ooje)669k48sj2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CSRF_COOKIE_SECURE = True
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1', '50.16.8.104']
+ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -77,11 +81,53 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'team12',
+        'USER': 'caffeine',
+        'PASSWORD': 'camera',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4'  #
+        }
+#        'TEST_NAME': 'test_team12'
+    },
+    'TEST': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+   # 'replica': {
+   #     'ENGINE': 'django.db.backends.mysql',
+   #     'NAME': 'team12',
+   #     'USER': 'caffeine',
+   #     'PASSWORD': 'camera',
+   #     'HOST': 'localhost',
+   #     'PORT': '3306',
+   #     'TEST': {
+   #         'MIRROR': 'default',
+   #     },
+   # }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/0',
+        'TIMEOUT': 604800,  # 7 days
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'MAX_ENTRIES': 1000,
+        }
     }
 }
 
@@ -108,7 +154,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 

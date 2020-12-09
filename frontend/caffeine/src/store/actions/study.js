@@ -2,6 +2,10 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import { push } from 'connected-react-router';
 
+axios.defaults.xsrfCookieName= 'csrftoken';
+axios.defaults.xsrfHeaderName='X-CSRFToken';
+
+
 export const postCapturetoServer_ = (data) =>{
     return { type: actionTypes.INFER_STUDY, inferred: data};
 }

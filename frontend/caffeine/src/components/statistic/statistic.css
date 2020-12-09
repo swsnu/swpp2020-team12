@@ -16,12 +16,11 @@
 
 div span[id="label"]{
     font-size:30px;
-}
-span[id="label"]{
+    margin-top:40px;
+    margin-bottom: 0px;
     color: rgb(255, 255, 255);
-    font-size:40px;
     padding: 16px;
-    margin:10px;
+    /*margin:10px;*/
     cursor: pointer;
 }
 

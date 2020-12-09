@@ -8,13 +8,16 @@ from unittest.mock import patch
 
 
 class StudyTestCase(TestCase):
+
     def setUp(self):
         user1 = User.objects.create_user(username='id1', name='nickname1',
                                          password='pw1', message='message1')
         User.objects.create_user(username='id2', name='nickname2',
-                                         password='pw2', message='message2')
-        daily_study_for_subject = DailyStudyForSubject.objects.create(study_time=timedelta(),
-            subject='swpp', distracted_time=timedelta(), user=user1)
+                                 password='pw2', message='message2')
+        daily_study_for_subject = DailyStudyForSubject.objects.create(
+            study_time=timedelta(),
+            subject='swpp', distracted_time=timedelta(),
+            user=user1)
         Concentration.objects.create(parent_study=daily_study_for_subject)
         Concentration.objects.create(parent_study=daily_study_for_subject)
 
@@ -71,11 +74,13 @@ class StudyTestCase(TestCase):
 
     def test_study_room_put(self):
         user1 = User.objects.get(username='id1')
-        today_study = DailyStudyRecord.objects.create(user=user1,
+        today_study = DailyStudyRecord.objects.create(
+            user=user1,
             total_study_time=timedelta(hours=10, minutes=42),
             total_concentration=timedelta(hours=10, minutes=42),
             total_gauge=1)
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         client = Client()
@@ -90,7 +95,7 @@ class StudyTestCase(TestCase):
         self.assertEqual(today.total_gauge,
                          (today_study.total_concentration + study1.study_time) /
                          (today_study.total_study_time + study1.study_time +
-                         study1.distracted_time))
+                          study1.distracted_time))
 
     def test_study_room_405(self):
         client = Client()
@@ -105,14 +110,15 @@ class StudyTestCase(TestCase):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {}
             ]
         }
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         # with status 1
@@ -123,20 +129,20 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 1,
-                             'gauge': study1.study_time /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': study1.study_time /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})
 
     @patch("requests.post")
     def test_study_infer_2(self, mock_post):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {
-                    "faceAnnotations":[
+                    "faceAnnotations": [
                         {
-                            "landmarks":{
+                            "landmarks": {
 
                             },
                             "panAngle": 35,
@@ -149,7 +155,8 @@ class StudyTestCase(TestCase):
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         # with status 1
@@ -160,30 +167,38 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
-                             'gauge': study1.study_time /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': study1.study_time /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})
 
     @patch("requests.post")
     def test_study_infer_3(self, mock_post):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {
-                    "faceAnnotations":[
+                    "faceAnnotations": [
                         {
-                            "landmarks":[
+                            "landmarks": [
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {}, {}, {}, {}, {}, {}, {}, {},
-                                {'type':'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 72.62827, 'y': 64.66847, 'z': -2.5742698}}, 
-                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 83.162415, 'y': 69.53085, 'z': -0.2833072}}, 
-                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 72.54645, 'y': 72.7361, 'z': -0.6251203}}, 
-                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 63.052597, 'y': 69.7298, 'z': 4.5587893}}, 
-                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 118.87221, 'y': 60.081333, 'z': -3.2206633}}, 
-                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 129.94545, 'y': 65.620705, 'z': 3.272311}}, 
-                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 118.60211, 'y': 68.69534, 'z': -1.4409065}}, 
-                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 107.855835, 'y': 64.51412, 'z': -0.5179331}}
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 72.62827, 'y': 64.66847, 'z': -2.5742698}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 83.162415, 'y': 69.53085, 'z': -0.2833072}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 72.54645, 'y': 72.7361, 'z': -0.6251203}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 63.052597, 'y': 69.7298, 'z': 4.5587893}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 118.87221, 'y': 60.081333, 'z': -3.2206633}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 129.94545, 'y': 65.620705, 'z': 3.272311}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 118.60211, 'y': 68.69534, 'z': -1.4409065}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 107.855835, 'y': 64.51412, 'z': -0.5179331}}
                             ],
                             "panAngle": 2,
                             "tiltAngle": 2
@@ -195,7 +210,8 @@ class StudyTestCase(TestCase):
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         # with status 1
@@ -206,36 +222,44 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 3,
-                             'gauge': study1.study_time /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': study1.study_time /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})
 
     @patch("requests.post")
     def test_study_infer_2_label(self, mock_post):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {
-                    "faceAnnotations":[
+                    "faceAnnotations": [
                         {
-                            "landmarks":[
+                            "landmarks": [
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {}, {}, {}, {}, {}, {}, {}, {},
-                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
-                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
-                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
-                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
-                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
-                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
-                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
-                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
                             ],
                             "panAngle": 2,
                             "tiltAngle": 2
                         }
                     ],
-                    "labelAnnotations":[
+                    "labelAnnotations": [
                         {
                             "description": 'Smartphone'
                         }
@@ -246,7 +270,8 @@ class StudyTestCase(TestCase):
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         # with status 1
@@ -257,36 +282,44 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
-                             'gauge': study1.study_time /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': study1.study_time /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})
 
     @patch("requests.post")
     def test_study_infer_2_label2(self, mock_post):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {
-                    "faceAnnotations":[
+                    "faceAnnotations": [
                         {
-                            "landmarks":[
+                            "landmarks": [
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {}, {}, {}, {}, {}, {}, {}, {},
-                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
-                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
-                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
-                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
-                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
-                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
-                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
-                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
                             ],
                             "panAngle": 2,
                             "tiltAngle": 2
                         }
                     ],
-                    "labelAnnotations":[
+                    "labelAnnotations": [
                         {
                             "description": 'Electronic device'
                         }
@@ -297,7 +330,8 @@ class StudyTestCase(TestCase):
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
         # with status 1
@@ -308,36 +342,44 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
-                             'gauge': study1.study_time /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': study1.study_time /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})
 
-    @patch("requests.post")          
+    @patch("requests.post")
     def test_study_infer_0(self, mock_post):
         response = mock_post.return_value
         response.status_code = 200
         response.json.return_value = {
-            "responses":[
+            "responses": [
                 {
-                    "faceAnnotations":[
+                    "faceAnnotations": [
                         {
-                            "landmarks":[
+                            "landmarks": [
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {}, {}, {}, {}, {}, {}, {}, {},
-                                {'type': 'LEFT_EYE_TOP_BOUNDARY', 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
-                                {'type': 'LEFT_EYE_RIGHT_CORNER', 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
-                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
-                                {'type': 'LEFT_EYE_LEFT_CORNER', 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
-                                {'type': 'RIGHT_EYE_TOP_BOUNDARY', 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
-                                {'type': 'RIGHT_EYE_RIGHT_CORNER', 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
-                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY', 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
-                                {'type': 'RIGHT_EYE_LEFT_CORNER', 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 88.8842, 'y': 86.08209, 'z': -3.097817}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 100.33783, 'y': 92.47614, 'z': 0.40933454}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 88.629486, 'y': 95.35517, 'z': -0.6440098}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 78.15495, 'y': 92.04042, 'z': 4.476044}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 144.95845, 'y': 91.08008, 'z': -0.96997035}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 155.19812, 'y': 97.29413, 'z': 7.579177}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 144.25189, 'y': 100.49269, 'z': 1.5529345}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 133.95114, 'y': 96.33359, 'z': 1.6383073}}
                             ],
                             "panAngle": 2,
                             "tiltAngle": 2
                         }
                     ],
-                    "labelAnnotations":[
+                    "labelAnnotations": [
                     ]
                 }
             ]
@@ -345,9 +387,11 @@ class StudyTestCase(TestCase):
         user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
-        study1 = DailyStudyForSubject.objects.create(study_time=timedelta(minutes=42),
+        study1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
-            user=user1, is_active=True)
+            user=user1, is_active=True
+        )
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
@@ -356,6 +400,6 @@ class StudyTestCase(TestCase):
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 0,
-                             'gauge': (study1.study_time+timedelta(seconds=10)) /
-                            (study1.study_time + study1.distracted_time +
-                            timedelta(seconds=10))})
+                              'gauge': (study1.study_time + timedelta(seconds=10)) /
+                                       (study1.study_time + study1.distracted_time +
+                                        timedelta(seconds=10))})

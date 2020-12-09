@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
@@ -81,12 +82,12 @@ describe('<Rankings />', () => {
     it(`should toggle rank day-total when click 'onChangeDuration'`, () => {
         const spyGroupTotalRank = jest.spyOn(actionCreators, 'getGroupTotalRank')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             });
         const spyUserTotalRank = jest.spyOn(actionCreators, 'getUserTotalRank')
             .mockImplementation(() => {
-                return dispatch => {
+                return () => {
                 };
             });
         const component = mount(ranking);

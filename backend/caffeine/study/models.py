@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from datetime import timedelta, date
 from user.models import User
 
@@ -16,13 +17,13 @@ class DailyStudyRecord(models.Model):
 
 
 class DailyStudyForSubject(models.Model):
-    date = models.DateField(auto_now_add=True)
-    start_time = models.DateTimeField(auto_now_add=True)
-    end_time = models.DateTimeField(auto_now=True)
+    date = models.DateField(default=date.today)
+    start_time = models.DateTimeField(default=timezone.now)
+    end_time = models.DateTimeField(default=timezone.now)
     study_time = models.DurationField(default=timedelta(0))
     distracted_time = models.DurationField(default=timedelta(0))
     concentration_gauge = models.FloatField(default=0)
-    last_updated_time = models.DateTimeField(auto_now=True)
+    last_updated_time = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=False)
     subject = models.CharField(max_length=64)
     user = models.ForeignKey(

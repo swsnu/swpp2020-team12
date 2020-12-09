@@ -23,6 +23,7 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('study/', include('study.urls')),
     path('statistic/', include("statistic.urls")),
+    path('rank/', include('rank.urls')),
     path('admin/', admin.site.urls),
-    path('rank/', include('rank.urls'))
+
 ]

@@ -4,8 +4,29 @@ import axios from 'axios'
 import {history} from '../store';
 import {push} from "connected-react-router";
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
+
 export const getLogin_ = (user) => {
-    return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name:user.name, message: user.message};
+    return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name: user.name, message: user.message};
 };
 
 export const getLogin = () => {

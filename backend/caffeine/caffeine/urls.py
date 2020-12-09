@@ -18,7 +18,7 @@ from django.urls import path, include
 
 #superuser: jongho, 19971216
 urlpatterns = [
-    path('groups/', include('group.urls')),
+    path('group/', include('group.urls')),
     path('subject/', include('subject.urls')),
     path('user/', include('user.urls')),
     path('study/', include('study.urls')),

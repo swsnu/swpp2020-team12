@@ -44,6 +44,11 @@ class MainPage extends Component {
         return (
             <div id="Main">
                 <span id="logo_text">Caffeine Camera</span>
+                
+                    <div id='body'>Register your subject</div>
+                    <div id='body'>Make or find a group</div>
+                    <div id='body'>Are you ready to study?</div>
+                
                 <div>
                     <button id="study-button">
                         <span id="study-button" onClick={() => {

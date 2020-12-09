@@ -6,7 +6,8 @@ import json
 from .models import User
 from django.contrib.auth import authenticate, login, logout
 
-
+@ensure_csrf_cookie
+@csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -21,7 +22,8 @@ def sign_up(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-
+@ensure_csrf_cookie
+@csrf_exempt
 def sign_in(request):
     if request.method == "POST":
         req_data = json.loads(request.body.decode())

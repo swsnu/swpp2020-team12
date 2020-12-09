@@ -3,9 +3,6 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import {push} from 'connected-react-router'
 
-axios.defaults.xsrfCookieName= 'csrftoken';
-axios.defaults.xsrfHeaderName='X-CSRFToken';
-
 export const SearchGroups_ = (groups) => {
     return {type: actionTypes.SEARCH_GROUP, searchedGroups: groups};
 }

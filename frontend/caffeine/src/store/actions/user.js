@@ -3,10 +3,7 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import {history} from '../store';
 import {push} from "connected-react-router";
-
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
+/*
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -23,7 +20,7 @@ function getCookie(name) {
 }
 
 const csrftoken = getCookie('csrftoken');
-
+*/
 
 export const getLogin_ = (user) => {
     return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name: user.name, message: user.message};

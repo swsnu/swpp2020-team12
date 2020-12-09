@@ -41,7 +41,7 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('ws://192.168.0.5/ws/study/'+
+        this.socketRef.current=new WebSocket('wss://50.16.8.104/ws/study/'+
             this.props.match.params.group_id+'/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
@@ -86,7 +86,7 @@ class Study extends Component {
         this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
     render() {
-        console.log(this.props.members)
+        console.log(this.props.match.params.group_id)
         return (
             <div className="container">
                 <h1>study room</h1>
@@ -114,7 +114,6 @@ class Study extends Component {
                         <button id='change-subject-button' onClick={() => this.setState({subjectShow: true})}>Change
                             Subject
                         </button>
-                        <button onClick={this.capture}>click</button>
                         <button id='end-study-button' onClick={this.onClickEnd}>End</button>
                         <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
                         <Studycomp

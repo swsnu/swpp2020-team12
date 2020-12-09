@@ -41,7 +41,7 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('wss://50.16.8.104/ws/study/'+
+        this.socketRef.current=new WebSocket('ws://50.16.8.104/ws/study/'+
             this.props.match.params.group_id+'/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)

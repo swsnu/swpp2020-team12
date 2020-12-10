@@ -91,6 +91,7 @@ class Groups extends Component {
                     members={group.members.length}
                     averageHours={this.getHours(group.time)}
                     announcement={group.description}
+                    activeCount={group.active_count}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
             );

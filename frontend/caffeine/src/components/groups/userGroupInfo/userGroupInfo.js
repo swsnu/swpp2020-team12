@@ -27,6 +27,7 @@ const UserGroupInfo=(props) => {
                 <ListGroup>
                     {memberList}
                 </ListGroup>
+
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" size="sm" id="quit-group-button"

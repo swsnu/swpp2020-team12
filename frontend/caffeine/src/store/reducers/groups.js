@@ -21,7 +21,8 @@ const reducer =(state=initialState, action)=>{
                 name: action.name,
                 time: action.time,
                 description: action.description,
-                members: action.members
+                members: action.members,
+                active_count: action.active_count
             }
             return{ ...state, myGroupList: [...state.myGroupList, new_group] }
         }
@@ -39,7 +40,8 @@ const reducer =(state=initialState, action)=>{
                 name: action.name,
                 time: action.time,
                 description: action.description,
-                members: action.members
+                members: action.members,
+                active_count: action.active_count
             }
             return {...state, unenrolledGroupInfo: null, myGroupList:[...state.myGroupList, join_group]}
         }

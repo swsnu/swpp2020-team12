@@ -55,7 +55,9 @@ export const deleteGroup = (group_id) => {
 export const joinGroup_ = (group) => {
     return {
         type: actionTypes.JOIN_GROUP, id: group.id,
-        name: group.name, time: group.time, description: group.description, members: group.members
+        name: group.name, time: group.time,
+        description: group.description, members: group.members,
+        active_count: group.active_count
     };
 }
 export const joinGroup = (data) => {
@@ -78,7 +80,8 @@ export const addGroup_ = (group) => {
         name: group.name,
         description: group.description,
         time: group.time,
-        members: group.members
+        members: group.members,
+        active_count: group.active_count
     };
 }
 export const addGroup = (data) => {

@@ -24,7 +24,12 @@ class App extends React.Component {
     }
 
     LogoutHandler = () => {
-        this.props.signout();
+        if(window.location.href.startsWith('study', 29)){
+            window.alert("stop study before logout")
+        }
+        else{
+            this.props.signout();
+        }
     }
     gotoHome = () => {
         this.props.history.push('/');
@@ -42,10 +47,7 @@ class App extends React.Component {
     gotoStat = () => {
         this.props.history.push('/statistic')
     }
-
     render() {
-
-
         return (
             <ConnectedRouter history={this.props.history}>
                 {this.props.isLoggedIn ?

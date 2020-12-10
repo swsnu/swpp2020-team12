@@ -13,6 +13,7 @@ const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
 class Study extends Component {
     state = {
+        members: this.props.members,
         time: moment.duration(0),
         subjectShow: false,
         subject: null
@@ -41,13 +42,33 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('ws://50.16.8.104/ws/study/'+
+        this.socketRef.current=new WebSocket('wss://caffeine-camera.shop/ws/study/'+
             this.props.match.params.group_id+'/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }
         this.socketRef.current.onmessage = e => {
-           console.log(e)
+           const d=JSON.parse(e.data)
+           if(d.hasOwnProperty('inference')){
+               const new_inf = this.state.members.find(obj => obj.user__id===d.inference.user__id)
+               new_inf.concentration_gauge=d.inference.gauge
+               const infered = this.state.members.map(obj => obj.user__id===d.inference.user__id ? new_inf : obj)
+               this.setState({members: infered})
+           }
+           else if(d.hasOwnProperty('join')){
+                const new_mem = {
+                    user__id: d.join.user__id,
+                    user__name: d.join.user__name,
+                    user__message: d.join.user__message,
+                    concentration_gauge: 0
+                }
+                const new_mems = [...this.state.members, new_mem]
+                this.setState({members: new_mems})
+           }
+           else if(d.hasOwnProperty('leave')){
+            const leav_mems = this.state.members.filter(obj=> obj.user__id!==d.leave.user__id)
+            this.setState({members: leav_mems})
+       }
         }
     }
 
@@ -86,11 +107,16 @@ class Study extends Component {
         this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
     render() {
-        console.log(this.props.match.params.group_id)
+        const mem=[].concat(this.state.members)
+            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
+            .map(m=><li>{m.user__name}{m.concentration_gauge}{m.user__message}</li>);
         return (
             <div className="container">
                 <h1>study room</h1>
                 <div className="row">
+                    <div className="col-1">
+                        {mem}
+                    </div>
                     <div className="col-3">
                         <Webcam
                             className='user_webcam'
@@ -135,7 +161,7 @@ const mapStateToProps = state => {
         gauge: state.study.gauge,
         currentSubject: state.study.subject,
         subjectList: state.subject.mySubjectList,
-        members: state.study.members
+        members: state.study.memberlist
     };
 }
 

@@ -59,7 +59,7 @@ class Statistic extends Component{
             <Container id="statistic">
                 <Row>
                     <Col>
-                    <Button id="timeline-button" onClick={() => {if (this.props.timelineData !== []){this.setState({timelineShow: true})}}}>TimeLine</Button>
+                    <Button id="timeline-button" onClick={() => {if (this.props.timelineData.length !== 0){this.setState({timelineShow: true})}}}>TimeLine</Button>
                     <TimeLine
                         show={this.state.timelineShow}
                         handletimelineShow={this.handletimelineShow}
@@ -86,7 +86,7 @@ class Statistic extends Component{
                                     this.props.getMonthlydata(moment(value))
                                     this.props.getWeeklydata(moment(value))
                                     this.props.getDailySubject(moment(value))
-                                    console.log(this.props.monthlyData)
+                                    console.log(this.props.timelineData)
                                 }} 
                                 value={this.state.date}
                             />

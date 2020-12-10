@@ -14,6 +14,8 @@ import mainPage from './components/main/mainPage'
 import Statistic from './components/statistic/statistic'
 import Ranking from './components/rank/ranking'
 import * as actionCreators from './store/actions/index';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navbar, Nav, Button} from 'react-bootstrap';
 
 
 class App extends React.Component {
@@ -24,26 +26,47 @@ class App extends React.Component {
     LogoutHandler = () => {
         this.props.signout();
     }
-    homeHandler = () => {
+    gotoHome = () => {
         this.props.history.push('/');
+    }
+
+    gotoGroup = () => {
+        this.props.history.push('/group')
+    }
+    gotoSubject = () => {
+        this.props.history.push('/subject')
+    }
+    gotoRank = () => {
+        this.props.history.push('/ranking')
+    }
+    gotoStat = () => {
+        this.props.history.push('/statistic')
     }
 
     render() {
 
 
-        const userTools = this.props.isLoggedIn ?
-            <div>
-                <button id='logout-button' onClick={this.LogoutHandler}>logout</button>
-                <button id='home-button' onClick={this.homeHandler}>HOME</button>
-                {this.props.user && <div id='user-info'>Hello, {this.props.user.name}</div>}
-            </div>
-            : null;
-
         return (
             <ConnectedRouter history={this.props.history}>
                 {this.props.isLoggedIn ?
                     (<div className="App">
-                        {userTools}
+                        <Navbar bg="dark" variant="dark">
+                            <Navbar.Brand href="#home">Caffeine Camera</Navbar.Brand>
+                                <Nav className="mr-auto">
+                                    <Nav.Link href="#" onSelect={this.gotoHome}>Home</Nav.Link>
+                                    <Nav.Link href="# " onSelect={this.gotoSubject}>Subject</Nav.Link>
+                                    <Nav.Link href="#  " onSelect={this.gotoGroup}>Group</Nav.Link>
+                                    <Nav.Link href="#   " onSelect={this.gotoStat}>Statistic</Nav.Link>
+                                    <Nav.Link href="#    " onSelect={this.gotoRank}>Ranking</Nav.Link>
+                                </Nav>
+                                <Nav>
+                                    <Button variant="outline-warning">{this.props.user && <div id='user-info'>Hello, {this.props.user.name}</div>}</Button>
+                                    <Button variant="outline-warning" id='logout-button' onClick={this.LogoutHandler}>Sign-Out</Button>
+                                </Nav>
+                        </Navbar>
+                        <Navbar className="justify-content-center" bg="dark" variant="dark" fixed="bottom">
+                            <p className="text-center mt-4 mb-4" style={{color: 'white'}}>Copyright © swpp2020-team12. All Right Reserved</p>
+                        </Navbar>
                         <Switch>
                             <Route path='/group' exact component={Group}/>
                             <Route path='/' exact component={mainPage}/>
@@ -54,8 +77,15 @@ class App extends React.Component {
                             <Route path='/statistic' exact component={Statistic}/>
                             <Redirect exact to="/"/>
                         </Switch>
+                        
                     </div>) : (
                         <div className="App">
+                             <Navbar bg="dark" variant="dark">
+                                <Navbar.Brand href="#home">Caffeine Camera</Navbar.Brand>
+                            </Navbar>
+                            <Navbar className="justify-content-center" bg="dark" variant="dark" fixed="bottom">
+                                <p className="text-center mt-4 mb-4" style={{color: 'white'}}>Copyright © swpp2020-team12. All Right Reserved</p>
+                            </Navbar>
                             <Switch>
                                 <Route path='/signin' exact component={SignIn}/>
                                 <Route path='/signup' exact component={SignUp}/>

@@ -1,6 +1,11 @@
 .SignUp {
     position: relative;
-    top: 150px;
+    top: 50px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 30px;
+    width:700px;
+    padding:20px;
+    margin: 0 auto;
   }
 
 .text {
@@ -8,30 +13,34 @@
     width:600px;
     height:50px;
     margin: 10px;
+
 }
 
-.button {
-    border-radius: 10px;
-    width:295px;
-    height:50px;
-    font-size: 30px;
-    margin: 5px;
-}
-
-.label {
-    position: relative;
-    right: 240px;
+#sign-up-label {
+    position: absolute;
+    right: 76%;
     font-size: x-large;
     text-align: left;
+    font-weight: bold;
 }
-
-.label2 {
-    position: relative;
-    right: 280px;
+#sign-up-label-id {
+    position: absolute;
+    right: 89%;
     font-size: x-large;
     text-align: left;
+    font-weight: bold;
 }
+#sign-up-label-message {
+    position: absolute;
+    right: 78%;
+    font-size: x-large;
+    text-align: left;
+    font-weight: bold;
+}
+
 
 .head {
     font-weight: bold;
+    margin: 0px;
+    padding: 0px;
 }

@@ -18,7 +18,7 @@ const Group = (props) => {
             </div>
             <div id="active">
                 <span id="active">
-                {props.activeCount}/5 members
+                {props.activeCount}/5 members active
             </span>
             </div>
             <div id="studyTime"> 

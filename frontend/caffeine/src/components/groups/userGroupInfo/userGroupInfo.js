@@ -13,7 +13,11 @@ const UserGroupInfo=(props) => {
         }
         return(
             <ListGroup.Item key={user.id}>
-                <div className="name"><h3>{user.name}</h3><h4>{getHours(user.studyhour)}</h4></div>
+                <div className="name">
+                    <h3>{user.name}</h3>
+                    <h4>{getHours(user.studyhour)}</h4>
+                    <h5>{props.activeCount}/5 in study room</h5>
+                </div>
                 <h4>{user.message}</h4>
             </ListGroup.Item>
         );
@@ -27,6 +31,7 @@ const UserGroupInfo=(props) => {
                 <ListGroup>
                     {memberList}
                 </ListGroup>
+
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="outline-danger" size="sm" id="quit-group-button"

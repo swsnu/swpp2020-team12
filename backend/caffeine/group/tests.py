@@ -4,6 +4,8 @@ from django.test import TestCase, Client
 from user.models import User
 from .models import Group
 from .models import StudyRoom
+from study.models import DailyStudyForSubject
+from subject.models import Subject
 
 
 # Create your tests here.
@@ -12,25 +14,27 @@ class GroupTestCase(TestCase):
 
     def setUp(self):  # beforeeach 같은거
         user1 = User.objects.create_user(username='id1', name='nickname1',
-            password='pw1', message='message1')
+                                         password='pw1', message='message1')
         user2 = User.objects.create_user(username='id2', name='nickname2',
-            password='pw2', message='message2')
+                                         password='pw2', message='message2')
         user3 = User.objects.create_user(username='id3', name='nickname3',
-            password='pw3', message='message3')
+                                         password='pw3', message='message3')
         group1 = Group.objects.create(name='team1', description='this is description1',
                                       time=datetime.timedelta(hours=10, minutes=42))
         group2 = Group.objects.create(name='team2', description='this is description2',
-            password='pw2', time=datetime.timedelta(hours=15, minutes=20))
+                                      password='pw2', time=datetime.timedelta(hours=15, minutes=20))
         group1.members.add(user1, user2)
         group2.members.add(user2, user3)
-        study_room1 = StudyRoom.objects.create(group=group1)  # 다른 그룹의 user들은 못들어오게 짜야하지 않나??
-        study_room1.active_members.add(user1)
+        active_study = DailyStudyForSubject.objects.create(subject='subject', user=user1, is_active=True)
+        study_room1 = StudyRoom.objects.create(group=group1)
+        study_room2 = StudyRoom.objects.create(group=group2)
+        study_room1.active_studys.add(active_study)
 
     def test_group_count(self):
         self.assertEqual(Group.objects.all().count(), 2)
 
     def test_studyRoom_count(self):
-        self.assertEqual(StudyRoom.objects.count(), 1)
+        self.assertEqual(StudyRoom.objects.count(), 2)
 
     def test_user_group_list_get(self):
         client = Client()
@@ -41,6 +45,7 @@ class GroupTestCase(TestCase):
                                             'id': 1,
                                             'name': 'team1',
                                             'time': 'P0DT10H42M00S',
+                                            'active_count': 1,
                                             'members': [{
                                                 'id': 1,
                                                 'name': 'nickname1',
@@ -56,6 +61,7 @@ class GroupTestCase(TestCase):
                                             'id': 2,
                                             'name': 'team2',
                                             'time': 'P0DT15H20M00S',
+                                            'active_count': 0,
                                             'members': [{
                                                 'id': 2,
                                                 'name': 'nickname2',
@@ -80,7 +86,8 @@ class GroupTestCase(TestCase):
             'time': 'P0DT00H00M00S',
             'name': 'test_team',
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'}],
-            'id': 3})
+            'id': 3,
+            'active_count': 0})
         response = client.post('/group/', json.dumps({
             'ww': 'test_descrip',
             'rr': '',
@@ -100,6 +107,7 @@ class GroupTestCase(TestCase):
             'description': 'this is description2',
             'name': 'team2',
             'time': 'P0DT15H20M00S',
+            'active_count': 0,
             'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
                         {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
         })
@@ -127,17 +135,7 @@ class GroupTestCase(TestCase):
              'name': 'team2',
              'time': 'P0DT15H20M00S', 'password': 'pw2'}
         ])
-        response = client.get('/group/2/')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {
-            'id': 2,
-            'count': 2,
-            'description': 'this is description2',
-            'name': 'team2',
-            'time': 'P0DT15H20M00S',
-            'members': [{'id': 2, 'message': 'message2', 'name': 'nickname2'},
-                        {'id': 3, 'message': 'message3', 'name': 'nickname3'}]
-        })
+
 
     def test_search_group_info(self):
         client = Client()

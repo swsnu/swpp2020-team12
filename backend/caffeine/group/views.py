@@ -15,8 +15,10 @@ def user_group_list(request):
         for group in groups:
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
+            active_count = StudyRoom(group=group).active_studys.count()
             response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
-                                  'description': group.description, 'members': member_list})
+                                  'description': group.description, 'members': member_list,
+                                  'active_count': active_count})
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'POST':
         try:
@@ -35,7 +37,7 @@ def user_group_list(request):
                        for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name,
                          'time': group.time, 'description': group.description,
-                         'members': member_list}
+                         'members': member_list, 'active_count': 0}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -47,11 +49,12 @@ def user_group_info(request, group_id):
     if request.method == 'GET':
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
+        active_count=StudyRoom.objects.get(group=group).active_studys.count()
         member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                        for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
                          'time': group.time, 'description': group.description,
-                         'members': member_list
+                         'members': member_list, 'active_count': active_count,
                          }
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'DELETE':
@@ -93,11 +96,12 @@ def search_group_info(request, group_id):
         if password == group.password:
             group.members.add(request.user)
             count = group.members.count()
+            active_count = StudyRoom.objects.get(group=group).active_studys.count()
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
             response_dict = {'id': group.id, 'name': group.name, 'count': count,
                              'time': group.time, 'description': group.description,
-                             'members': member_list
+                             'members': member_list, 'active_count': active_count
                              }
             return JsonResponse(response_dict, status=201, safe=False)
         else:

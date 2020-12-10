@@ -16,6 +16,11 @@ const Group = (props) => {
                 {props.members} members
             </span>
             </div>
+            <div id="active">
+                <span id="active">
+                {props.activeCount}/5 members active
+            </span>
+            </div>
             <div id="studyTime"> 
                 <span id="studyTime">
                     Average time: {props.averageHours}

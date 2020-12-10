@@ -12,7 +12,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SIGN_OUT:
             return {...state, isLoggedIn: false}
         case actionTypes.SIGN_IN:
-            return {...state, isLoggedIn: true}
+            return {...state, isLoggedIn: true, user:{name: action.name}}
         default:
             break;
     }

@@ -8,6 +8,7 @@ import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
 import SelectSubject from './selectSubject/selectSubject';
+import {Container, Row, Col, Table} from 'react-bootstrap'
 
 const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
@@ -109,16 +110,15 @@ class Study extends Component {
     render() {
         const mem=[].concat(this.state.members)
             .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
-            .map(m=><li>{m.user__name}{m.concentration_gauge}{m.user__message}</li>);
+            .map((m, i)=><tr><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
         return (
-            <div className="container">
-                <h1>study room</h1>
-                <div className="row">
-                    <div className="col-1">
-                        {mem}
-                    </div>
-                    <div className="col-3">
-                        <Webcam
+            <Container>
+                <Row>
+                    <h1>study room</h1>
+                </Row>
+                <Row>
+                    <Col>
+                    <Webcam
                             className='user_webcam'
                             audio={false}
                             height={360}
@@ -135,22 +135,34 @@ class Study extends Component {
                             onClickCheck={this.onClickCheck}
                             onClickChoose={this.onClickChoose}
                         />
-                    </div>
-                    <div className="col-9">
                         <button id='change-subject-button' onClick={() => this.setState({subjectShow: true})}>Change
                             Subject
                         </button>
                         <button id='end-study-button' onClick={this.onClickEnd}>End</button>
                         <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
                         <Studycomp
-                            name={'demo_user'}
+                            name={this.props.username.name}
                             state={this.props.status !== null ? status_array[this.props.status] : 'We believe you are studying'}
                             rate={this.props.gauge !== null ? this.props.gauge : 1}
                         />
-                    </div>
-                </div>
-
-            </div>
+                    </Col>
+                    <Col>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                <th>#</th>
+                                <th>name</th>
+                                <th>gauge</th>
+                                <th>message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {mem}
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }
@@ -161,7 +173,8 @@ const mapStateToProps = state => {
         gauge: state.study.gauge,
         currentSubject: state.study.subject,
         subjectList: state.subject.mySubjectList,
-        members: state.study.memberlist
+        members: state.study.memberlist,
+        username: state.user.user
     };
 }
 

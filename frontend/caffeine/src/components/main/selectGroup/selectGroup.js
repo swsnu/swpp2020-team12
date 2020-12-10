@@ -7,10 +7,17 @@ const SelectGroup=(props)=>{
     const groups=props.myGroupList.map(group=>{
         return(
             <div className='group' key={group.id}>
-                 {group.name} {group.active_count}/5
+                {group.name} {group.active_count}/5
+                {group.active_count>=5&&
                 <input type='checkbox' checked={props.group===group.id}
-                       disabled={group.active_count>=5}
+                    disabled={true}
                     onClick={()=>props.onClickCheck(group.id, group.active_count)}/>
+                }
+            {group.active_count<5&&
+                    <input type='checkbox' checked={props.group===group.id}
+                    disabled={false}
+                    onClick={()=>props.onClickCheck(group.id, group.active_count)}/>
+            } 
             </div>
         )
     })

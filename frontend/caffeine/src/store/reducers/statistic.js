@@ -10,7 +10,8 @@ const initialState={
     weekly_study_time: null,
     dailyData: null,
     daily_total:null,
-    daily_study_time:null
+    daily_study_time:null,
+    timelineData:null
 }
 
 const reducer =(state=initialState, action)=>{
@@ -20,7 +21,7 @@ const reducer =(state=initialState, action)=>{
         case actionTypes.GET_WEEKLYDATA:
             return { ...state, weeklyData: action.weeklyData, weekly_total:action.weekly_total, weekly_study_time:action.weekly_study_time }
         case actionTypes.GET_DAILYSUBJECT:
-            return { ...state, dailyData: action.dailyData, daily_total:action.daily_total, daily_study_time:action.daily_study_time }
+            return { ...state, dailyData: action.dailyData, daily_total:action.daily_total, daily_study_time:action.daily_study_time, timelineData:action.timelineData }
         default:
             break;
     }

@@ -1,4 +1,4 @@
-h1[id="head"] {
+/* h1[id="head"] {
     text-align: left;
     margin: 50px;
     font-size: 70px;
@@ -28,39 +28,7 @@ button[id='create-group-button']{
     border: none;
 }
 
-button[id='create-group-button']:hover {
-    color:#fff;
-    background: rgb(54, 54, 54);
-    transform: translateY(-7px);
-}
 
-button[id='group-search-button']{
-    position: relative;
-    width: 150px;
-    height: 50px;
-    left: 300px;
-    top: 30px;
-    margin: 10px;
-    background: rgb(202, 202, 202);
-    font-size: 30px;
-    border-radius: 10px;
-    transition: all .35s;
-    border: none;
-}
-
-button[id='group-search-button']:hover {
-    color:#fff;
-    background: rgb(54, 54, 54);
-    transform: translateY(-7px);
-}
-
-
-
-div[id='search-group']{
-    position: absolute;
-    left: 900px;
-    top: 100px;
-}
 
 input[id='group-search-input']{
     position: relative;
@@ -72,43 +40,9 @@ input[id='group-search-input']{
     font-size: 30px;
 }
 
-h5[id='search_group_result']{
-    position: absolute;
-    left: 300px;
-    top: 120px;
-}
 
-div[id="wrap"] {
-    position: absolute;
-    right:-730px;
-    top:50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   
-button[id="home"]{
-    width: 250px;
-    height: 70px;
-    font-size: 30px;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    font-weight: 500;
-    color: #000;
-    background-color: rgb(202, 202, 202);
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
-    }
-  
-button[id="home"]:hover {
-    background-color:rgb(54, 54, 54);
-    color: #fff;
-    transform: translateY(-7px);
-  }
+
 ul{
     margin:0px;
     padding: 0px;
@@ -147,4 +81,63 @@ div[id="searched"]{
   
 div[id="number-of-member"]{
     text-align: right;
+} */
+
+#GroupList {
+    position: relative;
+    top:30px;
+    border-style: dashed;
+    border-width: 7px;
+}
+
+#head {
+    margin: 30px; 
+    font-size: xx-large;  
+    font-weight: bold;
+}
+
+#left-col {
+    border-style: none dashed none none;
+    border-width:7px;
+}
+
+li[id="searched-group-list"]{
+    list-style-type: none;
+    background: rgb(202, 202, 202);
+    transition: all .35s;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
+li[id="searched-group-list"]:hover {
+    color:#fff;
+    background: rgb(54, 54, 54);
+    transform: translateY(-7px);
+}
+
+#searched-group-ul {
+    padding-left: 0px;
+    margin-left: 10px;
+    margin-right:10px;
+}
+
+#searched-group-name {
+    text-align: left;
+    margin-left: 10px;
+}
+
+#number-of-member {
+    text-align: right;
+    margin-right: 10px;
+}
+
+#group-search-button {
+    margin: 10px;
+}
+
+#group-search-input {
+    height: 40px;
+    width: 410px;
 }

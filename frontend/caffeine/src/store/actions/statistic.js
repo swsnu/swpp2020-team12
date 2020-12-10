@@ -28,7 +28,7 @@ export const getWeeklydata = (date) => {
 }
 
 export const getDailySubject_ = (response) => {
-    return {type: actionTypes.GET_DAILYSUBJECT, dailyData: response.subjectData, daily_total:response.daily_total, daily_study_time:response.daily_study_time};
+    return {type: actionTypes.GET_DAILYSUBJECT, dailyData: response.subjectData, daily_total:response.daily_total, daily_study_time:response.daily_study_time, timelineData: response.timelineData};
 }
 export const getDailySubject = (date) => {
     return dispatch => {

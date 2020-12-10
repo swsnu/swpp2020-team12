@@ -16,12 +16,12 @@ def announce_likes(studying_info, group_id, **kwargs):
     )
 
 @receiver(join_group)
-def announce_join(name, user_id, group_id, **kwargs):
+def announce_join(name, user_id, group_id, message, **kwargs):
     channel_layer=get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "join_group",
-            "user": {"name": name, "id": user_id}
+            "user": {"user__name": name, "user__id": user_id, "user__mesage": message}
         }
     )
     print(name)
@@ -32,7 +32,7 @@ def announce_leave(name, user_id, group_id, **kwargs):
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "leave_group",
-            "user": {"name": name, "id": user_id}
+            "user": {"user__name": name, "user__id": user_id}
         }
     )
 

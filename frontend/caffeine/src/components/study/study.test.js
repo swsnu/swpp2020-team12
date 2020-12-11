@@ -67,6 +67,12 @@ const stubsubjectState = {
         {id: '2', name: 'test2'}
     ]
 };
+const stubUserState = {
+    user: [
+        {id: '1', name: 'user1'}
+    ],
+    isLoggedIn: true
+};
 const getMockStudyReducer = jest.fn(
     initialState => (state = initialState, action) => {
         switch (action.type) {
@@ -87,11 +93,22 @@ const getMockSubjectReducer = jest.fn(
         return state;
     }
 );
+const getMockUserReducer = jest.fn(
+    initialState => (state = initialState, action) => {
+        switch (action.type) {
+            default:
+                break;
+        }
+        return state;
+    }
+);
 const mockStudyReducer = getMockStudyReducer(stubstudylState);
 const mockSubjectReducer = getMockSubjectReducer(stubsubjectState);
+const mockUserReducer = getMockSubjectReducer(stubUserState);
 const rootReducer = combineReducers({
     subject: mockSubjectReducer,
     study: mockStudyReducer,
+    user: mockUserReducer,
 });
 const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 

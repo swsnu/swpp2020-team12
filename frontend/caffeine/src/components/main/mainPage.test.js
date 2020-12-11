@@ -96,7 +96,7 @@ describe('<mainPage />', () => {
         expect(component.length).toBe(1);
     });
 
-    it(`should call 'handlerCancel'`, () => {
+/*    it(`should call 'handlerCancel'`, () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
             .mockImplementation(path => {
             });
@@ -105,6 +105,8 @@ describe('<mainPage />', () => {
         wrapper.simulate('click');
         expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     });
+
+ */
     it('should call show subject -> group modal if study button is clicked', () => {
         const spyStartStudy = jest.spyOn(actionStudy, 'startStudy')
             .mockImplementation(id => {

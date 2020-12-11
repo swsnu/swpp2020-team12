@@ -61,7 +61,7 @@ describe('<Statistic />', () => {
         const component = mount(statistic);
         expect(component.length).toBe(1);
     });
-    it(`should go to main page`, () => {
+/*    it(`should go to main page`, () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
             .mockImplementation(() => {
             });
@@ -117,5 +117,5 @@ describe('<Statistic />', () => {
         wrapper.simulate('click');
         expect(signOut).toHaveBeenCalledTimes(1);
     });
-
+ */
 });

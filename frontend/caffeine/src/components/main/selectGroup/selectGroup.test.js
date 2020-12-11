@@ -5,7 +5,7 @@ import SelectGroup from './selectGroup';
 
 const props = {
     myGroupList: [
-        {id: 1, name: 'group1'}
+        {id: 1, name: 'group1', active_count: 1}
     ],
     group: null
 }

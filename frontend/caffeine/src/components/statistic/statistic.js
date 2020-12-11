@@ -30,23 +30,7 @@ class Statistic extends Component{
         this.props.getWeeklydata(moment())
         this.props.getDailySubject(moment())
     }
-/*
-    gotoGroup = () => {
-        this.props.history.push('/group')
-    }
-    gotoSubject = () => {
-        this.props.history.push('/subject')
-    }
-    gotoStatistic = () => {
-        this.props.history.push('/statistic')
-    }
-    gotoRanking = () => {
-        this.props.history.push('/ranking')
-    }
-    gotoMain = () => {
-        this.props.history.push('/')
-    }
-*/
+
     handletimelineShow = () => {
         this.setState({timelineShow:false})
     }
@@ -82,11 +66,11 @@ class Statistic extends Component{
                         <div id="calendar">
                             <Calendar
                                 className="calendar"
+                                id="react-calendar"
                                 onChange={(value, event) => {
                                     this.props.getMonthlydata(moment(value))
                                     this.props.getWeeklydata(moment(value))
                                     this.props.getDailySubject(moment(value))
-                                    console.log(this.props.timelineData)
                                 }} 
                                 value={this.state.date}
                             />
@@ -145,8 +129,6 @@ const mapStateToProps = state => {
   
 const mapDispatchToProps = dispatch => {
     return {
-        signout: ()=>
-        dispatch(actionCreators.signout()),
         getMonthlydata: (date)=>
         dispatch(actionCreators.getMonthlydata(date)),
         getWeeklydata: (date)=>

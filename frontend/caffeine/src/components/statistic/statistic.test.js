@@ -9,6 +9,7 @@ import {getMockStore} from '../../test-utils/mocks';
 import {history} from '../../store/store';
 import * as actionCreators from '../../store/actions/statistic';
 import * as actionCreatorss from '../../store/actions/user'
+import moment from 'moment'
 
 const stubStatisticState = {
     monthlyData: [
@@ -61,61 +62,24 @@ describe('<Statistic />', () => {
         const component = mount(statistic);
         expect(component.length).toBe(1);
     });
-/*    it(`should go to main page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
+    it('should onChange', () => {
+        const spyGetMonthlydata = jest.spyOn(actionCreators, 'getMonthlydata')
             .mockImplementation(() => {
+                return () => {
+                };
             });
-        const component = mount(statistic);
-        const wrapper = component.find('.gotoMainbutton');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to subject page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
+        const spygetWeeklydata = jest.spyOn(actionCreators, 'getWeeklydata')
             .mockImplementation(() => {
+                return () => {
+                };
             });
-        const component = mount(statistic);
-        const wrapper = component.find('.gotoSubjectbutton');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to group page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(path => {
-            });
-        const component = mount(statistic);
-        const wrapper = component.find('.gotoGroupbutton');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to statistic page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(() => {
-            });
-        const component = mount(statistic);
-        const wrapper = component.find('.gotoStatisticbutton');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should go to ranking page`, () => {
-        const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(() => {
-            });
-        const component = mount(statistic);
-        const wrapper = component.find('.gotoRankingbutton');
-        wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
-    });
-    it(`should signout`, () => {
-        const signOut = jest.spyOn(actionCreatorss, 'signout')
+        const spygetDailySubject = jest.spyOn(actionCreators, 'getDailySubject')
             .mockImplementation(() => {
                 return () => {
                 };
             });
         const component = mount(statistic);
-        const wrapper = component.find('.Signoutbutton');
+        let wrapper = component.find('button').at(10)
         wrapper.simulate('click');
-        expect(signOut).toHaveBeenCalledTimes(1);
     });
- */
 });

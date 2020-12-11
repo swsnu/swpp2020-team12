@@ -12,7 +12,7 @@ const reducer =(state=initialState, action)=>{
         case actionTypes.INFER_STUDY:
             return { ...state, status: action.inferred.status, gauge: action.inferred.gauge}
         case actionTypes.START_STUDY:
-            return { ...state, subject: action.subject, members: action.members}
+            return { ...state, subject: action.data.subject, members: action.data.members}
         case actionTypes.END_STUDY:
             return { ...state, status: null, gauge: null}
         case actionTypes.CHANGE_SUBJECT:

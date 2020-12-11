@@ -12,15 +12,15 @@ export const postCapturetoServer = (image, id) =>{
             .then(res => dispatch(postCapturetoServer_(res.data)));
     } 
 }
-export const startStudy_ = (subject, members) =>{
-    return { type: actionTypes.START_STUDY, subject: subject, members: members};
+export const startStudy_ = (data) =>{
+    return { type: actionTypes.START_STUDY, data:data};
 }
 
 export const startStudy = (subject, group_id) =>{
     return dispatch =>{
         return axios.post('/study/status/', {subject: subject, group_id: group_id})
-            .then(()=>{
-                dispatch(res =>startStudy_(subject, res.data));
+            .then(res=>{
+                dispatch(startStudy_(res.data));
                 dispatch(push('/study/'+group_id));
             });
     } 

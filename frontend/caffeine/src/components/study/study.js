@@ -41,7 +41,7 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('ws://50.16.8.104/ws/study/'+
+        this.socketRef.current=new WebSocket('ws://localhost/ws/study/'+
             this.props.match.params.group_id+'/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
@@ -86,7 +86,8 @@ class Study extends Component {
         this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
     render() {
-        console.log(this.props.match.params.group_id)
+        console.log(this.props.members)
+        console.log(this.props.currentSubject)
         return (
             <div className="container">
                 <h1>study room</h1>

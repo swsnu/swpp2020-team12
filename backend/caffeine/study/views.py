@@ -55,14 +55,11 @@ def study_room(request):
         current_study = DailyStudyForSubject(subject=subject, is_active=True, user=user)
         current_study.save()
         room=StudyRoom.objects.get(group__id=group_id)
-        prev_room=[]
         room.active_studys.add(current_study)
         room.save()
-        for study_info in room.active_studys.all().values('concentration_gauge', 'user__name', 'user__message'):
-            prev_room.append(study_info)
+        prev_room=[study_info for study_info in room.active_studys.all().values('concentration_gauge', 'user__name', 'user__message')]
         join_group.send(sender='study_room', name=user.name, user_id=user.id, group_id=group_id)
-        print(prev_room)
-        return JsonResponse(prev_room, safe=False)
+        return JsonResponse({'subject':subject, 'members': prev_room}, safe=False)
     elif request.method == 'PUT':
         user = User.objects.get(id=request.user.id)
         req_data = json.loads(request.body.decode())

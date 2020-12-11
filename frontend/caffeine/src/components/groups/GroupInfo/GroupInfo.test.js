@@ -9,7 +9,7 @@ import * as actionCreators from '../../../store/actions/groups';
 import {getMockStore} from '../../../test-utils/mocks';
 import {history} from '../../../store/store';
 
-const mockGroup = {
+const mockGroup1 = {
     id: 3,
     name: "test3",
     members: [
@@ -36,12 +36,39 @@ const mockGroup = {
     time: "1hour",
     description: "studying"
 }
+const mockGroup2 = {
+    id: 3,
+    name: "test3",
+    members: [
+        {
+            "id": 1,
+            "name": "tesuser1",
+            "studyhour": "2hour",
+            "message": "I'm good"
+        },
+        {
+            "id": 2,
+            "name": "tesuser2",
+            "studyhour": "1hour",
+            "message": "2"
+        },
+        {
+            "id": 3,
+            "name": "tesuser3",
+            "studyhour": "42minutes",
+            "message": ""
+        }
+    ],
+    password: '',
+    time: "1hour",
+    description: "studying"
+}
 const stubInitialState = {
     myGroupList: [
         {id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 2},
         {id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 1},
     ],
-    unenrolledGroupInfo: mockGroup,
+    unenrolledGroupInfo: mockGroup1
 };
 const mockStore = getMockStore(stubInitialState);
 
@@ -135,5 +162,45 @@ describe('<GroupInfo />', () => {
         const wrapper_name = component.find('#GroupName');
         expect(wrapper_name.length).toBe(0);
 
+    });
+});
+
+const stubInitialState3 = {
+    myGroupList: [
+        {id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 2},
+        {id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 1},
+    ],
+    unenrolledGroupInfo: mockGroup2,
+};
+
+const mockStore3 = getMockStore(stubInitialState3);
+
+describe('<GroupInfo />', () => {
+    let groups
+    beforeEach(() => {
+        groups = (
+            <Provider store={mockStore3}>
+                <ConnectedRouter history={history}>
+                    <Switch>
+                        <Route path='/' exact component={GroupInfo}/>
+                    </Switch>
+                </ConnectedRouter>
+            </Provider>
+        );
+
+    })
+    afterEach(() => {
+        jest.clearAllMocks()
+    });
+    it('should join group when click join button wihtout passwd', () => {
+        const spyJoinGroup = jest.spyOn(actionCreators, 'joinGroup')
+            .mockImplementation( () => {
+                return () => {
+                };
+            });
+        const component = mount(groups);
+        const wrapper = component.find('#join-group-button');
+        wrapper.at(0).simulate('click');
+        expect(spyJoinGroup).toHaveBeenCalledTimes(1)
     });
 });

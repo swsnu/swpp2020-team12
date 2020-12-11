@@ -133,6 +133,29 @@ describe('<mainPage />', () => {
         wrapper.simulate('click');
         expect(spyStartStudy).toHaveBeenCalledTimes(1);
     });
+    it('should exit modal when clicked', () => {
+        const component = mount(mainPage);
+        let wrapper = component.find('#study-button span');
+        wrapper.simulate('click');
+        const newInstance = component.find(MainPage.WrappedComponent).instance();
+        expect(newInstance.state.subjectShow).toEqual(true);
+        wrapper = component.find('.subject input').at(0);
+        wrapper.simulate('click');
+        expect(newInstance.state.subject).toEqual('subject1');
+        wrapper = component.find('#to-group-button');
+        wrapper.simulate('click');
+        expect(newInstance.state.subjectShow).toEqual(false);
+        expect(newInstance.state.groupShow).toEqual(true);
+        wrapper = component.find('#closeButton');
+        wrapper.simulate('click');
+        component.update();
+        wrapper = component.find('#study-button span');
+        wrapper.simulate('click');
+        expect(newInstance.state.subjectShow).toEqual(true);
+        wrapper = component.find('#closeButton');
+        wrapper.simulate('click');
+        expect(newInstance.state.subjectShow).toBe(false);
+    });
 });
 
 

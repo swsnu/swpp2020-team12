@@ -80,7 +80,7 @@ jest.mock('../study/selectSubject/selectSubject', () => {
         })
         return (
             <div className="spysubject">
-                <button id='closeButton' onClick={props.handleSubjectShow}></button>
+                <button id='closeButton' onClick={props.onSubjectShow}></button>
                 {subjects}
                 <button size="sm" disabled={props.subject === null} id="start-study-button"
                         onClick={props.onClickChoose}>Choose Subject
@@ -101,6 +101,7 @@ jest.mock('./userGroupInfo/userGroupInfo', () => {
         })
         return (
             <div className='spyinfo'>
+                <button id='closeButton' onClick={props.handleDetailShow}></button>
                 <ul>
                     {memberList}
                 </ul>
@@ -295,6 +296,18 @@ describe('<Groups />', () => {
         wrapper = component.find('#start-study-button');
         wrapper.simulate('click');
         expect(spystartStudy).toHaveBeenCalledTimes(1);
+    });
+    it('should end  modal if close button is clicked', () => {
+        const component = mount(groups);
+        let wrapper = component.find('#name').at(0);
+        wrapper.simulate('click');
+        wrapper = component.find('#join-study-button');
+        wrapper.simulate('click');
+        const newInstance = component.find(Groups.WrappedComponent).instance();
+        expect(newInstance.state.detailShow).toEqual(false);
+        expect(newInstance.state.subjectShow).toEqual(true);
+        wrapper = component.find('#closeButton').at(0);
+        wrapper.simulate('click');
     });
     it('should call not show subject if active count >= 5', () => {
         const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});

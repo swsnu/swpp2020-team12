@@ -3,6 +3,8 @@ matrix:
     - language: node_js
       node_js: '12'
       python: '3.7'
+      services:
+        - redis-server
       cache:
         - pip: true
       addons:
@@ -29,7 +31,7 @@ matrix:
         - cd backend/caffeine
         - pylint **/*.py --load-plugins pylint_django
         - python manage.py migrate  
-        - coverage run --source='.' manage.py test
+        - coverage run --source='.' --omit='*/migrations/*','manage.py','*/wsgi.py','*/asgi.py','/utils/*','utils/*','*/routing.py' manage.py test
         - coverage xml
         - cd ../../
         - sonar-scanner
@@ -54,6 +56,8 @@ matrix:
 
     - language: python
       python: '3.7'
+      services:
+        - redis-server
       cache:
         - pip: true
       before_install:
@@ -63,5 +67,5 @@ matrix:
       script:
         - pylint **/*.py --load-plugins pylint_django
         - python manage.py migrate  
-        - coverage run --branch --source='.' manage.py test
+        - coverage run --source='.' --omit='*/migrations/*','manage.py','*/wsgi.py','*/asgi.py','/utils/*','utils/*','*/routing.py' manage.py test
         - coverage report -m

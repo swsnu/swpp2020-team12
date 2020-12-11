@@ -1,7 +1,11 @@
 import json
 from django.test import TestCase, Client
+from channels.testing import WebsocketCommunicator
+from channels.routing import URLRouter
+from django.conf.urls import url
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from group.models import Group, StudyRoom
+from .consumers import StudyConsumer
 from user.models import User
 from datetime import timedelta
 from datetime import date
@@ -12,7 +16,7 @@ class StudyTestCase(TestCase):
 
     def setUp(self):
         user1 = User.objects.create_user(username='id1', name='nickname1',
-                                         password='pw1', message='message1')
+            password='pw1', message='message1')
         User.objects.create_user(username='id2', name='nickname2',
                                  password='pw2', message='message2')
         daily_study_for_subject = DailyStudyForSubject.objects.create(
@@ -77,8 +81,61 @@ class StudyTestCase(TestCase):
         self.assertEqual(current_study.user, user1)
         self.assertEqual(current_study.subject, 'swpp')
 
+    def test_study_room_post_reject(self):
+        user3=User.objects.create_user(username='id3', name='nickname3',
+            password='pw3', message='message')
+        user4=User.objects.create_user(username='id4', name='nickname4',
+            password='pw4', message='message')
+        user5=User.objects.create_user(username='id5', name='nickname5',
+            password='pw5', message='message')
+        user6=User.objects.create_user(username='id6', name='nickname6',
+            password='pw6', message='message')
+        for i in range(1, 6):
+            client = Client()
+            client.login(username='id'+str(i), password='pw'+str(i))
+            response = client.post('/study/status/', json.dumps({
+            'group_id': 1, 'subject': 'swpp'
+            }), content_type='application/json')
+            self.assertEqual(response.status_code, 200)
+        client = Client()
+        client.login(username='id6', password='pw6')
+        response = client.post('/study/status/', json.dumps({
+        'group_id': 1, 'subject': 'swpp'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_study_room_post_flushing(self):
+        user1 = User.objects.get(username='id1')
+        today_before = DailyStudyRecord.objects.create(
+            user=user1,
+            total_study_time=timedelta(hours=10, minutes=42),
+            total_concentration=timedelta(hours=10, minutes=42),
+            total_gauge=1)
+        record1 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=1),
+            subject='swpp', distracted_time=timedelta(minutes=3),
+            user=user1, is_active=True) 
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/study/status/', json.dumps({
+        'group_id': 1, 'subject': 'swpp'
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        today_after = DailyStudyRecord.objects.get(date=date.today())
+        self.assertEqual(today_after.total_study_time,
+                         today_before.total_study_time + record1.study_time + record1.distracted_time)
+        self.assertEqual(today_after.total_concentration,
+                         today_before.total_concentration + record1.study_time)
+        self.assertEqual(today_after.total_gauge,
+                         (today_before.total_concentration + record1.study_time) /
+                         (today_before.total_study_time + record1.study_time +
+                          record1.distracted_time))
+
+
     def test_study_room_put(self):
         user1 = User.objects.get(username='id1')
+        user2 = User.objects.get(username='id2')
+        room = StudyRoom.objects.get(group__id=1) 
         today_study = DailyStudyRecord.objects.create(
             user=user1,
             total_study_time=timedelta(hours=10, minutes=42),
@@ -88,6 +145,13 @@ class StudyTestCase(TestCase):
             study_time=timedelta(minutes=42),
             subject='swpp', distracted_time=timedelta(minutes=32),
             user=user1, is_active=True)
+        study2 = DailyStudyForSubject.objects.create(
+            study_time=timedelta(minutes=42),
+            subject='swpp', distracted_time=timedelta(minutes=30),
+            user=user2, is_active=True)
+        room.active_studys.add(study1) 
+        room.active_studys.add(study2)
+        room.save() 
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.put('/study/status/', json.dumps({'group_id': 1}))
@@ -414,3 +478,22 @@ class StudyTestCase(TestCase):
                               'gauge': (study1.study_time + timedelta(seconds=10)) /
                                        (study1.study_time + study1.distracted_time +
                                         timedelta(seconds=10))})
+    
+    async def test_study_consumer_infer(self):
+        application = URLRouter([
+            url(r'^ws/study/(?P<room_number>[^/]+)/$', StudyConsumer.as_asgi())
+        ])
+        communicator = WebsocketCommunicator(application, "/ws/study/1/")
+        connected, subprotocol = await communicator.connect()
+        assert connected
+        await communicator.send_input({"type": "new_inference", "inference": "infer"})
+        event = await communicator.receive_output(timeout=1)
+        self.assertJSONEqual(event['text'], {"inference": "infer"})
+        await communicator.send_input({"type": "join_group", "user": "hello"})
+        event = await communicator.receive_output(timeout=1)
+        self.assertJSONEqual(event['text'], {"join": "hello"})
+        await communicator.send_input({"type": "leave_group", "user": "bye"})
+        event = await communicator.receive_output(timeout=1)
+        self.assertJSONEqual(event['text'], {"leave": "bye"})
+        await communicator.disconnect()
+       

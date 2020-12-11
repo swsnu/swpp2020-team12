@@ -10,8 +10,7 @@ const SelectGroup=(props)=>{
                 {group.name} {group.active_count}/5
                 {group.active_count>=5&&
                 <input type='checkbox' checked={props.group===group.id}
-                    disabled={true}
-                    onClick={()=>props.onClickCheck(group.id, group.active_count)}/>
+                    disabled={true}/>
                 }
             {group.active_count<5&&
                     <input type='checkbox' checked={props.group===group.id}

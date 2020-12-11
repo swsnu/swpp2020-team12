@@ -13,7 +13,7 @@ export const postCapturetoServer = (image, id) =>{
     } 
 }
 export const startStudy_ = (data) =>{
-    return { type: actionTypes.START_STUDY, data:data};
+    return { type: actionTypes.START_STUDY, subject: data.subject, members: data.members};
 }
 
 export const startStudy = (subject, group_id) =>{
@@ -22,7 +22,8 @@ export const startStudy = (subject, group_id) =>{
             .then(res=>{
                 dispatch(startStudy_(res.data));
                 dispatch(push('/study/'+group_id));
-            });
+            })
+            .catch(err=> alert("study room is already full.\n maximum study members : 5"));
     } 
 }
 export const endStudy_ = () =>{

@@ -24,7 +24,12 @@ class App extends React.Component {
     }
 
     LogoutHandler = () => {
-        this.props.signout();
+        if(window.location.href.startsWith('study', 29)){
+            window.alert("stop study before logout")
+        }
+        else{
+            this.props.signout();
+        }
     }
     gotoHome = () => {
         this.props.history.push('/');
@@ -42,10 +47,7 @@ class App extends React.Component {
     gotoStat = () => {
         this.props.history.push('/statistic')
     }
-
     render() {
-
-
         return (
             <ConnectedRouter history={this.props.history}>
                 {this.props.isLoggedIn ?
@@ -53,11 +55,11 @@ class App extends React.Component {
                         <Navbar bg="dark" variant="dark">
                             <Navbar.Brand href="#home">Caffeine Camera</Navbar.Brand>
                                 <Nav className="mr-auto">
-                                    <Nav.Link href="#" onSelect={this.gotoHome}>Home</Nav.Link>
-                                    <Nav.Link href="# " onSelect={this.gotoSubject}>Subject</Nav.Link>
-                                    <Nav.Link href="#  " onSelect={this.gotoGroup}>Group</Nav.Link>
-                                    <Nav.Link href="#   " onSelect={this.gotoStat}>Statistic</Nav.Link>
-                                    <Nav.Link href="#    " onSelect={this.gotoRank}>Ranking</Nav.Link>
+                                    <Nav.Link id='home-link' href="#" onSelect={this.gotoHome}>Home</Nav.Link>
+                                    <Nav.Link id='subject-link' href="# " onSelect={this.gotoSubject}>Subject</Nav.Link>
+                                    <Nav.Link id='group-link' href="#  " onSelect={this.gotoGroup}>Group</Nav.Link>
+                                    <Nav.Link id='stat-link' href="#   " onSelect={this.gotoStat}>Statistic</Nav.Link>
+                                    <Nav.Link id='rank-link' href="#    " onSelect={this.gotoRank}>Ranking</Nav.Link>
                                 </Nav>
                                 <Nav>
                                     <Button variant="outline-warning">{this.props.user && <div id='user-info'>Hello, {this.props.user.name}</div>}</Button>

@@ -33,15 +33,15 @@ export const getLogin = () => {
     }
 };
 
-export const signin_ = () => {
-    return {type: actionTypes.SIGN_IN, isLoggedIn: true}
+export const signin_ = (data) => {
+    return {type: actionTypes.SIGN_IN, isLoggedIn: true, name: data.user}
 }
 
 export const signin = (data) => {
     return dispatch => {
         return axios.post('/user/signin', data)
             .then(res => {
-                dispatch(signin_());
+                dispatch(signin_(res.data));
                 dispatch(push('/'));
             })
             .catch(err => {

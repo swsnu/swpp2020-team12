@@ -51,5 +51,9 @@ class StatisticTestCase(TestCase):
                                                                     today_month,
                                                                     today_day))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'daily_total': '00:00', 'daily_study_time': '00:00',
-                                           'subjectData': [{'x': 'swpp', 'y': 1.0}]})
+        self.assertEqual(response.json(), {
+            'daily_total': '00:00', 'daily_study_time': '00:00',
+       #     'timelineData': [{'cardSubtitle': datetime.now().strftime('%H:%M:%S')+'~'+datetime.now().strftime('%H:%M:%S')
+        #        , 'title': 'swpp'}],
+            #   이거 시간이 현재시간으로 와서 테스트가 안됨
+            'subjectData': [{'x': 'swpp', 'y': 1.0}]})

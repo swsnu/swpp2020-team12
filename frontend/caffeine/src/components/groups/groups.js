@@ -61,9 +61,16 @@ class Groups extends Component {
         this.setState({detailShow: false});
         this.props.quitGroup(this.props.specificGroupInfo.id);
     }
-    onClickStudy=()=>{
-        this.setState({detailShow: false});
-        this.setState({subjectShow: true});
+    onClickStudy=(count)=>{
+        if(count>=5){
+            alert("can't join. maximum members: 5");
+            this.setState({detailShow:false})
+        }
+        else{
+            this.setState({detailShow: false});
+            this.setState({subjectShow: true});
+        }
+
     }
     clickSearchedGroupHandler = (group) => {
         this.props.history.push('/group/' + group.id)
@@ -91,6 +98,7 @@ class Groups extends Component {
                     members={group.members.length}
                     averageHours={this.getHours(group.time)}
                     announcement={group.description}
+                    activeCount={group.active_count}
                     clickDetail={() => this.clickGroupHandler(group)}
                 />
             );
@@ -150,6 +158,7 @@ class Groups extends Component {
                         group_name={this.props.specificGroupInfo.name}
                         show={this.state.detailShow}
                         members={this.props.specificGroupInfo.members}
+                        activeCount={this.props.specificGroupInfo.active_count}
                         handleDetailShow={this.handleDetailShow}
                         onClickQuit={this.onClickQuit}
                         onClickStudy={this.onClickStudy}

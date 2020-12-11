@@ -1,6 +1,7 @@
 import json
 from django.test import TestCase, Client
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
+from group.models import Group, StudyRoom
 from user.models import User
 from datetime import timedelta
 from datetime import date
@@ -18,6 +19,10 @@ class StudyTestCase(TestCase):
             study_time=timedelta(),
             subject='swpp', distracted_time=timedelta(),
             user=user1)
+        group1 = Group.objects.create(name='team1', description='this is description1',
+                                      time=timedelta())
+        group1.members.add(user1)
+        study_room = StudyRoom.objects.create(group=group1)
         Concentration.objects.create(parent_study=daily_study_for_subject)
         Concentration.objects.create(parent_study=daily_study_for_subject)
 
@@ -42,7 +47,7 @@ class StudyTestCase(TestCase):
         response = client.post('/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(DailyStudyRecord.objects.all().count(), 1)
         current_study = DailyStudyForSubject.objects.filter(is_active=True)
         self.assertEqual(current_study.count(), 1)
@@ -63,7 +68,7 @@ class StudyTestCase(TestCase):
         response = client.post('/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(DailyStudyRecord.objects.all().count(), 1)
         current_study = DailyStudyForSubject.objects.filter(is_active=True)
         self.assertEqual(current_study.count(), 1)
@@ -85,7 +90,7 @@ class StudyTestCase(TestCase):
             user=user1, is_active=True)
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.put('/study/status/')
+        response = client.put('/study/status/', json.dumps({'group_id': 1}))
         self.assertEqual(response.status_code, 200)
         today = DailyStudyRecord.objects.get(date=date.today())
         self.assertEqual(today.total_study_time,
@@ -125,6 +130,7 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
+            'id': 1,
             'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
@@ -163,6 +169,7 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
+            'id': 1,
             'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
@@ -218,7 +225,8 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'id': 1,
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 3,
@@ -278,6 +286,7 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
+            'id': 1,
             'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
@@ -338,6 +347,7 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
+            'id': 1,
             'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
@@ -396,6 +406,7 @@ class StudyTestCase(TestCase):
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/study/infer/', json.dumps({
+            'id':1,
             'image': 'img/,b123sfad'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,

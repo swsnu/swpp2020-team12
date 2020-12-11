@@ -38,11 +38,11 @@ describe('<SignUp />', () => {
       expect(component.length).toBe(1);
     });
     
-    it(`should call 'handlerCancle'`, () => {
+    it(`should call 'handlerCancel'`, () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
         .mockImplementation(path => {});
         const component = mount(signup);
-        const wrapper = component.find('#cancle-Button');
+        const wrapper = component.find('#cancle-Button').at(0);
         wrapper.simulate('click');
         expect(spyHistoryPush).toHaveBeenCalledTimes(1);
     });
@@ -51,7 +51,7 @@ describe('<SignUp />', () => {
         const handlerSignUp = jest.spyOn(actionCreators, 'signup')
         .mockImplementation(id => {return dispatch => {}; });
         const component = mount(signup);
-        const wrapper = component.find('#sign-up-Button');
+        const wrapper = component.find('#sign-up-Button').at(0);
         wrapper.simulate('click');
         expect(handlerSignUp).toHaveBeenCalledTimes(1);
     });

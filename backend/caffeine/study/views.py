@@ -32,6 +32,9 @@ def study_room(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
         group_id = req_data['group_id']
+        room = StudyRoom.objects.get(group__id=group_id)
+        if room.active_studys.count() >= 5:
+            return HttpResponse(status=400)
         user = User.objects.get(id=request.user.id)
         today_study = user.daily_record.filter(date=datetime.date.today())
         if not today_study:
@@ -51,15 +54,16 @@ def study_room(request):
             current_study.is_active = False
             current_study.save()
             today_study.save()
+            room.active_studys.remove(current_study)
         subject = req_data['subject']
         current_study = DailyStudyForSubject(subject=subject, is_active=True, user=user)
         current_study.save()
-        room=StudyRoom.objects.get(group__id=group_id)
         room.active_studys.add(current_study)
         room.save()
-        prev_room=[study_info for study_info in room.active_studys.all().values('concentration_gauge', 'user__name', 'user__message')]
-        join_group.send(sender='study_room', name=user.name, user_id=user.id, group_id=group_id)
-        return JsonResponse({'subject':subject, 'members': prev_room}, safe=False)
+        prev_room = [study_info for study_info in
+                     room.active_studys.all().values('concentration_gauge', 'user__id', 'user__name', 'user__message')]
+        join_group.send(sender='study_room', name=user.name, user_id=user.id, group_id=group_id, message=user.message)
+        return JsonResponse({'subject': subject, 'members': prev_room}, safe=False)
     elif request.method == 'PUT':
         user = User.objects.get(id=request.user.id)
         req_data = json.loads(request.body.decode())
@@ -75,7 +79,7 @@ def study_room(request):
         current_study.is_active = False
         current_study.save()
         today_study.save()
-        room=StudyRoom.objects.get(group__id=group_id)
+        room = StudyRoom.objects.get(group__id=group_id)
         room.active_studys.remove(current_study)
         room.save()
         if room.active_studys.exists():
@@ -90,9 +94,9 @@ def study_infer(request):
     req_data = json.loads(request.body.decode())
     img = req_data['image']
     group_id = req_data['id']
-    api_url='https://vision.googleapis.com/v1/images:annotate?key='
-    key='AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
-    api_url+=key
+    api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
+    key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
+    api_url += key
     image = img.split(',')[1]
     _features = [{
         "type": "FACE_DETECTION",
@@ -167,9 +171,8 @@ def study_infer(request):
         current_study.concentration_gauge = current_study.study_time / (
                 current_study.study_time + current_study.distracted_time)
     current_study.save()
-    print(request.user.id)
     inference_happen.send(sender='study_infer', studying_info={
-        'id': request.user.id,
+        'user__id': request.user.id,
         'gauge': current_study.concentration_gauge,
     }, group_id=group_id)
 

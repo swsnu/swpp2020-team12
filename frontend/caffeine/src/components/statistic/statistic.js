@@ -30,7 +30,7 @@ class Statistic extends Component{
         this.props.getWeeklydata(moment())
         this.props.getDailySubject(moment())
     }
-
+/*
     gotoGroup = () => {
         this.props.history.push('/group')
     }
@@ -46,7 +46,7 @@ class Statistic extends Component{
     gotoMain = () => {
         this.props.history.push('/')
     }
-
+*/
     handletimelineShow = () => {
         this.setState({timelineShow:false})
     }

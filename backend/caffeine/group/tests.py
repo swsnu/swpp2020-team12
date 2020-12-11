@@ -117,6 +117,11 @@ class GroupTestCase(TestCase):
         client.login(username='id2', password='pw2')
         response = client.delete('/group/2/')
         self.assertEqual(response.status_code, 200)
+        client2 = Client() 
+        client.login(username='id3', password='pw3')
+        response = client.delete('/group/2/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Group.objects.filter(id=2).exists(), False)
 
     def test_group_search(self):
         client = Client()
@@ -165,4 +170,12 @@ class GroupTestCase(TestCase):
         response = client.put('/group/search/1', {'pass': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 400)
         response = client.delete('/group/search/1')
+        self.assertEqual(response.status_code, 405)
+
+    def test_user_group_info_405(self):
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/group/2/')
+        self.assertEqual(response.status_code, 405)
+        response = client.put('/group/2/')
         self.assertEqual(response.status_code, 405)

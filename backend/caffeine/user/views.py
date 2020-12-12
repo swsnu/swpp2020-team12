@@ -1,10 +1,10 @@
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 import json
-from .models import User
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from .models import User
+
 
 @ensure_csrf_cookie
 @csrf_exempt
@@ -21,6 +21,7 @@ def sign_up(request):
         return HttpResponse(status=201)
     else:
         return HttpResponseNotAllowed(['POST'])
+
 
 @ensure_csrf_cookie
 @csrf_exempt
@@ -59,12 +60,3 @@ def get_user(request):
         return JsonResponse(response_dict, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
-
-"""
-@ensure_csrf_cookie
-def token(request):
-    if request.method == 'GET':
-        return HttpResponse(status=204)
-    else:
-        return HttpResponseNotAllowed(['GET'])
-"""

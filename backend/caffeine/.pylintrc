@@ -10,11 +10,11 @@ fail-under=100.0
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=migrations,tests
+ignore= migrations, tests
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
-ignore-patterns=manage.py
+ignore-patterns=manage.py,
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
@@ -145,13 +145,15 @@ disable=print-statement,
         too-many-locals,
         attribute-defined-outside-init,
         unused-import,
+        unused-argument,
         wrong-import-order,
         invalid-name,
         unnecessary-comprehension,
         too-many-return-statements,
         no-else-return,
         duplicate-code,
-        consider-using-set-comprehension
+        consider-using-set-comprehension,
+        no-member
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

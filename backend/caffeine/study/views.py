@@ -61,8 +61,11 @@ def study_room(request):
         room.active_studys.add(current_study)
         room.save()
         prev_room = [study_info for study_info in
-                     room.active_studys.all().values('concentration_gauge', 'user__id', 'user__name', 'user__message')]
-        join_group.send(sender='study_room', name=user.name, user_id=user.id, group_id=group_id, message=user.message)
+                     room.active_studys.all().values(
+                         'concentration_gauge', 'user__id', 'user__name', 'user__message')]
+        join_group.send(
+            sender='study_room', name=user.name, user_id=user.id,
+            group_id=group_id, message=user.message)
         return JsonResponse({'subject': subject, 'members': prev_room}, safe=False)
     elif request.method == 'PUT':
         user = User.objects.get(id=request.user.id)
@@ -83,7 +86,9 @@ def study_room(request):
         room.active_studys.remove(current_study)
         room.save()
         if room.active_studys.exists():
-            leave_group.send(sender='study_room', name=user.name, user_id=user.id, group_id=group_id)
+            leave_group.send(
+                sender='study_room', name=user.name, user_id=user.id, group_id=group_id
+            )
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])

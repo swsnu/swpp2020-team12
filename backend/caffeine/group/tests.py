@@ -25,9 +25,11 @@ class GroupTestCase(TestCase):
                                       password='pw2', time=datetime.timedelta(hours=15, minutes=20))
         group1.members.add(user1, user2)
         group2.members.add(user2, user3)
-        active_study = DailyStudyForSubject.objects.create(subject='subject', user=user1, is_active=True)
+        active_study = DailyStudyForSubject.objects.create(
+            subject='subject', user=user1, is_active=True
+        )
         study_room1 = StudyRoom.objects.create(group=group1)
-        study_room2 = StudyRoom.objects.create(group=group2)
+        StudyRoom.objects.create(group=group2)
         study_room1.active_studys.add(active_study)
 
     def test_group_count(self):
@@ -117,7 +119,6 @@ class GroupTestCase(TestCase):
         client.login(username='id2', password='pw2')
         response = client.delete('/group/2/')
         self.assertEqual(response.status_code, 200)
-        client2 = Client() 
         client.login(username='id3', password='pw3')
         response = client.delete('/group/2/')
         self.assertEqual(response.status_code, 200)
@@ -140,7 +141,6 @@ class GroupTestCase(TestCase):
              'name': 'team2',
              'time': 'P0DT15H20M00S', 'password': 'pw2'}
         ])
-
 
     def test_search_group_info(self):
         client = Client()

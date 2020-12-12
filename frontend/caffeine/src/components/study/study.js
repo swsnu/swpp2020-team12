@@ -8,11 +8,13 @@ import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
 import SelectSubject from './selectSubject/selectSubject';
+import {Container, Row, Col, Table} from 'react-bootstrap'
 
 const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
 class Study extends Component {
     state = {
+        members: this.props.members,
         time: moment.duration(0),
         subjectShow: false,
         subject: null
@@ -22,6 +24,8 @@ class Study extends Component {
         height: 720,
         facingMode: "user"
     }
+    webcamRef = createRef()
+    socketRef = createRef()
     tick = () => {
         const {time} = this.state
         this.setState({time: time.clone().add(1, 'seconds')})
@@ -39,6 +43,33 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
+        this.socketRef.current=new WebSocket('ws://localhost:8000')
+        this.socketRef.current.onopen = e => {
+            console.log('open', e)
+        }
+        this.socketRef.current.onmessage = e => {
+           const d=JSON.parse(e.data)
+           if(Object.prototype.hasOwnProperty.call(d, 'inference')){
+               const new_inf = this.state.members.find(obj => obj.user__id===d.inference.user__id)
+               new_inf.concentration_gauge=d.inference.gauge
+               const infered = this.state.members.map(obj => obj.user__id===d.inference.user__id ? new_inf : obj)
+               this.setState({members: infered})
+           }
+           else if(Object.prototype.hasOwnProperty.call(d, 'join')){
+                const new_mem = {
+                    user__id: d.join.user__id,
+                    user__name: d.join.user__name,
+                    user__message: d.join.user__message,
+                    concentration_gauge: 0
+                }
+                const new_mems = [...this.state.members, new_mem]
+                this.setState({members: new_mems})
+           }
+           else if(Object.prototype.hasOwnProperty.call(d, 'leave')){
+            const leav_mems = this.state.members.filter(obj=> obj.user__id!==d.leave.user__id)
+            this.setState({members: leav_mems})
+       }
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -50,7 +81,8 @@ class Study extends Component {
 
     componentWillUnmount() {
         clearInterval(this.interval);
-        this.props.endStudy();
+        this.socketRef.current.close();
+        this.props.endStudy(this.props.match.params.group_id);
     }
 
     onClickEnd = () => {
@@ -71,23 +103,27 @@ class Study extends Component {
         } else
             this.setState({subjectShow: false});
     }
-    webcamRef = createRef()
     capture = () => {
-        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot())
+        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
     render() {
+        const mem=[].concat(this.state.members)
+            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
+            .map((m, i)=><tr key={i}><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
         return (
-            <div className="container">
-                <h1>study room</h1>
-                <div className="row">
-                    <div className="col-3">
-                        <Webcam
-                            className='invisible-webcam'
+            <Container>
+                <Row>
+                    <h1>study room</h1>
+                </Row>
+                <Row>
+                    <Col>
+                    <Webcam
+                            className='user_webcam'
                             audio={false}
-                            height={200}
+                            height={360}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={200}
+                            width={720}
                             videoConstraints={this.videoConstraints}
                         />
                         <SelectSubject
@@ -98,23 +134,34 @@ class Study extends Component {
                             onClickCheck={this.onClickCheck}
                             onClickChoose={this.onClickChoose}
                         />
-                    </div>
-                    <div className="col-9">
                         <button id='change-subject-button' onClick={() => this.setState({subjectShow: true})}>Change
                             Subject
                         </button>
-                        <button onClick={this.capture}>click</button>
                         <button id='end-study-button' onClick={this.onClickEnd}>End</button>
                         <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
                         <Studycomp
-                            name={'demo_user'}
+                            name={this.props.username.name}
                             state={this.props.status !== null ? status_array[this.props.status] : 'We believe you are studying'}
                             rate={this.props.gauge !== null ? this.props.gauge : 1}
                         />
-                    </div>
-                </div>
-
-            </div>
+                    </Col>
+                    <Col>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                <th>#</th>
+                                <th>name</th>
+                                <th>gauge</th>
+                                <th>message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {mem}
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }
@@ -124,16 +171,18 @@ const mapStateToProps = state => {
         status: state.study.status,
         gauge: state.study.gauge,
         currentSubject: state.study.subject,
-        subjectList: state.subject.mySubjectList
+        subjectList: state.subject.mySubjectList,
+        members: state.study.memberlist,
+        username: state.user.user
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postCapturetoServer: (image) =>
-            dispatch(actionCreators.postCapturetoServer(image)),
-        endStudy: () =>
-            dispatch(actionCreators.endStudy()),
+        postCapturetoServer: (image, group_id) =>
+            dispatch(actionCreators.postCapturetoServer(image, group_id)),
+        endStudy: (group_id) =>
+            dispatch(actionCreators.endStudy(group_id)),
         getSubjects: () =>
             dispatch(actionCreators.getSubjects()),
         changeSubject: (subject, group_id) =>

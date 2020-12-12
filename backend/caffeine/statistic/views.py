@@ -14,7 +14,6 @@ def formatHHmm(duration):
     return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
 
-@csrf_exempt
 def getMonthlydata(request, year, month):
     if request.method == 'GET':
         dailyRecord = request.user.daily_record
@@ -34,7 +33,6 @@ def getMonthlydata(request, year, month):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def getWeeklydata(request, year, month, date):
     if request.method == 'GET':
         dailySubjectRecord = request.user.daily_subject_record
@@ -69,13 +67,14 @@ def getWeeklydata(request, year, month, date):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def getDailySubject(request, year, month, date):
     if request.method == 'GET':
         dailySubjectRecord = request.user.daily_subject_record
         data_list = [
             {'date': dailySubjectRecord.date,
              'subject': dailySubjectRecord.subject,
+             'start_time': dailySubjectRecord.start_time,
+             'end_time': dailySubjectRecord.end_time,
              'study_time': dailySubjectRecord.study_time,
              'distracted_time': dailySubjectRecord.distracted_time
              }
@@ -96,9 +95,17 @@ def getDailySubject(request, year, month, date):
                     total += dic['study_time']
                     total += dic['distracted_time']
             result_list.append({'x': subject, 'y': subject_study_time.total_seconds()})
+        timelineData_list = [
+            {
+                'title': record['subject'],
+                'cardSubtitle': record['start_time'].strftime('%H:%M:%S') +
+                                '~' + record['end_time'].strftime('%H:%M:%S')
+            }
+            for record in data_list
+        ]
 
         response = {'daily_total': formatHHmm(total), 'daily_study_time': formatHHmm(study_time),
-                    'subjectData': result_list}
+                    'subjectData': result_list, 'timelineData': timelineData_list}
 
         return JsonResponse(response, safe=False)
     else:

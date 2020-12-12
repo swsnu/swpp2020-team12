@@ -3,9 +3,27 @@ import * as actionTypes from './actionTypes'
 import axios from 'axios'
 import {history} from '../store';
 import {push} from "connected-react-router";
+/*
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+*/
 
 export const getLogin_ = (user) => {
-    return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name:user.name, message: user.message};
+    return {type: actionTypes.GET_LOGIN, isLoggedIn: user.isLoggedIn, name: user.name, message: user.message};
 };
 
 export const getLogin = () => {
@@ -15,15 +33,15 @@ export const getLogin = () => {
     }
 };
 
-export const signin_ = () => {
-    return {type: actionTypes.SIGN_IN, isLoggedIn: true}
+export const signin_ = (data) => {
+    return {type: actionTypes.SIGN_IN, isLoggedIn: true, name: data.user}
 }
 
 export const signin = (data) => {
     return dispatch => {
         return axios.post('/user/signin', data)
             .then(res => {
-                dispatch(signin_());
+                dispatch(signin_(res.data));
                 dispatch(push('/'));
             })
             .catch(err => {

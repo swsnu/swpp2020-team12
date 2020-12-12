@@ -1,50 +1,4 @@
-.container{
-    position: relative;
-    display:grid;
-    height:100vh;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 60px 1fr 1fr;
-    background:whitesmoke;
-    grid-template-areas:
-        "header header"
-        "leftup rightup"
-        "leftdown rightdown" ;
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
-
-div span[id="label"]{
-    font-size:30px;
-    margin-top:40px;
-    margin-bottom: 0px;
-    color: rgb(255, 255, 255);
-    padding: 16px;
-    /*margin:10px;*/
-    cursor: pointer;
-}
-
-nav{
-    background: rgb(179, 174, 168);
-    grid-area: header;
-    width: auto;
-}
-
-#leftup{
-    position: relative;
-    grid-area:leftup;
-}
-#leftdown{
-    position: relative;
-    grid-area:leftdown;
-}
-#rightup{
-    grid-area:rightup;
-}
-
-#rightdown{
-    grid-area:rightdown;
-}
 
 
 .react-calendar-heatmap .color-scale-1 { fill: #d6e685; }
@@ -97,4 +51,21 @@ svg.react-calendar-heatmap {
 
 svg.react-calendar-heatmap text{
     fill: black
+}
+
+#statistic {
+    height: 100vh;
+    border-style: none dashed none dashed;
+    border-width: 7px;
+}
+
+div.react-calendar.calendar {
+    width: 530px;
+    margin-top:40px;
+}
+
+#timeline-button {
+    position: absolute;
+    right: 0px;
+    margin-top: 10px;
 }

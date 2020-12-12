@@ -5,6 +5,10 @@ import App from './App';
 import { Provider } from 'react-redux';
 import store, { history } from './store/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+
+axios.defaults.xsrfCookieName= 'csrftoken';
+axios.defaults.xsrfHeaderName='X-CSRFToken';
 
 ReactDOM.render(
   <Provider store={store}> <App history={history} /> </Provider>,

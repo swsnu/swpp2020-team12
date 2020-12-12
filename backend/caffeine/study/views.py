@@ -7,7 +7,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
+from .signals import inference_happen, join_group, leave_group
 from user.models import User
+from group.models import StudyRoom
 import math
 
 rot = ['top', 'right', 'bottom', 'left']
@@ -26,11 +28,13 @@ def calculate_ear(eye):
 
 
 # Create your views here.
-@csrf_exempt
 def study_room(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
-        # group_id = req_data['group_id']
+        group_id = req_data['group_id']
+        room = StudyRoom.objects.get(group__id=group_id)
+        if room.active_studys.count() >= 5:
+            return HttpResponse(status=400)
         user = User.objects.get(id=request.user.id)
         today_study = user.daily_record.filter(date=datetime.date.today())
         if not today_study:
@@ -50,15 +54,24 @@ def study_room(request):
             current_study.is_active = False
             current_study.save()
             today_study.save()
+            room.active_studys.remove(current_study)
         subject = req_data['subject']
         current_study = DailyStudyForSubject(subject=subject, is_active=True, user=user)
         current_study.save()
-        return HttpResponse(status=201)
+        room.active_studys.add(current_study)
+        room.save()
+        prev_room = [study_info for study_info in
+                     room.active_studys.all().values(
+                         'concentration_gauge', 'user__id', 'user__name', 'user__message')]
+        join_group.send(
+            sender='study_room', name=user.name, user_id=user.id,
+            group_id=group_id, message=user.message)
+        return JsonResponse({'subject': subject, 'members': prev_room}, safe=False)
     elif request.method == 'PUT':
         user = User.objects.get(id=request.user.id)
-        current_study = DailyStudyForSubject.objects.get(
-            user__id=request.user.id, is_active=True
-        )
+        req_data = json.loads(request.body.decode())
+        group_id = req_data['group_id']
+        current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
         today_study = user.daily_record.filter(date=datetime.date.today()).first()
         today_study.total_study_time += current_study.study_time
         today_study.total_study_time += current_study.distracted_time
@@ -69,16 +82,23 @@ def study_room(request):
         current_study.is_active = False
         current_study.save()
         today_study.save()
+        room = StudyRoom.objects.get(group__id=group_id)
+        room.active_studys.remove(current_study)
+        room.save()
+        if room.active_studys.exists():
+            leave_group.send(
+                sender='study_room', name=user.name, user_id=user.id, group_id=group_id
+            )
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-@csrf_exempt
 def study_infer(request):
     state = 0
     req_data = json.loads(request.body.decode())
     img = req_data['image']
+    group_id = req_data['id']
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key
@@ -156,6 +176,11 @@ def study_infer(request):
         current_study.concentration_gauge = current_study.study_time / (
                 current_study.study_time + current_study.distracted_time)
     current_study.save()
+    inference_happen.send(sender='study_infer', studying_info={
+        'user__id': request.user.id,
+        'gauge': current_study.concentration_gauge,
+    }, group_id=group_id)
+
     return JsonResponse({'status': state,
                          'gauge': current_study.concentration_gauge},
                         status=201, safe=False)

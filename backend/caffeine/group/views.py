@@ -2,12 +2,11 @@ import json
 from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Group
+from .models import Group, StudyRoom
 
 
 # Create your views here.
 
-@csrf_exempt
 def user_group_list(request):
     """user가 속한 그룹"""
     if request.method == 'GET':
@@ -16,8 +15,10 @@ def user_group_list(request):
         for group in groups:
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
+            active_count = StudyRoom(group=group).active_studys.count()
             response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
-                                  'description': group.description, 'members': member_list})
+                                  'description': group.description, 'members': member_list,
+                                  'active_count': active_count})
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'POST':
         try:
@@ -30,28 +31,30 @@ def user_group_list(request):
         group = Group(name=name, password=password, description=description)
         group.save()
         group.members.add(request.user)
+        studyroom = StudyRoom(group=group)
+        studyroom.save()
         member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                        for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name,
                          'time': group.time, 'description': group.description,
-                         'members': member_list}
+                         'members': member_list, 'active_count': 0}
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
 
-@csrf_exempt
 def user_group_info(request, group_id):
     """유저의 자기 그룹을 클릭했을 때"""
     # if group member에 request.user가 없다면 403
     if request.method == 'GET':
         group = Group.objects.filter(id=group_id).first()
         count = group.members.count()
+        active_count=StudyRoom.objects.get(group=group).active_studys.count()
         member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                        for member in group.members.iterator()]
         response_dict = {'id': group.id, 'name': group.name, 'count': count,
                          'time': group.time, 'description': group.description,
-                         'members': member_list
+                         'members': member_list, 'active_count': active_count,
                          }
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'DELETE':
@@ -64,7 +67,6 @@ def user_group_info(request, group_id):
         return HttpResponseNotAllowed(['GET', 'DELETE'])
 
 
-@csrf_exempt
 def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.
     members 정보를 보내지 않음"""
@@ -94,11 +96,12 @@ def search_group_info(request, group_id):
         if password == group.password:
             group.members.add(request.user)
             count = group.members.count()
+            active_count = StudyRoom.objects.get(group=group).active_studys.count()
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
             response_dict = {'id': group.id, 'name': group.name, 'count': count,
                              'time': group.time, 'description': group.description,
-                             'members': member_list
+                             'members': member_list, 'active_count': active_count
                              }
             return JsonResponse(response_dict, status=201, safe=False)
         else:

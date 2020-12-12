@@ -156,7 +156,7 @@ describe(' <Subjects/> ', () => {
     it(`should change 'createShow' `, () => {
         const component = mount(subjects);
         const wrapper = component.find('#create-subject-button');
-        wrapper.simulate('click');
+        wrapper.at(0).simulate('click');
         const newInstance = component.find(Subjects.WrappedComponent).instance();
         expect(newInstance.state.createShow).toEqual(true);
     });
@@ -281,7 +281,7 @@ describe(' <Subjects/> ', () => {
     it(`should handle 'handle create show'`, () => {
         const component = mount(subjects);
         const wrapper = component.find('#create-subject-button');
-        wrapper.simulate('click');
+        wrapper.at(0).simulate('click');
         const newInstance = component.find(Subjects.WrappedComponent).instance();
         expect(newInstance.state.createShow).toEqual(true);
 

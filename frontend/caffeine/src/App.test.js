@@ -50,19 +50,56 @@ describe('App', () => {
                 };
             });
         const component = mount(app);
-        const wrapper = component.find('#logout-button')
+        const wrapper = component.find('#logout-button').at(0);
         wrapper.simulate('click');
         expect(spySignout).toHaveBeenCalledTimes(1);
     });
-    it('should redirect to home when click homeHandler', () => {
+    it(`should call 'gotoHome'`, () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
-            .mockImplementation(() => {
+            .mockImplementation(path => {
             });
         const component = mount(app);
-        const wrapper = component.find('#home-button')
+        const wrapper = component.find('#home-link').at(0);
         wrapper.simulate('click');
-        expect(spyHistoryPush).toHaveBeenCalledTimes(1);
+        expect(spyHistoryPush).toHaveBeenCalledWith('/');
     });
+    it(`should call 'gotoGroup'`, () => {
+        const spyHistoryPush = jest.spyOn(history, 'push')
+            .mockImplementation(path => {
+            });
+        const component = mount(app);
+        const wrapper = component.find('#group-link').at(0);
+        wrapper.simulate('click');
+        expect(spyHistoryPush).toHaveBeenCalledWith('/group');
+    });
+    it(`should call 'gotoSubject'`, () => {
+        const spyHistoryPush = jest.spyOn(history, 'push')
+            .mockImplementation(path => {
+            });
+        const component = mount(app);
+        const wrapper = component.find('#subject-link').at(0);
+        wrapper.simulate('click');
+        expect(spyHistoryPush).toHaveBeenCalledWith('/subject');
+    });
+    it(`should call 'gotoRank'`, () => {
+        const spyHistoryPush = jest.spyOn(history, 'push')
+            .mockImplementation(path => {
+            });
+        const component = mount(app);
+        const wrapper = component.find('#rank-link').at(0);
+        wrapper.simulate('click');
+        expect(spyHistoryPush).toHaveBeenCalledWith('/ranking');
+    });
+    it(`should call 'gotoStat'`, () => {
+        const spyHistoryPush = jest.spyOn(history, 'push')
+            .mockImplementation(path => {
+            });
+        const component = mount(app);
+        const wrapper = component.find('#stat-link').at(0);
+        wrapper.simulate('click');
+        expect(spyHistoryPush).toHaveBeenCalledWith('/statistic');
+    });
+
 
 });
 

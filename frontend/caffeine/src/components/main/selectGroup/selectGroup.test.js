@@ -5,9 +5,9 @@ import SelectGroup from './selectGroup';
 
 const props = {
     myGroupList: [
-        {id: 1, name: 'group1'}
+        {id: 1, name: 'group1', active_count: 3}
     ],
-    group: null
+    group: null,
 }
 describe('<SelectGroup />', () => {
     it('should render without errors', () => {
@@ -30,5 +30,14 @@ describe('<SelectGroup />', () => {
         const wrapper = component.find('Button');
         wrapper.simulate('click')
         expect(spyClick).toBeCalledTimes(1);
+    });
+    it('should not call onClickCheck', () => {
+        const spyClick = jest.fn()
+        const mockGroupList= [{id: 1, name: 'group1', active_count: 6}];
+        const component = shallow(<SelectGroup show={true} myGroupList={mockGroupList} group={null}
+                                                 onClickCheck={spyClick}/>);
+        const wrapper = component.find('input');
+        wrapper.simulate('click')
+        expect(spyClick).toBeCalledTimes(0);
     });
 });

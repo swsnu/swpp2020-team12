@@ -35,12 +35,13 @@ const mockgroup = {
     ],
     password: null,
     time: "1hour",
-    description: "stduying"
+    description: "studying",
+    active_count: 1
 }
 const stubInitialState = {
     myGroupList: [
-        {id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 2},
-        {id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 1},
+        {id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 3, active_count: 1},
+        {id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 5, active_count: 5},
     ],
     searchGroupList: [{id: 3, name: 'abcd', description: null, time: 'P0DT10H41M00S', members: 1}],
     specificGroupInfo: mockgroup,
@@ -79,7 +80,7 @@ jest.mock('../study/selectSubject/selectSubject', () => {
         })
         return (
             <div className="spysubject">
-                <button id='closeButton' onClick={props.handleSubjectShow}></button>
+                <button id='closeButton' onClick={props.onSubjectShow}></button>
                 {subjects}
                 <button size="sm" disabled={props.subject === null} id="start-study-button"
                         onClick={props.onClickChoose}>Choose Subject
@@ -100,11 +101,12 @@ jest.mock('./userGroupInfo/userGroupInfo', () => {
         })
         return (
             <div className='spyinfo'>
+                <button id='closeButton' onClick={props.handleDetailShow}></button>
                 <ul>
                     {memberList}
                 </ul>
                 <button id="quit-group-button" onClick={props.onClickQuit}>leave group</button>
-                <button id="join-study-button" onClick={props.onClickStudy}>study with me!</button>
+                <button id="join-study-button" onClick={()=>props.onClickStudy(props.activeCount)}>study with me!</button>
             </div>
         )
     })
@@ -136,7 +138,7 @@ describe('<Groups />', () => {
     it('should render Groups', () => {
         const component = mount(groups);
         const wrapper = component.find('#name');
-        expect(wrapper.length).toBe(2);
+        expect(wrapper.length).toBe(4);
         expect(spygetGroups).toBeCalledTimes(1);
     });
     it(`should call 'clickGroupHandler'`, () => {
@@ -159,13 +161,13 @@ describe('<Groups />', () => {
                 };
             });
         const component = mount(groups);
-        const wrapper = component.find('#group-search-button');
+        const wrapper = component.find('#group-search-button').at(0);
         wrapper.simulate('click');
         expect(spysearchGroups).toHaveBeenCalledTimes(1);
     });
     it(`should change 'createShow' `, () => {
         const component = mount(groups);
-        const wrapper = component.find('#create-group-button');
+        const wrapper = component.find('#create-group-button').at(0);
         wrapper.simulate('click');
         const newInstance = component.find(Groups.WrappedComponent).instance();
         expect(newInstance.state.createShow).toEqual(true);
@@ -186,7 +188,7 @@ describe('<Groups />', () => {
         const newInstance = component.find(Groups.WrappedComponent).instance();
         expect(newInstance.state.group_name).toEqual('1234');
     });
-    it(`should redirect to main`, () => {
+   /* it(`should redirect to main`, () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
             .mockImplementation(path => {
             });
@@ -195,6 +197,7 @@ describe('<Groups />', () => {
         wrapper.simulate('click');
         expect(spyHistoryPush).toHaveBeenCalledWith('/');
     });
+    */
     it(`should chage state as input chaged but push back change nothing`, () => {
         const spyadd = jest.spyOn(actionCreators, 'addGroup')
             .mockImplementation(id => {
@@ -202,7 +205,7 @@ describe('<Groups />', () => {
                 };
             });
         const component = mount(groups);
-        let wrapper = component.find('#create-group-button');
+        let wrapper = component.find('#create-group-button').at(0);
         wrapper.simulate('click');
         wrapper = component.find('.spycreate');
         expect(wrapper.length).toBe(1);
@@ -228,7 +231,7 @@ describe('<Groups />', () => {
                 };
             });
         const component = mount(groups);
-        let wrapper = component.find('#create-group-button');
+        let wrapper = component.find('#create-group-button').at(0);
         wrapper.simulate('click');
         wrapper = component.find('.spycreate');
         expect(wrapper.length).toBe(1);
@@ -293,5 +296,106 @@ describe('<Groups />', () => {
         wrapper = component.find('#start-study-button');
         wrapper.simulate('click');
         expect(spystartStudy).toHaveBeenCalledTimes(1);
+    });
+    it('should end  modal if close button is clicked', () => {
+        const component = mount(groups);
+        let wrapper = component.find('#name').at(0);
+        wrapper.simulate('click');
+        wrapper = component.find('#join-study-button');
+        wrapper.simulate('click');
+        const newInstance = component.find(Groups.WrappedComponent).instance();
+        expect(newInstance.state.detailShow).toEqual(false);
+        expect(newInstance.state.subjectShow).toEqual(true);
+        wrapper = component.find('#closeButton').at(0);
+        wrapper.simulate('click');
+    });
+    it('should call not show subject if active count >= 5', () => {
+        const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(groups);
+        let wrapper = component.find('#name').at(1);
+        wrapper.simulate('click');
+        wrapper = component.find('#join-study-button');
+        wrapper.simulate('click');
+        const newInstance = component.find(Groups.WrappedComponent).instance();
+        expect(newInstance.state.detailShow).toEqual(false);
+
+    });
+});
+
+
+const mockgroup1 = {
+    id: 1,
+    name: "test1",
+    members: [
+        {
+            "id": 1,
+            "name": "tesuser1",
+            "studyhour": "2hour",
+            "message": "I'm good"
+        },
+        {
+            "id": 2,
+            "name": "tesuser2",
+            "studyhour": "1hour",
+            "message": "2"
+        },
+        {
+            "id": 3,
+            "name": "tesuser3",
+            "studyhour": "42minutes",
+            "message": ""
+        }
+    ],
+    password: null,
+    time: "1hour",
+    description: "studying",
+    active_count: 5
+}
+const stubInitialState1 = {
+    myGroupList: [
+        {id: 1, name: 'test', description: null, time: 'P0DT10H42M00S', members: 3, active_count: 1},
+        {id: 2, name: 'test2', description: null, time: 'P0DT10H41M00S', members: 5, active_count: 5},
+    ],
+    searchGroupList: [{id: 3, name: 'abcd', description: null, time: 'P0DT10H41M00S', members: 1}],
+    specificGroupInfo: mockgroup1,
+    mySubjectList: [
+        {id: 1, name: 'subject1', description: 'ds', days: [{day: 0, start_time: '10:00', end_time: '12:00'}]},
+        {id: 2, name: 'subject2', description: '', days: [{day: 0, start_time: '10:00', end_time: '12:00'}]}
+    ]
+};
+const mockStore1 = getMockStore(stubInitialState1);
+
+describe('<Groups />', () => {
+    let groups, spygetGroups;
+
+    beforeEach(() => {
+        groups = (
+            <Provider store={mockStore1}>
+                <ConnectedRouter history={history}>
+                    <Switch>
+                        <Route path='/' exact component={Groups}/>
+                    </Switch>
+                </ConnectedRouter>
+            </Provider>
+        );
+        spygetGroups = jest.spyOn(actionCreators, 'getGroups')
+            .mockImplementation(() => {
+                return () => {
+                };
+            });
+    })
+    afterEach(() => {
+        jest.clearAllMocks()
+    });
+    it('should call not show subject if active count >= 5', () => {
+        const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(groups);
+        let wrapper = component.find('#name').at(1);
+        wrapper.simulate('click');
+        wrapper = component.find('#join-study-button');
+        wrapper.simulate('click');
+        const newInstance = component.find(Groups.WrappedComponent).instance();
+        expect(newInstance.state.detailShow).toEqual(false);
+        expect(mockAlert).toHaveBeenCalled();
     });
 });

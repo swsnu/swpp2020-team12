@@ -11,6 +11,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {createBrowserHistory} from 'history';
 import moment from 'moment'
 import * as actionTypes from '../../store/actions/actionTypes'
+import WS from "jest-websocket-mock";
 
 jest.mock('./selectSubject/selectSubject', () => {
     return jest.fn(props => {
@@ -60,12 +61,22 @@ const stubstudylState = {
     status: null,
     gauge: null,
     subject: 'test2',
+    memberlist:[
+        {user__id: 1, user__name: 'test', concentration_gauge: 0.5, user__message:"testing"},
+        {user__id: 2, user__name: 'test2', concentration_gauge: 0.7, user__message:"testing"}
+    ]
 };
 const stubsubjectState = {
     mySubjectList: [
         {id: '1', name: 'test1'},
         {id: '2', name: 'test2'}
     ]
+};
+const stubUserState = {
+    user: [
+        {id: '1', name: 'user1'}
+    ],
+    isLoggedIn: true
 };
 const getMockStudyReducer = jest.fn(
     initialState => (state = initialState, action) => {
@@ -87,18 +98,30 @@ const getMockSubjectReducer = jest.fn(
         return state;
     }
 );
+const getMockUserReducer = jest.fn(
+    initialState => (state = initialState, action) => {
+        switch (action.type) {
+            default:
+                break;
+        }
+        return state;
+    }
+);
 const mockStudyReducer = getMockStudyReducer(stubstudylState);
 const mockSubjectReducer = getMockSubjectReducer(stubsubjectState);
+const mockUserReducer = getMockSubjectReducer(stubUserState);
 const rootReducer = combineReducers({
     subject: mockSubjectReducer,
     study: mockStudyReducer,
+    user: mockUserReducer,
 });
 const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 
 
 describe('<Study />', () => {
-    let study, spygetSubjects;
+    let study, spygetSubjects, server;
     beforeEach(() => {
+        server = new WS("ws://localhost:8000", { jsonProtocol: true });
         jest.useFakeTimers();
         history.push('/1')
         study = (
@@ -117,7 +140,20 @@ describe('<Study />', () => {
             });
     })
     afterEach(() => {
-        jest.clearAllMocks()
+        jest.clearAllMocks();
+        WS.clean();
+    });
+    it('should update if inference data is come from ws', () => {
+        const component = mount(study);
+        setTimeout(() =>{
+            server.connected;
+        }, 10);
+        jest.runOnlyPendingTimers();
+        server.send({inference:{user__id:1, gauge: 0.3}})
+        server.send({join:{user__id:3, user__name: 'test3', user__message:"testing"}})
+        server.send({leave:{user__id:2}})
+        server.send({})
+        component.unmount();
     });
     it('should render Study', () => {
         console.log = jest.fn();

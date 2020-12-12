@@ -1,12 +1,12 @@
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 import json
-from .models import User
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from .models import User
 
 
+@ensure_csrf_cookie
 @csrf_exempt
 def sign_up(request):
     if request.method == 'POST':
@@ -23,6 +23,7 @@ def sign_up(request):
         return HttpResponseNotAllowed(['POST'])
 
 
+@ensure_csrf_cookie
 @csrf_exempt
 def sign_in(request):
     if request.method == "POST":
@@ -32,14 +33,13 @@ def sign_in(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponse(status=204)
+            return JsonResponse({'user': user.name}, status=204)
         else:
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def sign_out(request):
     if request.method == 'GET':
         if not request.user.is_authenticated:
@@ -50,7 +50,6 @@ def sign_out(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def get_user(request):
     if request.method == 'GET':
         is_logged_in = request.user.is_authenticated

@@ -1,0 +1,39 @@
+#Group {
+    background: rgb(202, 202, 202);
+    transition: all .35s;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    margin:10px;
+}
+
+
+#Group:hover {
+    color:#fff;
+    background: rgb(54, 54, 54);
+    transform: translateY(-7px);
+}
+
+#name {
+    text-align: left;
+    margin-left: 10px;
+}
+
+#members {
+    text-align: right;
+    margin-right:10px;
+}
+#active {
+    text-align: right;
+    margin-right:10px;
+}
+
+#studyTime {
+    text-align: right;
+    margin-right:10px;
+}
+
+#announcement {
+    text-align: right;
+    margin-right:10px;
+}

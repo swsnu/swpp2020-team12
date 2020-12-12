@@ -8,8 +8,6 @@ import Statistic from './statistic';
 import {getMockStore} from '../../test-utils/mocks';
 import {history} from '../../store/store';
 import * as actionCreators from '../../store/actions/statistic';
-import * as actionCreatorss from '../../store/actions/user'
-import moment from 'moment'
 
 const stubStatisticState = {
     monthlyData: [
@@ -20,13 +18,28 @@ const stubStatisticState = {
     weekly_study_time: null,
     dailyData: null,
     daily_total: null,
-    daily_study_time: null
+    daily_study_time: null,
+    timelineData: [{'title': 'hi',
+    'cardSubtitle': 'hi'}]
+};
+const stubStatisticState2 = {
+    monthlyData: [
+        {date: '2020-11-01', count: 0},
+    ],
+    weeklyData: null,
+    weekly_total: null,
+    weekly_study_time: null,
+    dailyData: null,
+    daily_total: null,
+    daily_study_time: null,
+    timelineData: []
 };
 
+const mockStore2 = getMockStore(stubStatisticState2);
 const mockStore = getMockStore(stubStatisticState);
 
 describe('<Statistic />', () => {
-    let statistic, spygetDailySubject, spyGetMonthlydata, spygetWeeklydata;
+    let statistic, statistics,spygetDailySubject, spyGetMonthlydata, spygetWeeklydata;
 
     afterEach(() => {
         jest.clearAllMocks();
@@ -35,6 +48,15 @@ describe('<Statistic />', () => {
     beforeEach(() => {
         statistic = (
             <Provider store={mockStore}>
+                <Router history={history}>
+                    <Switch>
+                        <Route path='/' exact component={Statistic}/>
+                    </Switch>
+                </Router>
+            </Provider>
+        );
+        statistics = (
+            <Provider store={mockStore2}>
                 <Router history={history}>
                     <Switch>
                         <Route path='/' exact component={Statistic}/>
@@ -82,4 +104,25 @@ describe('<Statistic />', () => {
         let wrapper = component.find('button').at(10)
         wrapper.simulate('click');
     });
+    it('should Button', () => {
+        const intersectionObserverMock = () => ({
+            observe: () => null
+       })
+        window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+        const component = mount(statistic);
+        let wrapper = component.find('#timeline-button').at(0)
+        wrapper.simulate('click')
+        const newInstance = component.find(Statistic.WrappedComponent).instance();
+        expect(newInstance.state.timelineShow).toEqual(true);
+        wrapper = component.find('#close-button').at(0)
+        wrapper.simulate('click')
+    })
+    it('should not Button', () => {
+        const component = mount(statistics);
+        let wrapper = component.find('#timeline-button').at(0)
+        wrapper.simulate('click')
+    })
 });
+
+
+

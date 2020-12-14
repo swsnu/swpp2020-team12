@@ -22,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '=-g%30li8p%n-w26e_&j=_6_3^c-2yhm1^)8ooje)669k48sj2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 CSRF_COOKIE_SECURE = True
 #SECURE_SSL_REDIRECT = True
-#SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '50.16.8.104']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['50.16.8.104', 'ec2-50-16-8-104.compute-1.amazonaws.com',
+                 'caffeine-camera.shop', 'localhost', "'caffeine'@'%'"]
 
 
 # Application definition
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -118,6 +119,7 @@ DATABASES = {
    #     },
    # }
 }
+"""
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',

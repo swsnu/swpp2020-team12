@@ -6,6 +6,7 @@ import * as actionCreators from '../../store/actions/index';
 import Webcam from 'react-webcam'
 import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import './study.css'
 import SelectSubject from './selectSubject/selectSubject';
 import {Container, Row, Col, Table} from 'react-bootstrap'
@@ -43,20 +44,19 @@ class Study extends Component {
     componentDidMount() {
         this.startTimer();
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('wss://caffeine-camera.shop/ws/study/'+
-            this.props.match.params.group_id+'/')
+        this.socketRef.current = new WebSocket('wss://caffeine-camera.shop/ws/study/' +
+            this.props.match.params.group_id + '/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }
         this.socketRef.current.onmessage = e => {
-           const d=JSON.parse(e.data)
-           if(Object.prototype.hasOwnProperty.call(d, 'inference')){
-               const new_inf = this.state.members.find(obj => obj.user__id===d.inference.user__id)
-               new_inf.concentration_gauge=d.inference.gauge
-               const infered = this.state.members.map(obj => obj.user__id===d.inference.user__id ? new_inf : obj)
-               this.setState({members: infered})
-           }
-           else if(Object.prototype.hasOwnProperty.call(d, 'join')){
+            const d = JSON.parse(e.data)
+            if (Object.prototype.hasOwnProperty.call(d, 'inference')) {
+                const new_inf = this.state.members.find(obj => obj.user__id === d.inference.user__id)
+                new_inf.concentration_gauge = d.inference.gauge
+                const infered = this.state.members.map(obj => obj.user__id === d.inference.user__id ? new_inf : obj)
+                this.setState({members: infered})
+            } else if (Object.prototype.hasOwnProperty.call(d, 'join')) {
                 const new_mem = {
                     user__id: d.join.user__id,
                     user__name: d.join.user__name,
@@ -65,16 +65,15 @@ class Study extends Component {
                 }
                 const new_mems = [...this.state.members, new_mem]
                 this.setState({members: new_mems})
-           }
-           else if(Object.prototype.hasOwnProperty.call(d, 'leave')){
-            const leav_mems = this.state.members.filter(obj=> obj.user__id!==d.leave.user__id)
-            this.setState({members: leav_mems})
-       }
+            } else if (Object.prototype.hasOwnProperty.call(d, 'leave')) {
+                const leav_mems = this.state.members.filter(obj => obj.user__id !== d.leave.user__id)
+                this.setState({members: leav_mems})
+            }
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.currentSubject !== prevProps.currentSubject){
+        if (this.props.currentSubject !== prevProps.currentSubject) {
             console.log('this.props.currentSubject')
             this.startTimer();
         }
@@ -107,10 +106,24 @@ class Study extends Component {
     capture = () => {
         this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
     }
+
     render() {
-        const mem=[].concat(this.state.members)
-            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
-            .map((m, i)=><tr key={i}><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
+        const mem = [].concat(this.state.members)
+            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1 : -1)
+            .map((m, i) => <tr key={i}>
+                <td>{i}</td>
+                <td>{m.user__name}</td>
+                <td>{(m.concentration_gauge).toFixed(3)}</td>
+                <td> {m.concentration_gauge > 0.8 ?
+                    <ProgressBar striped variant="danger" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                 now={m.concentration_gauge * 100}/>
+                    : m.concentration_gauge > 0.6 ?
+                        <ProgressBar variant="warning" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/> :
+                        <ProgressBar variant="info" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/>}</td>
+                <td>{m.user__message}</td>
+            </tr>);
         return (
             <Container>
                 <Row>
@@ -118,7 +131,7 @@ class Study extends Component {
                 </Row>
                 <Row>
                     <Col>
-                    <Webcam
+                        <Webcam
                             className='user_webcam'
                             audio={false}
                             height={360}
@@ -149,15 +162,16 @@ class Study extends Component {
                     <Col>
                         <Table striped bordered hover>
                             <thead>
-                                <tr>
+                            <tr>
                                 <th>#</th>
                                 <th>name</th>
-                                <th>gauge</th>
+                                <th>concentration</th>
+                                <th>gauge-bar</th>
                                 <th>message</th>
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                {mem}
+                            {mem}
                             </tbody>
                         </Table>
                     </Col>

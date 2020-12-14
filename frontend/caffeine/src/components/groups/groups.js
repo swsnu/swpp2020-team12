@@ -149,7 +149,7 @@ class Groups extends Component {
                         show={this.state.subjectShow}
                         mySubjectList={this.props.subjectList}
                         subject={this.state.subject}
-                        handleSubjectshow={this.onSubjectShow}
+                        handleSubjectShow={this.onSubjectShow}
                         onClickCheck={this.onClickCheck}
                         onClickChoose={this.onClickChoose}
                     />

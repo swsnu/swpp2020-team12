@@ -36,7 +36,7 @@ class App extends React.Component {
     }
 
     gotoGroup = () => {
-        this.props.history.push('/group')
+        this.props.history.push('/groups')
     }
     gotoSubject = () => {
         this.props.history.push('/subject')
@@ -70,9 +70,9 @@ class App extends React.Component {
                             <p className="text-center mt-4 mb-4" style={{color: 'white'}}>Copyright © swpp2020-team12. All Right Reserved</p>
                         </Navbar>
                         <Switch>
-                            <Route path='/group' exact component={Group}/>
+                            <Route path='/groups' exact component={Group}/>
                             <Route path='/' exact component={mainPage}/>
-                            <Route path='/group/:group_id' exact component={GroupInfo}/>
+                            <Route path='/groups/:group_id' exact component={GroupInfo}/>
                             <Route path='/study/:group_id' exact component={Study}/>
                             <Route path='/subject' exact component={Subjects}/>
                             <Route path='/ranking' exact component={Ranking}/>

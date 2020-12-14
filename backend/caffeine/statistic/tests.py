@@ -53,6 +53,8 @@ class StatisticTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {
             'daily_total': '00:00', 'daily_study_time': '00:00',
-            'timelineData': [{'cardSubtitle': str(DailyStudyForSubject.objects.get(pk=1).end_time)[11:19]+'~'+str(DailyStudyForSubject.objects.get(pk=1).end_time)[11:19]
+            'timelineData': [{
+                'cardSubtitle': str(DailyStudyForSubject.objects.get(pk=1).end_time)[11:19] +
+                                '~' + str(DailyStudyForSubject.objects.get(pk=1).end_time)[11:19]
                 , 'title': 'swpp'}],
             'subjectData': [{'x': 'swpp', 'y': 1.0}]})

@@ -23,7 +23,7 @@ export const startStudy = (subject, group_id) =>{
                 dispatch(startStudy_(res.data));
                 dispatch(push('/study/'+group_id));
             })
-            .catch(err=> alert("study room is already full.\n maximum study members : 5"));
+            .catch(()=> alert("study room is already full.\n maximum study members : 5"));
     } 
 }
 export const endStudy_ = () =>{

@@ -1,5 +1,5 @@
 /* eslint react/prop-types: 0 */
-import React, {Component, createRef, useEffect} from 'react';
+import React, {Component, createRef} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import * as actionCreators from '../../store/actions/index';
@@ -49,13 +49,13 @@ class Study extends Component {
         }
         this.socketRef.current.onmessage = e => {
            const d=JSON.parse(e.data)
-           if(d.hasOwnProperty('inference')){
+           if(Object.prototype.hasOwnProperty.call(d, 'inference')){
                const new_inf = this.state.members.find(obj => obj.user__id===d.inference.user__id)
                new_inf.concentration_gauge=d.inference.gauge
                const infered = this.state.members.map(obj => obj.user__id===d.inference.user__id ? new_inf : obj)
                this.setState({members: infered})
            }
-           else if(d.hasOwnProperty('join')){
+           else if(Object.prototype.hasOwnProperty.call(d, 'join')){
                 const new_mem = {
                     user__id: d.join.user__id,
                     user__name: d.join.user__name,
@@ -65,7 +65,7 @@ class Study extends Component {
                 const new_mems = [...this.state.members, new_mem]
                 this.setState({members: new_mems})
            }
-           else if(d.hasOwnProperty('leave')){
+           else if(Object.prototype.hasOwnProperty.call(d, 'leave')){
             const leav_mems = this.state.members.filter(obj=> obj.user__id!==d.leave.user__id)
             this.setState({members: leav_mems})
        }
@@ -109,7 +109,7 @@ class Study extends Component {
     render() {
         const mem=[].concat(this.state.members)
             .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
-            .map((m, i)=><tr><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
+            .map((m, i)=><tr key={i}><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
         return (
             <Container>
                 <Row>

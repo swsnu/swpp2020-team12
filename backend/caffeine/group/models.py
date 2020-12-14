@@ -24,7 +24,7 @@ class StudyRoom(models.Model):
     group = models.OneToOneField(Group,
                                  on_delete=models.CASCADE,
                                  primary_key=True)
-    active_studys = models.ManyToManyField(DailyStudyForSubject, blank=True)  # group에 속한 user들만 들어올 수 있게 하려면?
+    active_studys = models.ManyToManyField(DailyStudyForSubject, blank=True)
 
 #    def getActiveUsers(self):
 #        return self.active_members

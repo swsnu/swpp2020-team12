@@ -1,13 +1,14 @@
 from channels.generic.websocket import WebsocketConsumer
+from channels.layers import get_channel_layer
 from django.dispatch import receiver
 from asgiref.sync import async_to_sync
 from .signals import inference_happen, join_group, leave_group
-from channels.layers import get_channel_layer
 import json
+
 
 @receiver(inference_happen)
 def announce_likes(studying_info, group_id, **kwargs):
-    channel_layer=get_channel_layer()
+    channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "new_inference",
@@ -15,9 +16,10 @@ def announce_likes(studying_info, group_id, **kwargs):
         }
     )
 
+
 @receiver(join_group)
 def announce_join(name, user_id, group_id, message, **kwargs):
-    channel_layer=get_channel_layer()
+    channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "join_group",
@@ -25,10 +27,11 @@ def announce_join(name, user_id, group_id, message, **kwargs):
         }
     )
     print(name)
-    
+
+
 @receiver(leave_group)
 def announce_leave(name, user_id, group_id, **kwargs):
-    channel_layer=get_channel_layer()
+    channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "leave_group",
@@ -59,7 +62,7 @@ class StudyConsumer(WebsocketConsumer):
         inference = event['inference']
         # Send message to WebSocket
         self.send(text_data=json.dumps({'inference': inference}))
-    
+
     def join_group(self, event):
         user = event['user']
         # Send message to WebSocket

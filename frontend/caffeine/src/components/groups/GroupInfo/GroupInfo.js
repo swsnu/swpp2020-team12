@@ -40,7 +40,7 @@ class GroupInfo extends Component {
                     <Button variant="outline-dark" size="sm" id="join-group-button"
                             onClick={this.onClickJoin}>Join Group</Button>
                     <Button variant="outline-dark" size="sm" id="cancel-button"
-                            onClick={()=>this.props.history.push('/group')}>Cancel</Button>
+                            onClick={()=>this.props.history.push('/groups')}>Cancel</Button>
                 </div>
                 </body>
                 

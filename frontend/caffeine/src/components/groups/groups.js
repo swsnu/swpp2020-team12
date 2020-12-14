@@ -73,7 +73,7 @@ class Groups extends Component {
 
     }
     clickSearchedGroupHandler = (group) => {
-        this.props.history.push('/group/' + group.id)
+        this.props.history.push('/groups/' + group.id)
     }
     searchHandler = () => {
         this.props.SearchGroups(this.state.group_name)

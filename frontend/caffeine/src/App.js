@@ -24,7 +24,7 @@ class App extends React.Component {
     }
 
     LogoutHandler = () => {
-        if(window.location.href.startsWith('study', 29)){
+        if(window.location.href.startsWith('studies', 29)){
             window.alert("stop study before logout")
         }
         else{
@@ -39,13 +39,13 @@ class App extends React.Component {
         this.props.history.push('/groups')
     }
     gotoSubject = () => {
-        this.props.history.push('/subject')
+        this.props.history.push('/subjects')
     }
     gotoRank = () => {
-        this.props.history.push('/ranking')
+        this.props.history.push('/rankings')
     }
     gotoStat = () => {
-        this.props.history.push('/statistic')
+        this.props.history.push('/statistics')
     }
     render() {
         return (
@@ -73,10 +73,10 @@ class App extends React.Component {
                             <Route path='/groups' exact component={Group}/>
                             <Route path='/' exact component={mainPage}/>
                             <Route path='/groups/:group_id' exact component={GroupInfo}/>
-                            <Route path='/study/:group_id' exact component={Study}/>
-                            <Route path='/subject' exact component={Subjects}/>
-                            <Route path='/ranking' exact component={Ranking}/>
-                            <Route path='/statistic' exact component={Statistic}/>
+                            <Route path='/studies/:group_id' exact component={Study}/>
+                            <Route path='/subjects' exact component={Subjects}/>
+                            <Route path='/rankings' exact component={Ranking}/>
+                            <Route path='/statistics' exact component={Statistic}/>
                             <Redirect exact to="/"/>
                         </Switch>
                         

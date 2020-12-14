@@ -21,7 +21,7 @@ export const startStudy = (subject, group_id) =>{
         return axios.post('/study/status/', {subject: subject, group_id: group_id})
             .then(res=>{
                 dispatch(startStudy_(res.data));
-                dispatch(push('/study/'+group_id));
+                dispatch(push('/studies/'+group_id));
             })
             .catch(()=> alert("study room is already full.\n maximum study members : 5"));
     } 

@@ -15,7 +15,7 @@ def user_group_list(request):
         for group in groups:
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
-            active_count = StudyRoom(group=group).active_studys.count()
+            active_count = StudyRoom.objects.get(group=group).active_studys.count()
             response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
                                   'description': group.description, 'members': member_list,
                                   'active_count': active_count})

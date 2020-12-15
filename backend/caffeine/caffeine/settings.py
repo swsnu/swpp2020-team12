@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -89,6 +89,7 @@ DATABASES = {
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -129,7 +130,7 @@ CACHES = {
         }
     }
 }
-"""
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 

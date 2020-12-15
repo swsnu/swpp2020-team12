@@ -33,7 +33,7 @@ def sign_in(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'user': user.name}, status=204)
+            return JsonResponse({'user': user.name}, status=200)
         else:
             return HttpResponse(status=401)
     else:

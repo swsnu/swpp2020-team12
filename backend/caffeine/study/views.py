@@ -27,6 +27,67 @@ def calculate_ear(eye):
     return vertic / horigental
 
 
+def study_tune(request):
+    req_data = json.loads(request.body.decode())
+    user = User.objects.get(id=request.user.id)
+    img = req_data['image']
+    group_id = req_data['id']
+    api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
+    key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
+    api_url += key
+    if img is None:
+        return HttpResponse(status=400)
+    image = img.split(',')[1]
+    _features = [{
+        "type": "FACE_DETECTION",
+        "maxResults": 1
+    }
+    ]
+    _features_label = [{
+        "type": "LABEL_DETECTION",
+        "maxResults": 10
+    },
+    ]
+    _image = {
+        'content': image
+    }
+    data = {
+        "requests": [{
+            'image': _image,
+            'features': [_features]
+        }
+        ]
+    }
+    response = requests.post(api_url, json=data)
+    # print(response_label.json()['responses'])
+    response = response.json()
+    if response['responses'][0] == {}:  # 얼굴이 없을 때
+        return HttpResponse(status=400)
+    else:
+        face = response['responses'][0]['faceAnnotations'][0]
+        landmarks = face['landmarks']
+        left = {}
+        right = {}
+        for i in range(4):
+            left[rot[i]] = landmarks[16 + i]['position']
+            right[rot[i]] = landmarks[20 + i]['position']
+        left_ear = calculate_ear(left)
+        right_ear = calculate_ear(right)
+    if request.method == 'POST':  # open
+        user.open_eyes_left=left_ear
+        user.open_eyes_right=right_ear
+        user.save()
+        return HttpResponse(status=204)
+    elif request.method == 'PUT':  # close
+        user.close_eyes_left = left_ear
+        user.close_eyes_right = right_ear
+        user.save()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponseNotAllowed(['PUT', 'POST'])
+        # current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
+
+
 # Create your views here.
 def study_room(request):
     if request.method == 'POST':
@@ -99,6 +160,8 @@ def study_infer(request):
     req_data = json.loads(request.body.decode())
     img = req_data['image']
     group_id = req_data['id']
+    eye_data=User.objects.filter(id=request.user.id).values('open_eye_left',
+                'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key
@@ -150,7 +213,9 @@ def study_infer(request):
             right_ear = calculate_ear(right)
             ear = (left_ear + right_ear) / 2.0
             print(ear)
-            if ear < 0.4:
+            threshold=(eye_data['open_eye_left']+eye_data['open_eye_right'])/2.0*0.2 +\
+                      (eye_data['close_eye_left'] + eye_data['close_eye_right']) / 2.0 * 0.8
+            if ear < threshold:
                 state = 3
             else:
                 labels = response_label.json()['responses'][0]['labelAnnotations']

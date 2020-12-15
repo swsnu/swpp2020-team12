@@ -4,7 +4,7 @@
 
 #SubjectList {
     position: relative;
-    top: 50px;
+    top: 30px;
     border-style: dashed;
     border-width: 7px;
     width: 500px;
@@ -15,5 +15,5 @@
 }
 
 #row1 {
-    border: 2px 
+    border: 2px;
 }

@@ -116,7 +116,7 @@ class Groups extends Component {
                 <Row>
                     <Col id='left-col'>
                         <span id="head">I &apos;m in...</span>
-                        <Button id='create-group-button' onClick={() => this.setState({
+                        <Button id='create-group-button' variant="outline-dark" onClick={() => this.setState({
                             createShow: true,
                             group_name: '',
                             name: '',
@@ -128,7 +128,7 @@ class Groups extends Component {
                     <Col>
                         <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
                             onChange={(e) => this.setState({group_name: e.target.value})}/>
-                        <Button id='group-search-button' onClick={this.searchHandler}>Search</Button>
+                        <Button id='group-search-button' variant="outline-dark" onClick={this.searchHandler}>Search</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -149,7 +149,7 @@ class Groups extends Component {
                         show={this.state.subjectShow}
                         mySubjectList={this.props.subjectList}
                         subject={this.state.subject}
-                        handleSubjectshow={this.onSubjectShow}
+                        handleSubjectShow={this.onSubjectShow}
                         onClickCheck={this.onClickCheck}
                         onClickChoose={this.onClickChoose}
                     />

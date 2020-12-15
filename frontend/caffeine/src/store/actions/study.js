@@ -6,9 +6,9 @@ export const postCapturetoServer_ = (data) =>{
     return { type: actionTypes.INFER_STUDY, inferred: data};
 }
 
-export const postCapturetoServer = (image, id) =>{
+export const postCapturetoServer = (image, simage, id) =>{
     return dispatch =>{
-        return axios.post('/api/study/infer/', {image: image, id: id})
+        return axios.post('/api/study/infer/', {image: image, simage: simage, id: id})
             .then(res => dispatch(postCapturetoServer_(res.data)));
     } 
 }

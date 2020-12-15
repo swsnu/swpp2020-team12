@@ -8,8 +8,10 @@ import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
 import SelectSubject from './selectSubject/selectSubject';
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import {Container, Row, Col, Table} from 'react-bootstrap'
 import axios from "axios";
+import Jimp from 'jimp';
 
 const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
@@ -46,7 +48,8 @@ class Study extends Component {
     componentDidMount() {
         this.setState({openEyeShow: true});
         this.props.getSubjects()
-        this.socketRef.current = new WebSocket('ws://localhost:8000')
+        this.socketRef.current = new WebSocket('wss://caffeine-camera.shop/ws/study/' +
+            this.props.match.params.group_id + '/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }
@@ -55,6 +58,7 @@ class Study extends Component {
             if (Object.prototype.hasOwnProperty.call(d, 'inference')) {
                 const new_inf = this.state.members.find(obj => obj.user__id === d.inference.user__id)
                 new_inf.concentration_gauge = d.inference.gauge
+                new_inf.image = d.image
                 const infered = this.state.members.map(obj => obj.user__id === d.inference.user__id ? new_inf : obj)
                 this.setState({members: infered})
             } else if (Object.prototype.hasOwnProperty.call(d, 'join')) {
@@ -62,6 +66,7 @@ class Study extends Component {
                     user__id: d.join.user__id,
                     user__name: d.join.user__name,
                     user__message: d.join.user__message,
+                    image: null,
                     concentration_gauge: 0
                 }
                 const new_mems = [...this.state.members, new_mem]
@@ -125,7 +130,19 @@ class Study extends Component {
             this.setState({subjectShow: false});
     }
     capture = () => {
-        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
+        const screenshot=this.webcamRef.current.getScreenshot();
+        let shotdata = screenshot.split(',')[1];
+        const buf = Buffer.from(shotdata, 'base64');
+        Jimp.read(buf, (err, image) => {
+            if (err) throw err;
+            else {
+              image.resize(100, 100)
+                .quality(80)
+                .getBase64(Jimp.MIME_JPEG, (err, src) => {
+                this.props.postCapturetoServer(screenshot, src, this.props.match.params.group_id)
+                })
+            }
+          })
     }
 
     render() {
@@ -134,7 +151,16 @@ class Study extends Component {
             .map((m, i) => <tr key={i}>
                 <td>{i}</td>
                 <td>{m.user__name}</td>
+                <td><img src={m.image} /></td>
                 <td>{(m.concentration_gauge).toFixed(3)}</td>
+                <td> {m.concentration_gauge > 0.8 ?
+                    <ProgressBar striped variant="danger" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                 now={m.concentration_gauge * 100}/>
+                    : m.concentration_gauge > 0.6 ?
+                        <ProgressBar variant="warning" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/> :
+                        <ProgressBar variant="info" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/>}</td>
                 <td>{m.user__message}</td>
             </tr>);
         const tuneModel =
@@ -177,10 +203,10 @@ class Study extends Component {
                         <Webcam
                             className='user_webcam'
                             audio={false}
-                            height={360}
+                            height={540}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={720}
+                            width={540}
                             videoConstraints={this.videoConstraints}
                         />
                         {tuneModel}
@@ -191,7 +217,9 @@ class Study extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>name</th>
-                                <th>gauge</th>
+                                <th>image</th>
+                                <th>concentration</th>
+                                <th>gauge-bar</th>
                                 <th>message</th>
                             </tr>
                             </thead>
@@ -223,8 +251,8 @@ const mapDispatchToProps = dispatch => {
         //    dispatch(actionCreators.captureOpenEye(image, group_id)),
         //captureCloseEye: (image, group_id) =>
         //    dispatch(actionCreators.captureCloseEye(image, group_id)),
-        postCapturetoServer: (image, group_id) =>
-            dispatch(actionCreators.postCapturetoServer(image, group_id)),
+        postCapturetoServer: (image, simage, group_id) =>
+            dispatch(actionCreators.postCapturetoServer(image, simage, group_id)),
         endStudy: (group_id) =>
             dispatch(actionCreators.endStudy(group_id)),
         getSubjects: () =>

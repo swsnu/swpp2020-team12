@@ -73,19 +73,19 @@ def study_tune(request):
             right[rot[i]] = landmarks[20 + i]['position']
         left_ear = calculate_ear(left)
         right_ear = calculate_ear(right)
-    if request.method == 'POST':  # open
-        user.open_eyes_left=left_ear
-        user.open_eyes_right=right_ear
-        user.save()
-        return HttpResponse(status=204)
-    elif request.method == 'PUT':  # close
-        user.close_eyes_left = left_ear
-        user.close_eyes_right = right_ear
-        user.save()
-        return HttpResponse(status=204)
-    else:
-        return HttpResponseNotAllowed(['PUT', 'POST'])
-        # current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
+        if request.method == 'POST':  # open
+            user.open_eye_left = left_ear
+            user.open_eye_right = right_ear
+            user.save()
+            return HttpResponse(status=204)
+        elif request.method == 'PUT':  # close
+            user.close_eye_left = left_ear
+            user.close_eye_right = right_ear
+            user.save()
+            return HttpResponse(status=204)
+        else:
+            return HttpResponseNotAllowed(['PUT', 'POST'])
+            # current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
 
 
 # Create your views here.
@@ -159,9 +159,10 @@ def study_infer(request):
     state = 0
     req_data = json.loads(request.body.decode())
     img = req_data['image']
+    simage = req_data['simage']
     group_id = req_data['id']
-    eye_data=User.objects.filter(id=request.user.id).values('open_eye_left',
-                'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
+    eye_data = User.objects.filter(id=request.user.id).values('open_eye_left',
+                                                              'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key
@@ -212,9 +213,10 @@ def study_infer(request):
             left_ear = calculate_ear(left)
             right_ear = calculate_ear(right)
             ear = (left_ear + right_ear) / 2.0
-            print(ear)
-            threshold=(eye_data['open_eye_left']+eye_data['open_eye_right'])/2.0*0.2 +\
-                      (eye_data['close_eye_left'] + eye_data['close_eye_right']) / 2.0 * 0.8
+            print("ear: ", ear)
+            threshold = (eye_data['open_eye_left'] + eye_data['open_eye_right']) / 2.0 * 0.2 + \
+                        (eye_data['close_eye_left'] + eye_data['close_eye_right']) / 2.0 * 0.8
+            print(f"eye_data: {eye_data}, threshold: {threshold}")
             if ear < threshold:
                 state = 3
             else:
@@ -244,7 +246,7 @@ def study_infer(request):
     inference_happen.send(sender='study_infer', studying_info={
         'user__id': request.user.id,
         'gauge': current_study.concentration_gauge,
-    }, group_id=group_id)
+    }, simage=simage, group_id=group_id)
 
     return JsonResponse({'status': state,
                          'gauge': current_study.concentration_gauge},

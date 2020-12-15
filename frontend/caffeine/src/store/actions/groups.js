@@ -8,7 +8,7 @@ export const SearchGroups_ = (groups) => {
 }
 export const SearchGroups = (keyword) => {
     return dispatch => {
-        return axios.post('/group/search/' + keyword)
+        return axios.post('/api/group/search/' + keyword)
             .then(res => dispatch(SearchGroups_(res.data)));
     }
 }
@@ -17,13 +17,13 @@ export const getGroups_ = (groups) => {
 }
 export const getGroups = () => {
     return dispatch => {
-        return axios.get('/group/')
+        return axios.get('/api/group/')
             .then(res => dispatch(getGroups_(res.data)));
     }
 }
 export const getunEnrolled = (group_id) => {
     return dispatch => {
-        return axios.get('/group/search/' + group_id)
+        return axios.get('/api/group/search/' + group_id)
             .then(res => dispatch(getunEnrolled_(res.data)))
             .catch(()=> {
                 alert("you already joined this group");
@@ -39,7 +39,7 @@ export const getGroup_ = (group) => {
 }
 export const getGroup = (group_id) => {
     return dispatch => {
-        return axios.get('/group/' + group_id)
+        return axios.get('/api/group/' + group_id)
             .then(res => dispatch(getGroup_(res.data)))
     }
 }
@@ -48,7 +48,7 @@ export const deleteGroup_ = (group_id) => {
 }
 export const deleteGroup = (group_id) => {
     return dispatch => {
-        return axios.delete('/group/' + group_id)
+        return axios.delete('/api/group/' + group_id)
             .then(() => dispatch(deleteGroup_(group_id)));
     }
 }
@@ -62,7 +62,7 @@ export const joinGroup_ = (group) => {
 }
 export const joinGroup = (data) => {
     return dispatch => {
-        return axios.put('/group/search/' + data.id, data)
+        return axios.put('/api/group/search/' + data.id, data)
             .then(res => {
                 dispatch(joinGroup_(res.data));
                 dispatch(push('/group'));
@@ -86,7 +86,10 @@ export const addGroup_ = (group) => {
 }
 export const addGroup = (data) => {
     return dispatch => {
-        return axios.post('/group/', data)
-            .then(res => dispatch(addGroup_(res.data)));
+        return axios.post('/api/group/', data)
+            .then(res => dispatch(addGroup_(res.data)))
+            .catch(err => {
+                alert('use another group name')
+            });
     }
 }

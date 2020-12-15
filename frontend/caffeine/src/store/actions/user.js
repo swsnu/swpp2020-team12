@@ -28,7 +28,7 @@ export const getLogin_ = (user) => {
 
 export const getLogin = () => {
     return dispatch => {
-        return axios.get('/user')
+        return axios.get('/api/user')
             .then(res => dispatch(getLogin_(res.data)))
     }
 };
@@ -39,7 +39,7 @@ export const signin_ = (data) => {
 
 export const signin = (data) => {
     return dispatch => {
-        return axios.post('/user/signin', data)
+        return axios.post('/api/user/signin', data)
             .then(res => {
                 dispatch(signin_(res.data));
                 dispatch(push('/'));
@@ -53,7 +53,7 @@ export const signin = (data) => {
 
 export const signup = (data) => {
     return dispatch => {
-        return axios.post('/user/signup', data)
+        return axios.post('/api/user/signup', data)
             .then((res) => {
                 history.push('/signin')
             })
@@ -69,7 +69,7 @@ export const signout_ = () => {
 
 export const signout = () => {
     return dispatch => {
-        return axios.get('/user/signout')
+        return axios.get('/api/user/signout')
             .then((res) => {
                 dispatch(signout_());
                 dispatch(push('/'));

@@ -9,7 +9,7 @@ export const getMonthlydata = (date) => {
     return dispatch => {
         var year=moment(date).year()
         var month=moment(date).month()
-        return axios.get('/statistic/' + year + '/' + month)
+        return axios.get('/api/statistic/' + year + '/' + month)
             .then(res => dispatch(getMonthlydata_(res.data)));
     }
 }
@@ -22,7 +22,7 @@ export const getWeeklydata = (date) => {
         var year=moment(date).year()
         var month=moment(date).month()
         var day=moment(date).date()
-        return axios.get('/statistic/' + year +'/'+ month +'/'+ day)
+        return axios.get('/api/statistic/' + year +'/'+ month +'/'+ day)
             .then(res => dispatch(getWeeklydata_(res.data)));
     }
 }
@@ -35,7 +35,7 @@ export const getDailySubject = (date) => {
         var year=moment(date).year()
         var month=moment(date).month()
         var day=moment(date).date()
-        return axios.get('/statistic/' + year +'/'+ month +'/'+ day + '/subjects')
+        return axios.get('/api/statistic/' + year +'/'+ month +'/'+ day + '/subjects')
             .then(res => dispatch(getDailySubject_(res.data)));
     }
 }

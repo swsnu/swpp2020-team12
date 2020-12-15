@@ -51,7 +51,7 @@ class App extends React.Component {
         return (
             <ConnectedRouter history={this.props.history}>
                 {this.props.isLoggedIn ?
-                    (<div className="App">
+                    (<div className="App" id="App">
                         <Navbar bg="dark" variant="dark">
                             <Navbar.Brand href="#home">Caffeine Camera</Navbar.Brand>
                                 <Nav className="mr-auto">
@@ -66,9 +66,7 @@ class App extends React.Component {
                                     <Button variant="outline-warning" id='logout-button' onClick={this.LogoutHandler}>Sign-Out</Button>
                                 </Nav>
                         </Navbar>
-                        <Navbar className="justify-content-center" bg="dark" variant="dark" fixed="bottom">
-                            <p className="text-center mt-4 mb-4" style={{color: 'white'}}>Copyright © swpp2020-team12. All Right Reserved</p>
-                        </Navbar>
+                        
                         <Switch>
                             <Route path='/group' exact component={Group}/>
                             <Route path='/' exact component={mainPage}/>
@@ -79,7 +77,6 @@ class App extends React.Component {
                             <Route path='/statistic' exact component={Statistic}/>
                             <Redirect exact to="/"/>
                         </Switch>
-                        
                     </div>) : (
                         <div className="App">
                              <Navbar bg="dark" variant="dark">

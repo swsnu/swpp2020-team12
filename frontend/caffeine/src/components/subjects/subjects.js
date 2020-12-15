@@ -140,7 +140,9 @@ class Subjects extends Component {
                 <Row id="row1">
                     <Col>
                         <span id="mysubject">My Subject</span>
-                        <Button id='create-subject-button' onClick={() => this.setState({
+                        <Button id='create-subject-button' 
+                            variant="outline-dark"
+                            onClick={() => this.setState({
                             createShow: true, name: '',
                             description: '',
                             start_time: '00:00',

@@ -6,6 +6,7 @@ import SelectSubject from "../study/selectSubject/selectSubject";
 import SelectGroup from "./selectGroup/selectGroup";
 import * as actionCreators from "../../store/actions";
 import {connect} from "react-redux";
+import {Button} from "react-bootstrap"
 
 class MainPage extends Component {
 
@@ -50,11 +51,11 @@ class MainPage extends Component {
                     <div id='body'>Are you ready to study?</div>
                 
                 <div>
-                    <button id="study-button">
+                    <Button id="study-button" variant="outline-danger">
                         <span id="study-button" onClick={() => {
                             this.setState({subjectShow: true})
                         }}>Study</span>
-                    </button>
+                    </Button>
                     <SelectSubject
                         show={this.state.subjectShow}
                         handleSubjectShow={this.handleSubjectShow}

@@ -10,28 +10,28 @@
 #total{
     position: absolute;
     top: 40%;
-    right:15%;
+    right:5%;
     font-size:25px;
 }
 
 #study{
     position: absolute;
     top: 55%;
-    right:15%;
+    right:5%;
     font-size:25px;
 }
 
 #total2{
     position: absolute;
     top: 40%;
-    right:15%;
+    right:5%;
     font-size:25px;
 }
 
 #study2{
     position: absolute;
     top: 55%;
-    right:15%;
+    right:5%;
     font-size:25px;
 }
 
@@ -54,8 +54,8 @@ svg.react-calendar-heatmap text{
 }
 
 #statistic {
-    height: 100vh;
-    border-style: none dashed none dashed;
+    margin-top: 30px;
+    border-style: dashed;
     border-width: 7px;
 }
 

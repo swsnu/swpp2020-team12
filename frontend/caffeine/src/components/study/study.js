@@ -18,7 +18,9 @@ class Study extends Component {
         members: this.props.members,
         time: moment.duration(0),
         subjectShow: false,
-        subject: null
+        subject: null,
+        emg: null,
+        temg: null,
     }
     videoConstraints = {
         width: 720,
@@ -56,6 +58,7 @@ class Study extends Component {
                 new_inf.concentration_gauge = d.inference.gauge
                 const infered = this.state.members.map(obj => obj.user__id === d.inference.user__id ? new_inf : obj)
                 this.setState({members: infered})
+                this.setState({emg: d.image})
             } else if (Object.prototype.hasOwnProperty.call(d, 'join')) {
                 const new_mem = {
                     user__id: d.join.user__id,
@@ -104,7 +107,10 @@ class Study extends Component {
             this.setState({subjectShow: false});
     }
     capture = () => {
-        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
+        const screenshot=this.webcamRef.current.getScreenshot();
+        const smallshot=this.webcamRef.current.getScreenshot({width: 50, height: 50});
+        this.setState({temg: smallshot});
+        this.props.postCapturetoServer(screenshot, smallshot, this.props.match.params.group_id)
     }
 
     render() {
@@ -134,10 +140,10 @@ class Study extends Component {
                         <Webcam
                             className='user_webcam'
                             audio={false}
-                            height={360}
+                            height={540}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={720}
+                            width={540}
                             videoConstraints={this.videoConstraints}
                         />
                         <SelectSubject
@@ -174,6 +180,8 @@ class Study extends Component {
                             {mem}
                             </tbody>
                         </Table>
+                        {this.state.emg&&<img src={this.state.emg}/>}
+                        {this.state.temg&&<img src={this.state.temg}/>}
                     </Col>
                 </Row>
             </Container>
@@ -194,8 +202,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        postCapturetoServer: (image, group_id) =>
-            dispatch(actionCreators.postCapturetoServer(image, group_id)),
+        postCapturetoServer: (image, simage, group_id) =>
+            dispatch(actionCreators.postCapturetoServer(image, simage, group_id)),
         endStudy: (group_id) =>
             dispatch(actionCreators.endStudy(group_id)),
         getSubjects: () =>

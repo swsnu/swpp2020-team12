@@ -98,6 +98,7 @@ def study_infer(request):
     state = 0
     req_data = json.loads(request.body.decode())
     img = req_data['image']
+    simage = req_data['simage']
     group_id = req_data['id']
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
@@ -179,7 +180,7 @@ def study_infer(request):
     inference_happen.send(sender='study_infer', studying_info={
         'user__id': request.user.id,
         'gauge': current_study.concentration_gauge,
-    }, group_id=group_id)
+    }, simage=simage, group_id=group_id)
 
     return JsonResponse({'status': state,
                          'gauge': current_study.concentration_gauge},

@@ -26,16 +26,18 @@ describe('studyReducer', () => {
         const stubInitialState = {
             status: null,
             gauge: null,
-            subject: null
+            subject: null,
           };
         const newState = reducer(stubInitialState, {
             type: actionTypes.START_STUDY,
-            subject: "swpp"
+            subject: "swpp",
+            members: []
         });
         expect(newState).toEqual({
             status: null,
             gauge: null,
-            subject: "swpp"
+            subject: "swpp",
+            memberlist: []
         });
     })
     it('should end study', () => {

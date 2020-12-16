@@ -97,7 +97,6 @@ class Study extends Component {
         })
             .then(() => this.setState({openEyeShow: false, closeEyeShow: true}))
             .catch(() => alert("please capture again."))
-
     }
     onClickCloseEye = () => {
         return axios.put('/api/study/tune/', {
@@ -162,6 +161,7 @@ class Study extends Component {
                                      now={m.concentration_gauge * 100}/>}</td>
                 <td>{m.user__message}</td>
             </tr>);
+        console.log(this.state.openEyeShow, this.state.closeEyeShow)
         const tuneModel =
             !this.webcamRef.current ? <div>wait until your camera is on...</div> :
                 this.state.openEyeShow ?

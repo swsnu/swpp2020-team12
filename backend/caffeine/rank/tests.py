@@ -74,7 +74,7 @@ class StudyTestCase(TestCase):
         # first start from day
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.get('/rank/user')
+        response = client.get('/api/rank/user')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
                          {"records": [{'name': 'nickname2', 'time': 'P0DT01H42M00S'},
@@ -89,7 +89,7 @@ class StudyTestCase(TestCase):
         # first start from day
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/rank/user')
+        response = client.post('/api/rank/user')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
                          {"records": [{'name': 'nickname3', 'time': 'P0DT15H00M00S'},
@@ -98,17 +98,17 @@ class StudyTestCase(TestCase):
                                       {'name': 'nickname4', 'time': 'P0DT00H00M00S'}],
                           "user_ranking": 3,
                           "user_record": {'name': 'nickname1', 'time': 'P0DT06H30M00S'}})
-        response = client.put('/rank/user')
+        response = client.put('/api/rank/user')
         self.assertEqual(response.status_code, 405)
 
     def test_group_rank_get(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.get('/rank/group/0')
+        response = client.get('/api/rank/group/0')
         self.assertEqual(response.status_code, 400)
-        response = client.put('/rank/group/1')
+        response = client.put('/api/rank/group/1')
         self.assertEqual(response.status_code, 405)
-        response = client.get('/rank/group/1')
+        response = client.get('/api/rank/group/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
                          {"records": [{'name': 'nickname2', 'time': 'P0DT01H42M00S'},
@@ -120,9 +120,9 @@ class StudyTestCase(TestCase):
     def test_group_rank_post(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/rank/group/0')
+        response = client.post('/api/rank/group/0')
         self.assertEqual(response.status_code, 400)
-        response = client.post('/rank/group/1')
+        response = client.post('/api/rank/group/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
                          {"records": [{'name': 'nickname2', 'time': 'P0DT06H42M00S'},

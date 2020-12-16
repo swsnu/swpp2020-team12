@@ -24,7 +24,7 @@ class StatisticTestCase(TestCase):
         today_year = str(datetime.today().year)
         today_month = str(datetime.today().month - 1)
         today = date.today().isoformat()
-        response = client.get('/statistic/{}/{}'.format(today_year, today_month))
+        response = client.get('/api/statistic/{}/{}'.format(today_year, today_month))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [{'date': today,
                                             'count': 0
@@ -36,7 +36,7 @@ class StatisticTestCase(TestCase):
         today_year = str(datetime.today().year)
         today_month = str(datetime.today().month - 1)
         today_day = str(datetime.today().day)
-        response = client.get('/statistic/{}/{}/{}'.format(today_year, today_month, today_day))
+        response = client.get('/api/statistic/{}/{}/{}'.format(today_year, today_month, today_day))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'weekly_total': '00:00', 'weekly_study_time': '00:00',
                                            'weekly_subjectData': [{'x': 'swpp', 'y': 1.0}]})
@@ -47,7 +47,7 @@ class StatisticTestCase(TestCase):
         today_year = str(datetime.today().year)
         today_month = str(datetime.today().month - 1)
         today_day = str(datetime.today().day)
-        response = client.get('/statistic/{}/{}/{}/subjects'.format(today_year,
+        response = client.get('/api/statistic/{}/{}/{}/subjects'.format(today_year,
                                                                     today_month,
                                                                     today_day))
         self.assertEqual(response.status_code, 200)

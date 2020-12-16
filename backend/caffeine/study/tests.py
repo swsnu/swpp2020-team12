@@ -47,7 +47,7 @@ class StudyTestCase(TestCase):
         # first start from day
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/status/', json.dumps({
+        response = client.post('/api/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -68,7 +68,7 @@ class StudyTestCase(TestCase):
                                         total_gauge=1)
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/status/', json.dumps({
+        response = client.post('/api/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -92,13 +92,13 @@ class StudyTestCase(TestCase):
         for i in range(1, 6):
             client = Client()
             client.login(username='id' + str(i), password='pw' + str(i))
-            response = client.post('/study/status/', json.dumps({
+            response = client.post('/api/study/status/', json.dumps({
                 'group_id': 1, 'subject': 'swpp'
             }), content_type='application/json')
             self.assertEqual(response.status_code, 200)
         client = Client()
         client.login(username='id6', password='pw6')
-        response = client.post('/study/status/', json.dumps({
+        response = client.post('/api/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 400)
@@ -116,7 +116,7 @@ class StudyTestCase(TestCase):
             user=user1, is_active=True)
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/status/', json.dumps({
+        response = client.post('/api/study/status/', json.dumps({
             'group_id': 1, 'subject': 'swpp'
         }), content_type='application/json')
         self.assertEqual(response.status_code, 200)
@@ -154,7 +154,7 @@ class StudyTestCase(TestCase):
         room.save()
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.put('/study/status/', json.dumps({'group_id': 1}))
+        response = client.put('/api/study/status/', json.dumps({'group_id': 1}))
         self.assertEqual(response.status_code, 200)
         today = DailyStudyRecord.objects.get(date=date.today())
         self.assertEqual(today.total_study_time,
@@ -169,10 +169,129 @@ class StudyTestCase(TestCase):
     def test_study_room_405(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.get('/study/status/')
+        response = client.get('/api/study/status/')
         self.assertEqual(response.status_code, 405)
-        response = client.delete('/study/status/')
+        response = client.delete('/api/study/status/')
         self.assertEqual(response.status_code, 405)
+
+    def test_study_tune_405(self):
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.get('/api/study/tune/')
+        self.assertEqual(response.status_code, 405)
+        response = client.delete('/api/study/tune/', json.dumps({
+            'id': 1,
+            'image': 'img/,b123sfad',
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 405)
+
+    @patch("requests.post")
+    def test_study_tune_error(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses": [
+                {}
+            ]
+        }
+        user1 = User.objects.get(username='id1')
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/api/study/tune/', json.dumps({
+            'id': 1,
+            'image': 'img/,b123sfad',
+        }), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+
+    @patch("requests.post")
+    def test_study_tune_open(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses": [
+                {
+                    "faceAnnotations": [
+                        {
+                            "landmarks": [
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.post('/api/study/tune/', json.dumps({
+            'id': 1,
+            'image': 'img/,b123sfad',
+        }), content_type='application/json')
+        user1 = User.objects.get(username='id1')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(user1.open_eye_left, 0)
+        self.assertEqual(user1.open_eye_right, 0)
+
+    @patch("requests.post")
+    def test_study_tune_close(self, mock_post):
+        response = mock_post.return_value
+        response.status_code = 200
+        response.json.return_value = {
+            "responses": [
+                {
+                    "faceAnnotations": [
+                        {
+                            "landmarks": [
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {}, {}, {}, {}, {}, {}, {}, {},
+                                {'type': 'LEFT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'LEFT_EYE_LEFT_CORNER',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_TOP_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_RIGHT_CORNER',
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                                {'type': 'RIGHT_EYE_LEFT_CORNER',
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+        client = Client()
+        client.login(username='id1', password='pw1')
+        response = client.put('/api/study/tune/', json.dumps({
+            'id': 1,
+            'image': 'img/,b123sfad',
+        }), content_type='application/json')
+        user1 = User.objects.get(username='id1')
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(user1.close_eye_left, 0)
+        self.assertEqual(user1.close_eye_right, 0)
 
     @patch("requests.post")
     def test_study_infer_1(self, mock_post):
@@ -193,9 +312,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'id': 1,
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 1,
@@ -232,9 +352,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'id': 1,
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
@@ -255,25 +376,27 @@ class StudyTestCase(TestCase):
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {}, {}, {}, {}, {}, {}, {}, {},
                                 {'type': 'LEFT_EYE_TOP_BOUNDARY',
-                                 'position': {'x': 72.62827, 'y': 64.66847, 'z': -2.5742698}},
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                                 {'type': 'LEFT_EYE_RIGHT_CORNER',
-                                 'position': {'x': 83.162415, 'y': 69.53085, 'z': -0.2833072}},
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
                                 {'type': 'LEFT_EYE_BOTTOM_BOUNDARY',
-                                 'position': {'x': 72.54645, 'y': 72.7361, 'z': -0.6251203}},
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                                 {'type': 'LEFT_EYE_LEFT_CORNER',
-                                 'position': {'x': 63.052597, 'y': 69.7298, 'z': 4.5587893}},
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                                 {'type': 'RIGHT_EYE_TOP_BOUNDARY',
-                                 'position': {'x': 118.87221, 'y': 60.081333, 'z': -3.2206633}},
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                                 {'type': 'RIGHT_EYE_RIGHT_CORNER',
-                                 'position': {'x': 129.94545, 'y': 65.620705, 'z': 3.272311}},
+                                 'position': {'x': 1, 'y': 0, 'z': 0}},
                                 {'type': 'RIGHT_EYE_BOTTOM_BOUNDARY',
-                                 'position': {'x': 118.60211, 'y': 68.69534, 'z': -1.4409065}},
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                                 {'type': 'RIGHT_EYE_LEFT_CORNER',
-                                 'position': {'x': 107.855835, 'y': 64.51412, 'z': -0.5179331}}
+                                 'position': {'x': 0, 'y': 0, 'z': 0}},
                             ],
                             "panAngle": 2,
                             "tiltAngle": 2
                         }
+                    ],
+                    "labelAnnotations": [
                     ]
                 }
             ]
@@ -288,9 +411,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'image': 'img/,b123sfad',
             'id': 1,
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 3,
@@ -349,9 +473,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'id': 1,
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
@@ -410,9 +535,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'id': 1,
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 2,
@@ -469,9 +595,10 @@ class StudyTestCase(TestCase):
         # with status 1
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/study/infer/', json.dumps({
+        response = client.post('/api/study/infer/', json.dumps({
             'id': 1,
-            'image': 'img/,b123sfad'
+            'image': 'img/,b123sfad',
+            'simage': 'img/,djkljf'
         }), content_type='application/json')
         self.assertJSONEqual(response.content,
                              {'status': 0,
@@ -486,9 +613,9 @@ class StudyTestCase(TestCase):
         communicator = WebsocketCommunicator(application, "/ws/study/1/")
         connected, _ = await communicator.connect()
         assert connected
-        await communicator.send_input({"type": "new_inference", "inference": "infer"})
+        await communicator.send_input({"type": "new_inference", "inference": "infer", "image": "img"})
         event = await communicator.receive_output(timeout=1)
-        self.assertJSONEqual(event['text'], {"inference": "infer"})
+        self.assertJSONEqual(event['text'], {"inference": "infer", "image": "img"})
         await communicator.send_input({"type": "join_group", "user": "hello"})
         event = await communicator.receive_output(timeout=1)
         self.assertJSONEqual(event['text'], {"join": "hello"})

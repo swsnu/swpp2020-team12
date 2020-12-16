@@ -6,6 +6,7 @@ from json import JSONDecodeError
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from .signals import inference_happen, join_group, leave_group
 from user.models import User
@@ -26,12 +27,11 @@ def calculate_ear(eye):
     horigental = math.sqrt(horigental_sum)
     return vertic / horigental
 
-
+@require_http_methods(['POST', 'PUT'])
 def study_tune(request):
     req_data = json.loads(request.body.decode())
     user = User.objects.get(id=request.user.id)
     img = req_data['image']
-    group_id = req_data['id']
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key
@@ -78,14 +78,11 @@ def study_tune(request):
             user.open_eye_right = right_ear
             user.save()
             return HttpResponse(status=204)
-        elif request.method == 'PUT':  # close
+        else:  # close
             user.close_eye_left = left_ear
             user.close_eye_right = right_ear
             user.save()
             return HttpResponse(status=204)
-        else:
-            return HttpResponseNotAllowed(['PUT', 'POST'])
-            # current_study = DailyStudyForSubject.objects.get(user__id=request.user.id, is_active=True)
 
 
 # Create your views here.
@@ -162,7 +159,7 @@ def study_infer(request):
     simage = req_data['simage']
     group_id = req_data['id']
     eye_data = User.objects.filter(id=request.user.id).values('open_eye_left',
-                                                              'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
+                'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key

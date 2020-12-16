@@ -55,7 +55,7 @@ class Ranking extends Component {
         const userTable = this.props.myUserRank &&
             <tbody>
             {userList}
-            <tr>
+            <tr id="me">
                 <th scope="row">{this.props.myUserRank.rank}</th>
                 <td>{this.props.myUserRank.record.name}</td>
                 <td>{this.getHours(this.props.myUserRank.record.time)}</td>
@@ -86,7 +86,7 @@ class Ranking extends Component {
         const groupTable = this.props.myGroupRank &&
             <tbody>
             {groupList}
-            <tr>
+            <tr id="me">
                 <th scope="row">{this.props.myGroupRank.rank}</th>
                 <td>{this.props.myGroupRank.record.name}</td>
                 <td>{this.getHours(this.props.myGroupRank.record.time)}</td>

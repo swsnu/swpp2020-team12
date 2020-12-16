@@ -15,7 +15,6 @@ const UserGroupInfo=(props) => {
             <ListGroup.Item key={user.id}>
                 <div className="name">
                     <h3>{user.name}</h3>
-                    <h4>{getHours(user.studyhour)}</h4>
                 </div>
                 <h4>{user.message}</h4>
             </ListGroup.Item>

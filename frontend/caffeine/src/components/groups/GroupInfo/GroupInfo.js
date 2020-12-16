@@ -36,7 +36,6 @@ class GroupInfo extends Component {
                     &nbsp;
                     <h2>Description: {this.props.unenrolledGroupInfo.description}</h2>
                     &nbsp;
-                    <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
                             onClick={this.onClickJoin}>Join Group</Button>
                     <Button variant="outline-dark" size="sm" id="cancel-button"

@@ -136,7 +136,7 @@ class Study extends Component {
         Jimp.read(buf, (err, image) => {
             if (err) throw err;
             else {
-              image.resize(100, 100)
+              image.resize(50, 50)
                 .quality(80)
                 .getBase64(Jimp.MIME_JPEG, (err, src) => {
                 this.props.postCapturetoServer(screenshot, src, this.props.match.params.group_id)

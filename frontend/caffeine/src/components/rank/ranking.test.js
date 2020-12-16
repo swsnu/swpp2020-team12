@@ -91,11 +91,11 @@ describe('<Rankings />', () => {
                 };
             });
         const component = mount(ranking);
-        const wrapper_click1 = component.find('#show-total-rank');
+        const wrapper_click1 = component.find('#show-total-rank').at(0);
         wrapper_click1.simulate('click');
         expect(spyGroupTotalRank).toHaveBeenCalledTimes(1);
         expect(spyUserTotalRank).toHaveBeenCalledTimes(1);
-        const wrapper_click2 = component.find('#show-day-rank');
+        const wrapper_click2 = component.find('#show-day-rank').at(0);
         wrapper_click2.simulate('click');
         expect(spyGroupDayRank).toHaveBeenCalledTimes(2);
         expect(spyUserDayRank).toHaveBeenCalledTimes(2);

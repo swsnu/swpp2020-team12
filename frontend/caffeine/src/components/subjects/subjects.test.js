@@ -226,6 +226,19 @@ describe(' <Subjects/> ', () => {
         expect(spyNewSubject).toHaveBeenCalledTimes(1)
     });
 
+    it(`should call 'onClickConfirm'2`, () => {
+        window.alert = jest.fn().mockImplementation();
+        const spyNewSubject = jest.spyOn(actionCreators, 'addSubject')
+            .mockImplementation(sub => {
+                return dispatch => {
+                };
+            });
+        const component = mount(subjects);
+        const wrapper = component.find("#confirm-new-subject-button");
+        wrapper.simulate('click');
+        expect(spyNewSubject).toHaveBeenCalledTimes(0)
+    });
+
 
     it(`should call 'onClickEdit'`, () => {
         const spyEditSubject = jest.spyOn(actionCreators, 'editSubject')

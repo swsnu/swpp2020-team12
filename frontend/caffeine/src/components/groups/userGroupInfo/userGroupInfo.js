@@ -7,10 +7,10 @@ import moment from 'moment'
 
 const UserGroupInfo=(props) => {
     const memberList=props.members.map(user=>{
-        const getHours =(duration)=>{
-            const m=moment.duration(duration);
-            return m.humanize();
-        }
+        //const getHours =(duration)=>{
+        //    const m=moment.duration(duration);
+        //    return m.humanize();
+        //}
         return(
             <ListGroup.Item key={user.id}>
                 <div className="name">

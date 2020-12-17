@@ -13,7 +13,7 @@ def formatHHmm(duration):
     sec = duration.total_seconds()
     return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
-
+@csrf_exempt
 def getMonthlydata(request, year, month):
     if request.method == 'GET':
         dailyRecord = request.user.daily_record
@@ -32,7 +32,7 @@ def getMonthlydata(request, year, month):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-
+@csrf_exempt
 def getWeeklydata(request, year, month, date):
     if request.method == 'GET':
         dailySubjectRecord = request.user.daily_subject_record
@@ -66,7 +66,7 @@ def getWeeklydata(request, year, month, date):
     else:
         return HttpResponseNotAllowed(['GET'])
 
-
+@csrf_exempt
 def getDailySubject(request, year, month, date):
     if request.method == 'GET':
         dailySubjectRecord = request.user.daily_subject_record

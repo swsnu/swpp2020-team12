@@ -234,7 +234,8 @@ describe(' <Subjects/> ', () => {
         const wrapper = component.find("#confirm-new-subject-button");
         wrapper.simulate('click');
         expect(spyNewSubject).toHaveBeenCalledTimes(1)
-    });
+    })
+
 
 
     it(`should call 'onClickEdit'`, () => {

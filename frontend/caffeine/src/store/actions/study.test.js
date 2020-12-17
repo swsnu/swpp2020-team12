@@ -33,8 +33,26 @@ describe('ActionCreators', () => {
             return new Promise((resolve, reject) => {
                 const result = {
                     status: 200,
+                    data: { subject: 'swpp', members: [{concentration_gauge: 1, user__id: 1, user__name: 'test', user__message: 'hi'}] }
                 };
                 resolve(result);
+            });
+        })
+    store.dispatch(actionCreators.startStudy({subject: "swpp", group_id: 1}))
+        .then(() => {
+            expect(spy).toHaveBeenCalledTimes(1);
+            done();
+        });
+    })
+
+    it(`'startStudy' should start study uncorrectly`, (done) => {
+        const spy = jest.spyOn(axios, 'post')
+        .mockImplementation((url, ar) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    status: 500,
+                };
+                reject(result);
             });
         })
     store.dispatch(actionCreators.startStudy({subject: "swpp", group_id: 1}))
@@ -88,6 +106,42 @@ describe('ActionCreators', () => {
         });
     })
 
+    it(`'captureOpenEye' should postcapture correctly`, (done) => {
+        const image = []
+        const id = "test"
+        const spy = jest.spyOn(axios, 'post')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+                        data: []
+                    };
+                    resolve(result);
+                });
+            })
+        store.dispatch(actionCreators.captureOpenEye()).then(() => {
+            expect(spy).toHaveBeenCalledTimes(1);
+            done();
+        });
+    });
 
+    it(`'captureCloseEye' should postcapture correctly`, (done) => {
+        const image = []
+        const id = "test"
+        const spy = jest.spyOn(axios, 'post')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+                        data: []
+                    };
+                    resolve(result);
+                });
+            })
+        store.dispatch(actionCreators.captureCloseEye()).then(() => {
+            expect(spy).toHaveBeenCalledTimes(0);
+            done();
+        });
+    });
 
 })

@@ -7,7 +7,7 @@ from .models import Subject, Days
 
 # Create your views here.
 
-
+@csrf_exempt
 def subject_list(request):
     """user의 subject"""
     if request.method == 'GET':
@@ -44,7 +44,7 @@ def subject_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-
+@csrf_exempt
 def subject_info(request, subject_id):
     """유저의 자기 subject을 클릭했을 때"""
     # if subject member에 request.user가 없다면 403

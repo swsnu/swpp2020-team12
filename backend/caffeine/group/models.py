@@ -7,7 +7,7 @@ from study.models import DailyStudyForSubject
 # Create your models here.
 
 class Group(models.Model):
-    name = models.CharField(null=False, max_length=64, unique=True)
+    name = models.CharField(null=False, max_length=64, unique=False)
     password = models.CharField(null=True, max_length=64, blank=True, default='')
     description = models.TextField(null=True, blank=True, default='')
     time = models.DurationField(default=timedelta())  # sum of all user's daily study time

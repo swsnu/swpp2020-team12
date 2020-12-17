@@ -78,10 +78,10 @@ class Groups extends Component {
     searchHandler = () => {
         this.props.SearchGroups(this.state.group_name)
     }
-    getHours = (duration) => {
-        const m = moment.duration(duration);
-        return m.humanize();
-    }
+    //getHours = (duration) => {
+    //    const m = moment.duration(duration);
+    //    return m.humanize();
+    //}
     onClickCheck=(name)=>{
         this.setState({subject: name})
     }

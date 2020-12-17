@@ -162,10 +162,12 @@ class GroupTestCase(TestCase):
     def test_search_group_info_join(self):
         client = Client()
         client.login(username='id3', password='pw3')
-        response = client.put('/api/group/search/1', {'password': ''}, content_type='application/json')
+        response = client.put('/api/group/search/1',
+            {'password': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Group.objects.filter(id=1).first().members.count(), 3)
-        response = client.put('/api/group/search/2', {'password': ''}, content_type='application/json')
+        response = client.put('/api/group/search/2',
+            {'password': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 403)
         response = client.put('/api/group/search/1', {'pass': ''}, content_type='application/json')
         self.assertEqual(response.status_code, 400)

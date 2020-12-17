@@ -132,7 +132,7 @@ const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 describe('<Study />', () => {
     let study, spygetSubjects, server;
     beforeEach(() => {
-        server = new WS("ws://localhost:8000/ws/study/", {jsonProtocol: true});
+        server = new WS("ws://localhost:8000/ws/study/1/", {jsonProtocol: true});
         jest.useFakeTimers();
         history.push('/1')
         study = (

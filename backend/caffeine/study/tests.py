@@ -194,7 +194,6 @@ class StudyTestCase(TestCase):
                 {}
             ]
         }
-        user1 = User.objects.get(username='id1')
         client = Client()
         client.login(username='id1', password='pw1')
         response = client.post('/api/study/tune/', json.dumps({
@@ -606,6 +605,8 @@ class StudyTestCase(TestCase):
                                        (study1.study_time + study1.distracted_time +
                                         timedelta(seconds=10))})
 
+
+class StudyChannelTest(TestCase):
     async def test_study_consumer_infer(self):
         application = URLRouter([
             url(r'^ws/study/(?P<room_number>[^/]+)/$', StudyConsumer.as_asgi())
@@ -613,7 +614,8 @@ class StudyTestCase(TestCase):
         communicator = WebsocketCommunicator(application, "/ws/study/1/")
         connected, _ = await communicator.connect()
         assert connected
-        await communicator.send_input({"type": "new_inference", "inference": "infer", "image": "img"})
+        await communicator.send_input({"type": "new_inference",
+            "inference": "infer", "image": "img"})
         event = await communicator.receive_output(timeout=1)
         self.assertJSONEqual(event['text'], {"inference": "infer", "image": "img"})
         await communicator.send_input({"type": "join_group", "user": "hello"})

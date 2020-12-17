@@ -106,42 +106,4 @@ describe('ActionCreators', () => {
         });
     })
 
-    it(`'captureOpenEye' should postcapture correctly`, (done) => {
-        const image = []
-        const id = "test"
-        const spy = jest.spyOn(axios, 'post')
-            .mockImplementation((url, ar) => {
-                return new Promise((resolve, reject) => {
-                    const result = {
-                        status: 200,
-                        data: []
-                    };
-                    resolve(result);
-                });
-            })
-        store.dispatch(actionCreators.captureOpenEye()).then(() => {
-            expect(spy).toHaveBeenCalledTimes(1);
-            done();
-        });
-    });
-
-    it(`'captureCloseEye' should postcapture correctly`, (done) => {
-        const image = []
-        const id = "test"
-        const spy = jest.spyOn(axios, 'post')
-            .mockImplementation((url, ar) => {
-                return new Promise((resolve, reject) => {
-                    const result = {
-                        status: 200,
-                        data: []
-                    };
-                    resolve(result);
-                });
-            })
-        store.dispatch(actionCreators.captureCloseEye()).then(() => {
-            expect(spy).toHaveBeenCalledTimes(0);
-            done();
-        });
-    });
-
 })

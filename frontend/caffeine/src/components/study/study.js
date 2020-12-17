@@ -48,7 +48,8 @@ class Study extends Component {
     componentDidMount() {
         this.setState({openEyeShow: true});
         this.props.getSubjects()
-        this.socketRef.current = new WebSocket('ws://localhost:8000/ws/study/')
+        this.socketRef.current = new WebSocket('ws://localhost:8000/ws/study/' +
+            this.props.match.params.group_id + '/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }

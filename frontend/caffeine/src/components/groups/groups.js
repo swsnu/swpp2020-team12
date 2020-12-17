@@ -8,7 +8,6 @@ import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
 import SelectSubject from '../study/selectSubject/selectSubject'
 import './groups.css'
-import moment from 'moment'
 import { Container , Row, Col, Button } from 'react-bootstrap';
 
 

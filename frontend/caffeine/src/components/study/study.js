@@ -48,7 +48,7 @@ class Study extends Component {
     componentDidMount() {
         this.setState({openEyeShow: true});
         this.props.getSubjects()
-        this.socketRef.current = new WebSocket('ws://localhost/ws/study/')
+        this.socketRef.current = new WebSocket('ws://localhost:8000/ws/study/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }
@@ -132,14 +132,11 @@ class Study extends Component {
         let shotdata = screenshot.split(',')[1];
         const buf = Buffer.from(shotdata, 'base64');
         Jimp.read(buf, (err, image) => {
-            if (err) throw err;
-            else {
               image.resize(50, 50)
                 .quality(80)
                 .getBase64(Jimp.MIME_JPEG, (err, src) => {
                 this.props.postCapturetoServer(screenshot, src, this.props.match.params.group_id)
                 })
-            }
           })
     }
 

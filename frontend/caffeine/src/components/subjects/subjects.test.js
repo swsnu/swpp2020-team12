@@ -178,6 +178,16 @@ describe(' <Subjects/> ', () => {
         expect(wrapper.length).toBe(2);
         expect(spyGetSubjects).toBeCalledTimes(1);
     });
+    it(`should change alert error with empty input`, () => {
+        const spyalert= jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(subjects);
+        const description = ''
+        const wrapperDescription = component.find('#create-subject-description-input')
+        wrapperDescription.simulate('change', {target: {value: description}});
+        const wrapper = component.find("#confirm-new-subject-button");
+        wrapper.simulate('click');
+        expect(spyalert).toBeCalledTimes(1);
+    });
 
     it(`should change create-description`, () => {
         const component = mount(subjects);

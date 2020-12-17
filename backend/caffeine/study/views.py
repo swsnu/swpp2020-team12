@@ -27,7 +27,6 @@ def calculate_ear(eye):
     horigental = math.sqrt(horigental_sum)
     return vertic / horigental
 
-@csrf_exempt
 @require_http_methods(['POST', 'PUT'])
 def study_tune(request):
     req_data = json.loads(request.body.decode())
@@ -87,7 +86,6 @@ def study_tune(request):
 
 
 # Create your views here.
-@csrf_exempt
 def study_room(request):
     if request.method == 'POST':
         req_data = json.loads(request.body.decode())
@@ -153,7 +151,6 @@ def study_room(request):
     else:
         return HttpResponseNotAllowed(['POST', 'PUT'])
 
-@csrf_exempt
 def study_infer(request):
     state = 0
     req_data = json.loads(request.body.decode())

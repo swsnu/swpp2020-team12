@@ -226,6 +226,26 @@ describe(' <Subjects/> ', () => {
         expect(spyNewSubject).toHaveBeenCalledTimes(1)
     });
 
+    it(`should alert when click 'onClickConfirm' with no name`, () => {
+        /*const spyNewSubject = jest.spyOn(actionCreators, 'addSubject')
+            .mockImplementation(sub => {
+                return dispatch => {
+                };
+            });
+
+         */
+        const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(subjects);
+        //const name = '';
+        //const wrapperName = component.find('#create-subject-name-input');
+        //wrapperName.simulate('change', {target: {value: name}});
+        //const newName = component.find(Subjects.WrappedComponent).instance();
+        //expect(newName.state.name).toEqual(name);
+        const wrapper = component.find("#confirm-new-subject-button");
+        wrapper.simulate('click');
+        expect(spyAlert).toHaveBeenCalledTimes(1)
+    });
+
 
     it(`should call 'onClickEdit'`, () => {
         const spyEditSubject = jest.spyOn(actionCreators, 'editSubject')

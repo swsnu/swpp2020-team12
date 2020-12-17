@@ -103,6 +103,7 @@ describe('<GroupInfo />', () => {
         expect(wrapper_name.length).toBe(1);
     });
 
+
     it('should goto group when click cancel button', () => {
         const spyHistoryPush = jest.spyOn(history, 'push')
             .mockImplementation(() => {

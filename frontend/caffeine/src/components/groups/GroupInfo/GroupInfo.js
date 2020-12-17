@@ -21,10 +21,10 @@ class GroupInfo extends Component {
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': password});
         }
     }
-    getHours = (duration) => {
-        const m = moment.duration(duration);
-        return m.humanize();
-    }
+    //getHours = (duration) => {
+    //    const m = moment.duration(duration);
+    //    return m.humanize();
+    //}
 
     render() {
         console.log("i'm in groupinfo page")

@@ -5,6 +5,7 @@ import {withRouter} from 'react-router';
 import * as actionCreators from '../../store/actions/index';
 import './ranking.css'
 import moment from 'moment'
+import { Button, Container, Col, Row} from "react-bootstrap"
 
 class Ranking extends Component {
     state = {
@@ -54,7 +55,7 @@ class Ranking extends Component {
         const userTable = this.props.myUserRank &&
             <tbody>
             {userList}
-            <tr>
+            <tr id="me">
                 <th scope="row">{this.props.myUserRank.rank}</th>
                 <td>{this.props.myUserRank.record.name}</td>
                 <td>{this.getHours(this.props.myUserRank.record.time)}</td>
@@ -85,8 +86,7 @@ class Ranking extends Component {
         const groupTable = this.props.myGroupRank &&
             <tbody>
             {groupList}
-            <tr>
-
+            <tr id="me">
                 <th scope="row">{this.props.myGroupRank.rank}</th>
                 <td>{this.props.myGroupRank.record.name}</td>
                 <td>{this.getHours(this.props.myGroupRank.record.time)}</td>
@@ -95,43 +95,53 @@ class Ranking extends Component {
 
 
         return (
-            <div className='Rank'>
-                <button id='show-day-rank'
-                        onClick={() => this.onChangeDuration()}
-                        disabled={this.state.dayShow}>day
-                </button>
-                <button id='show-total-rank'
-                        onClick={() => this.onChangeDuration()}
-                        disabled={!this.state.dayShow}>total
-                </button>
-                <div id="user-rank">
-                    <h1 id="user-rank-head">User Rank</h1>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">rank</th>
-                            <th scope="col">user</th>
-                            <th scope="col">time</th>
-                        </tr>
-                        </thead>
-                        {userTable}
-                    </table>
-                </div>
-
-                <h1 id="group-rank-head">Group Rank</h1>
-                {groupSelect}
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">rank</th>
-                        <th scope="col">user</th>
-                        <th scope="col">time</th>
-                    </tr>
-                    </thead>
-                    {groupTable}
-                </table>
-            </div>
-
+                <Container id="rank">
+                    <Row className="justify-content-md-center">
+                        <Button id='show-day-rank'
+                            variant="outline-dark"
+                            onClick={() => this.onChangeDuration()}
+                            disabled={this.state.dayShow}>day
+                        </Button>
+                        <Button id='show-total-rank'
+                                variant="outline-dark"
+                                onClick={() => this.onChangeDuration()}
+                                disabled={!this.state.dayShow}>total
+                        </Button>
+                    </Row>
+                    <Row>
+                        <Col><h1 id="user-rank-head">User Rank</h1></Col>
+                        <Col><h1 id="group-rank-head">Group Rank</h1>
+                        {groupSelect}</Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div id="user-rank">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">rank</th>
+                                    <th scope="col">user</th>
+                                    <th scope="col">time</th>
+                                </tr>
+                                </thead>
+                                {userTable}
+                            </table>
+                            </div>
+                        </Col>
+                        <Col>
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">rank</th>
+                                <th scope="col">user</th>
+                                <th scope="col">time</th>
+                            </tr>
+                            </thead>
+                            {groupTable}
+                        </table>
+                        </Col>
+                    </Row>
+                </Container>
         )
     }
 }

@@ -10,7 +10,7 @@ export const getGroupDayRank_ = (records) => {
 
 export const getGroupDayRank = (group_id) => {
     return dispatch => {
-        return axios.get('/rank/group/' + group_id)
+        return axios.get('/api/rank/group/' + group_id)
             .then(res => dispatch(getGroupDayRank_(res.data)));
     }
 }
@@ -24,7 +24,7 @@ export const getGroupTotalRank_ = (records) => {
 
 export const getGroupTotalRank = (group_id) => {
     return dispatch => {
-        return axios.post('/rank/group/' + group_id)
+        return axios.post('/api/rank/group/' + group_id)
             .then(res => dispatch(getGroupTotalRank_(res.data)));
     }
 }
@@ -38,7 +38,7 @@ export const getUserDayRank_ = (records) => {
 
 export const getUserDayRank = () => {
     return dispatch => {
-        return axios.get('/rank/user')
+        return axios.get('/api/rank/user')
             .then(res => dispatch(getUserDayRank_(res.data)));
     }
 }
@@ -52,7 +52,7 @@ export const getUserTotalRank_ = (records) => {
 
 export const getUserTotalRank = () => {
     return dispatch => {
-        return axios.post('/rank/user')
+        return axios.post('/api/rank/user')
             .then(res => dispatch(getUserTotalRank_(res.data)));
     }
 }

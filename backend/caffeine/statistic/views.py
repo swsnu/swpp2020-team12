@@ -13,7 +13,6 @@ def formatHHmm(duration):
     sec = duration.total_seconds()
     return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
-
 def getMonthlydata(request, year, month):
     if request.method == 'GET':
         dailyRecord = request.user.daily_record
@@ -31,7 +30,6 @@ def getMonthlydata(request, year, month):
         return JsonResponse(response_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
-
 
 def getWeeklydata(request, year, month, date):
     if request.method == 'GET':
@@ -65,7 +63,6 @@ def getWeeklydata(request, year, month, date):
         return JsonResponse(response, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
-
 
 def getDailySubject(request, year, month, date):
     if request.method == 'GET':

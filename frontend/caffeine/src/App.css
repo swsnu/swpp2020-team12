@@ -1,3 +1,9 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+#footer {
+  margin-top: auto;
 }

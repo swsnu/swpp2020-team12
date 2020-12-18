@@ -7,12 +7,13 @@ import json
 
 
 @receiver(inference_happen)
-def announce_likes(studying_info, group_id, **kwargs):
+def announce_likes(studying_info, group_id, simage, **kwargs):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         f'study{group_id}', {
             "type": "new_inference",
             "inference": studying_info,
+            "image": simage
         }
     )
 
@@ -60,8 +61,9 @@ class StudyConsumer(WebsocketConsumer):
 
     def new_inference(self, event):
         inference = event['inference']
+        image = event['image']
         # Send message to WebSocket
-        self.send(text_data=json.dumps({'inference': inference}))
+        self.send(text_data=json.dumps({'inference': inference, 'image': image}))
 
     def join_group(self, event):
         user = event['user']

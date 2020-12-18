@@ -21,11 +21,6 @@ const Group = (props) => {
                 {props.activeCount}/5 members active
             </span>
             </div>
-            <div id="studyTime"> 
-                <span id="studyTime">
-                    Average time: {props.averageHours}
-                </span>
-            </div>
             <div id="announcement">
                 {props.announcement!==''&&
                 <span id="announcement">

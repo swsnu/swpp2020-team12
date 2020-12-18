@@ -7,7 +7,6 @@ from .models import Subject, Days
 
 # Create your views here.
 
-
 def subject_list(request):
     """user의 subject"""
     if request.method == 'GET':
@@ -43,7 +42,6 @@ def subject_list(request):
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
-
 
 def subject_info(request, subject_id):
     """유저의 자기 subject을 클릭했을 때"""

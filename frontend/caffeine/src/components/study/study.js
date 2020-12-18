@@ -8,7 +8,10 @@ import moment from 'moment'
 import Studycomp from './studycomponent/studycomp'
 import './study.css'
 import SelectSubject from './selectSubject/selectSubject';
+import ProgressBar from 'react-bootstrap/ProgressBar'
 import {Container, Row, Col, Table} from 'react-bootstrap'
+import axios from "axios";
+import Jimp from 'jimp';
 
 const status_array = ['studying', 'absent', 'distracted', 'drowsy']
 
@@ -17,7 +20,9 @@ class Study extends Component {
         members: this.props.members,
         time: moment.duration(0),
         subjectShow: false,
-        subject: null
+        subject: null,
+        openEyeShow: false,
+        closeEyeShow: false,
     }
     videoConstraints = {
         width: 720,
@@ -41,39 +46,40 @@ class Study extends Component {
     };
 
     componentDidMount() {
-        this.startTimer();
+        this.setState({openEyeShow: true});
         this.props.getSubjects()
-        this.socketRef.current=new WebSocket('ws://localhost:8000')
+        this.socketRef.current = new WebSocket('ws://localhost:8000/ws/study/' +
+            this.props.match.params.group_id + '/')
         this.socketRef.current.onopen = e => {
             console.log('open', e)
         }
         this.socketRef.current.onmessage = e => {
-           const d=JSON.parse(e.data)
-           if(Object.prototype.hasOwnProperty.call(d, 'inference')){
-               const new_inf = this.state.members.find(obj => obj.user__id===d.inference.user__id)
-               new_inf.concentration_gauge=d.inference.gauge
-               const infered = this.state.members.map(obj => obj.user__id===d.inference.user__id ? new_inf : obj)
-               this.setState({members: infered})
-           }
-           else if(Object.prototype.hasOwnProperty.call(d, 'join')){
+            const d = JSON.parse(e.data)
+            if (Object.prototype.hasOwnProperty.call(d, 'inference')) {
+                const new_inf = this.state.members.find(obj => obj.user__id === d.inference.user__id)
+                new_inf.concentration_gauge = d.inference.gauge
+                new_inf.image = d.image
+                const infered = this.state.members.map(obj => obj.user__id === d.inference.user__id ? new_inf : obj)
+                this.setState({members: infered})
+            } else if (Object.prototype.hasOwnProperty.call(d, 'join')) {
                 const new_mem = {
                     user__id: d.join.user__id,
                     user__name: d.join.user__name,
                     user__message: d.join.user__message,
+                    image: null,
                     concentration_gauge: 0
                 }
                 const new_mems = [...this.state.members, new_mem]
                 this.setState({members: new_mems})
-           }
-           else if(Object.prototype.hasOwnProperty.call(d, 'leave')){
-            const leav_mems = this.state.members.filter(obj=> obj.user__id!==d.leave.user__id)
-            this.setState({members: leav_mems})
-       }
+            } else if (Object.prototype.hasOwnProperty.call(d, 'leave')) {
+                const leav_mems = this.state.members.filter(obj => obj.user__id !== d.leave.user__id)
+                this.setState({members: leav_mems})
+            }
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.currentSubject !== prevProps.currentSubject){
+        if (this.props.currentSubject !== prevProps.currentSubject) {
             console.log('this.props.currentSubject')
             this.startTimer();
         }
@@ -85,6 +91,25 @@ class Study extends Component {
         this.props.endStudy(this.props.match.params.group_id);
     }
 
+    onClickOpenEye = () => {
+        return axios.post('/api/study/tune/', {
+            image: this.webcamRef.current.getScreenshot(),
+            id: this.props.match.params.group_id
+        })
+            .then(() => this.setState({openEyeShow: false, closeEyeShow: true}))
+            .catch(() => alert("please capture again."))
+    }
+    onClickCloseEye = () => {
+        return axios.put('/api/study/tune/', {
+            image: this.webcamRef.current.getScreenshot(),
+            id: this.props.match.params.group_id
+        })
+            .then(() => {
+                this.setState({closeEyeShow: false})
+                this.startTimer()
+            })
+            .catch(() => alert("please capture again."))
+    }
     onClickEnd = () => {
         this.props.history.push('/');
     }
@@ -104,12 +129,67 @@ class Study extends Component {
             this.setState({subjectShow: false});
     }
     capture = () => {
-        this.props.postCapturetoServer(this.webcamRef.current.getScreenshot(), this.props.match.params.group_id)
+        const screenshot=this.webcamRef.current.getScreenshot();
+        let shotdata = screenshot.split(',')[1];
+        const buf = Buffer.from(shotdata, 'base64');
+        Jimp.read(buf, (err, image) => {
+              image.resize(50, 50)
+                .quality(80)
+                .getBase64(Jimp.MIME_JPEG, (err, src) => {
+                this.props.postCapturetoServer(screenshot, src, this.props.match.params.group_id)
+                })
+          })
     }
+
     render() {
-        const mem=[].concat(this.state.members)
-            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1: -1)
-            .map((m, i)=><tr key={i}><td>{i}</td><td>{m.user__name}</td><td>{(m.concentration_gauge).toFixed(3)}</td><td>{m.user__message}</td></tr>);
+        const mem = [].concat(this.state.members)
+            .sort((a, b) => a.concentration_gauge < b.concentration_gauge ? 1 : -1)
+            .map((m, i) => <tr key={i}>
+                <td>{i}</td>
+                <td>{m.user__name}</td>
+                <td><img src={m.image} /></td>
+                <td>{(m.concentration_gauge).toFixed(3)}</td>
+                <td> {m.concentration_gauge > 0.8 ?
+                    <ProgressBar striped variant="danger" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                 now={m.concentration_gauge * 100}/>
+                    : m.concentration_gauge > 0.6 ?
+                        <ProgressBar variant="warning" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/> :
+                        <ProgressBar variant="info" label={`${Math.round(m.concentration_gauge * 100)}%`} animated
+                                     now={m.concentration_gauge * 100}/>}</td>
+                <td>{m.user__message}</td>
+            </tr>);
+        console.log(this.state.openEyeShow, this.state.closeEyeShow)
+        const tuneModel =
+            !this.webcamRef.current ? <div>wait until your camera is on...</div> :
+                this.state.openEyeShow ?
+                    <button id='open-eye' onClick={this.onClickOpenEye}>
+                        open your eyes and click this button</button> :
+                    this.state.closeEyeShow ?
+                        <button id='close-eye' onClick={this.onClickCloseEye}>
+                            close your eyes and click this button</button> :
+                        <div>
+                            <SelectSubject
+                                show={this.state.subjectShow}
+                                handleSubjectShow={this.handleSubjectShow}
+                                mySubjectList={this.props.subjectList}
+                                subject={this.state.subject}
+                                onClickCheck={this.onClickCheck}
+                                onClickChoose={this.onClickChoose}
+                            />
+                            <button id='change-subject-button' onClick={() => this.setState({subjectShow: true})}>Change
+                                Subject
+                            </button>
+                            <button id='end-study-button' onClick={this.onClickEnd}>End</button>
+                            <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
+                            <Studycomp
+                                name={this.props.username.name}
+                                state={this.props.status !== null ? status_array[this.props.status] : 'We believe you are studying'}
+                                rate={this.props.gauge !== null ? this.props.gauge : 1}
+                            />
+                        </div>
+
+
         return (
             <Container>
                 <Row>
@@ -117,46 +197,31 @@ class Study extends Component {
                 </Row>
                 <Row>
                     <Col>
-                    <Webcam
+                        <Webcam
                             className='user_webcam'
                             audio={false}
-                            height={360}
+                            height={540}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={720}
+                            width={540}
                             videoConstraints={this.videoConstraints}
                         />
-                        <SelectSubject
-                            show={this.state.subjectShow}
-                            handleSubjectShow={this.handleSubjectShow}
-                            mySubjectList={this.props.subjectList}
-                            subject={this.state.subject}
-                            onClickCheck={this.onClickCheck}
-                            onClickChoose={this.onClickChoose}
-                        />
-                        <button id='change-subject-button' onClick={() => this.setState({subjectShow: true})}>Change
-                            Subject
-                        </button>
-                        <button id='end-study-button' onClick={this.onClickEnd}>End</button>
-                        <p>{moment().hour(0).minute(0).second(this.state.time.asSeconds()).format("HH:mm:ss")}</p>
-                        <Studycomp
-                            name={this.props.username.name}
-                            state={this.props.status !== null ? status_array[this.props.status] : 'We believe you are studying'}
-                            rate={this.props.gauge !== null ? this.props.gauge : 1}
-                        />
+                        {tuneModel}
                     </Col>
                     <Col>
                         <Table striped bordered hover>
                             <thead>
-                                <tr>
+                            <tr>
                                 <th>#</th>
                                 <th>name</th>
-                                <th>gauge</th>
+                                <th>image</th>
+                                <th>concentration</th>
+                                <th>gauge-bar</th>
                                 <th>message</th>
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody>
-                                {mem}
+                            {mem}
                             </tbody>
                         </Table>
                     </Col>
@@ -179,8 +244,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        postCapturetoServer: (image, group_id) =>
-            dispatch(actionCreators.postCapturetoServer(image, group_id)),
+        //captureOpenEye: (image, group_id) =>
+        //    dispatch(actionCreators.captureOpenEye(image, group_id)),
+        //captureCloseEye: (image, group_id) =>
+        //    dispatch(actionCreators.captureCloseEye(image, group_id)),
+        postCapturetoServer: (image, simage, group_id) =>
+            dispatch(actionCreators.postCapturetoServer(image, simage, group_id)),
         endStudy: (group_id) =>
             dispatch(actionCreators.endStudy(group_id)),
         getSubjects: () =>

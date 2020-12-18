@@ -97,6 +97,30 @@ describe('ActionCreators', () => {
           done();
         });
     });
+
+    it(`'addGroup' should post group correctly`, (done) => {
+        const stubnewgroup={
+            author_id: 1,
+            title: 'test',
+            content: 'testcontent',
+        };
+        const spy = jest.spyOn(axios, 'post')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 500,
+                        data: stubnewgroup
+                    };
+                    reject(result);
+                });
+            })
+    
+        store.dispatch(actionCreators.addGroup(stubnewgroup)).then(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
     it(`'deleteGroup' should delete group correctly`, (done) => {
         const spy = jest.spyOn(axios, 'delete')
             .mockImplementation(url => {
@@ -142,6 +166,33 @@ describe('ActionCreators', () => {
         });
     });
 
+    it(`'joinGroup' should join group uncorrectly`, (done) => {
+        const spy = jest.spyOn(axios, 'put')
+            .mockImplementation((url, ar)=> {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 500,
+                        data: {
+                            name: "text",
+                            time: 'P0DT10H42M00S',
+                            description: "hi",
+                            members: [1,2,3]
+                        },
+                    };
+                    reject(result);
+                });
+        })
+        store.dispatch(actionCreators.joinGroup({
+                            name: "text",
+                            time: 'P0DT10H42M00S',
+                            description: "hi",
+                            members: [1,2,3]
+                        })).then(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
     it(`'getunEnrolled' should join group correctly`, (done) => {
         const spy = jest.spyOn(axios, 'get')
             .mockImplementation((url, ar)=> {
@@ -151,6 +202,23 @@ describe('ActionCreators', () => {
                         data: [1,2,3,4]
                     };
                     resolve(result);
+                });
+        })
+        store.dispatch(actionCreators.getunEnrolled(1)).then(() => {
+          expect(spy).toHaveBeenCalledTimes(1);
+          done();
+        });
+    });
+
+    it(`'getunEnrolled' should join group uncorrectly`, (done) => {
+        const spy = jest.spyOn(axios, 'get')
+            .mockImplementation((url, ar)=> {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 500,
+                        data: [1,2,3,4]
+                    };
+                    reject(result);
                 });
         })
         store.dispatch(actionCreators.getunEnrolled(1)).then(() => {

@@ -7,7 +7,7 @@ export const getSubjects_ = (subjects) => {
 }
 export const getSubjects = () => {
     return dispatch => {
-        return axios.get('/subject/')
+        return axios.get('/api/subject/')
             .then(res => dispatch(getSubjects_(res.data)));
     }
 }
@@ -17,7 +17,7 @@ export const getSubject_ = (subject) => {
 }
 export const getSubject = (subject_id) => {
     return dispatch => {
-        return axios.get('/subject/' + subject_id)
+        return axios.get('/api/subject/' + subject_id)
             .then(res => dispatch(getSubject_(res.data)));
     }
 }
@@ -27,7 +27,7 @@ export const deleteSubject_ = (subject_id) => {
 }
 export const deleteSubject = (subject_id) => {
     return dispatch => {
-        return axios.delete('/subject/' + subject_id)
+        return axios.delete('/api/subject/' + subject_id)
             .then(() => dispatch(deleteSubject_(subject_id)));
     }
 }
@@ -44,7 +44,7 @@ export const addSubject_ = (subject) => {
 }
 export const addSubject = (data) => {
     return dispatch => {
-        return axios.post('/subject/', data)
+        return axios.post('/api/subject/', data)
             .then(res => dispatch(addSubject_(res.data)));
     }
 }
@@ -61,7 +61,7 @@ export const editSubject_ = (subject) => {  //TODO: 이거 바꿔야할듯?
 }
 export const editSubject = (data) => {
     return dispatch => {
-        return axios.put('/subject/' + data.id, data)
+        return axios.put('/api/subject/' + data.id, data)
             .then(res => dispatch(editSubject_(res.data)));
     }
 }

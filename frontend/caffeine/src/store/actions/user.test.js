@@ -68,7 +68,7 @@ describe('ActionCreators', () => {
     });
 
 
-    it(`'signup' should signin correctly`, (done) => {
+    it(`'signup' should signup correctly`, (done) => {
         window.alert = jest.fn().mockImplementation();
         const spy = jest.spyOn(axios, 'post')
             .mockImplementation((url, ar) => {
@@ -78,6 +78,24 @@ describe('ActionCreators', () => {
                         data: stubUser,
                     };
                     resolve(result);
+                });
+            })
+        store.dispatch(actionCreators.signup()).then(() => {
+            expect(spy).toHaveBeenCalledTimes(1);
+            done();
+        });
+    });
+
+    it(`'signup' should signup uncorrectly`, (done) => {
+        window.alert = jest.fn().mockImplementation();
+        const spy = jest.spyOn(axios, 'post')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 500,
+                        data: stubUser,
+                    };
+                    reject(result);
                 });
             })
         store.dispatch(actionCreators.signup()).then(() => {

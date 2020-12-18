@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import * as actionCreators from '../../../store/actions/index';
 import Button from 'react-bootstrap/Button'
-import moment from "moment";
 import './GroupInfo.css'
 
 class GroupInfo extends Component {
@@ -21,10 +20,10 @@ class GroupInfo extends Component {
             this.props.joinGroup({'id': this.props.unenrolledGroupInfo.id, 'password': password});
         }
     }
-    getHours = (duration) => {
-        const m = moment.duration(duration);
-        return m.humanize();
-    }
+    //getHours = (duration) => {
+    //    const m = moment.duration(duration);
+    //    return m.humanize();
+    //}
 
     render() {
         console.log("i'm in groupinfo page")
@@ -36,7 +35,6 @@ class GroupInfo extends Component {
                     &nbsp;
                     <h2>Description: {this.props.unenrolledGroupInfo.description}</h2>
                     &nbsp;
-                    <h2>Average Study Time: {this.getHours(this.props.unenrolledGroupInfo.time)}</h2>
                     <Button variant="outline-dark" size="sm" id="join-group-button"
                             onClick={this.onClickJoin}>Join Group</Button>
                     <Button variant="outline-dark" size="sm" id="cancel-button"

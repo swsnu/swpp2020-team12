@@ -23,12 +23,13 @@ SECRET_KEY = '=-g%30li8p%n-w26e_&j=_6_3^c-2yhm1^)8ooje)669k48sj2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-CSRF_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 #SECURE_SSL_REDIRECT = True
 #SESSION_COOKIE_SECURE = True
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '50.16.8.104']
 ALLOWED_HOSTS = ['*']
-
+#ALLOWED_HOSTS = ['50.16.8.104', 'ec2-50-16-8-104.compute-1.amazonaws.com',
+#                 'caffeine-camera.shop', 'localhost', "'caffeine'@'%'"]
 
 # Application definition
 
@@ -89,6 +90,7 @@ DATABASES = {
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -118,6 +120,7 @@ DATABASES = {
    #     },
    # }
 }
+"""
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -129,7 +132,7 @@ CACHES = {
         }
     }
 }
-"""
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -155,11 +158,11 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Seoul'
 
-USE_I18N = True
+#USE_I18N = True
 
-USE_L10N = True
+#USE_L10N = True
 
-USE_TZ = True
+#USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

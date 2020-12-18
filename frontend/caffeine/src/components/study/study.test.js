@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, {createRef} from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {Route, Router, Switch} from 'react-router-dom';
 import Study from './study';
 import thunk from 'redux-thunk';
+import Webcam from 'react-webcam'
 import * as actionSubjects from '../../store/actions/subjects';
 import * as actionStudy from '../../store/actions/study';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
@@ -12,7 +13,15 @@ import {createBrowserHistory} from 'history';
 import moment from 'moment'
 import * as actionTypes from '../../store/actions/actionTypes'
 import WS from "jest-websocket-mock";
+import axios from "axios";
 
+const webcam = jest.genMockFromModule('react-webcam');
+
+Webcam.prototype.getScreenshot = function () {
+    return 'img,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+};
+
+jest.mock('react-webcam');
 jest.mock('./selectSubject/selectSubject', () => {
     return jest.fn(props => {
         const subjects = props.mySubjectList.map(subject => {
@@ -61,9 +70,10 @@ const stubstudylState = {
     status: null,
     gauge: null,
     subject: 'test2',
-    memberlist:[
-        {user__id: 1, user__name: 'test', concentration_gauge: 0.5, user__message:"testing"},
-        {user__id: 2, user__name: 'test2', concentration_gauge: 0.7, user__message:"testing"}
+    memberlist: [
+        {user__id: 1, user__name: 'test', concentration_gauge: 0.5, user__message: "testing"},
+        {user__id: 2, user__name: 'test2', concentration_gauge: 0.7, user__message: "testing"},
+        {user__id: 3, user__name: 'test3', concentration_gauge: 0.9, user__message: "testing"}
     ]
 };
 const stubsubjectState = {
@@ -107,6 +117,7 @@ const getMockUserReducer = jest.fn(
         return state;
     }
 );
+
 const mockStudyReducer = getMockStudyReducer(stubstudylState);
 const mockSubjectReducer = getMockSubjectReducer(stubsubjectState);
 const mockUserReducer = getMockSubjectReducer(stubUserState);
@@ -121,7 +132,7 @@ const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 describe('<Study />', () => {
     let study, spygetSubjects, server;
     beforeEach(() => {
-        server = new WS("ws://localhost:8000", { jsonProtocol: true });
+        server = new WS("ws://localhost:8000/ws/study/1/", {jsonProtocol: true});
         jest.useFakeTimers();
         history.push('/1')
         study = (
@@ -138,6 +149,25 @@ describe('<Study />', () => {
                 return dispatch => {
                 };
             });
+        jest.spyOn(axios, 'post')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+
+                    };
+                    resolve(result);
+                });
+            })
+        jest.spyOn(axios, 'put')
+            .mockImplementation((url, ar) => {
+                return new Promise((resolve, reject) => {
+                    const result = {
+                        status: 200,
+                    };
+                    resolve(result);
+                });
+            })
     })
     afterEach(() => {
         jest.clearAllMocks();
@@ -145,19 +175,27 @@ describe('<Study />', () => {
     });
     it('should update if inference data is come from ws', () => {
         const component = mount(study);
-        setTimeout(() =>{
+        setTimeout(() => {
             server.connected;
         }, 10);
         jest.runOnlyPendingTimers();
-        server.send({inference:{user__id:1, gauge: 0.3}})
-        server.send({join:{user__id:3, user__name: 'test3', user__message:"testing"}})
-        server.send({leave:{user__id:2}})
+        server.send({inference: {user__id: 1, gauge: 0.3}})
+        server.send({join: {user__id: 3, user__name: 'test3', user__message: "testing"}})
+        server.send({join: {user__id: 3, user__name: 'test3', user__message: "testing"}})
+        server.send({join: {user__id: 4, user__name: 'test4', user__message: "testing"}})
+        server.send({leave: {user__id: 3}})
         server.send({})
         component.unmount();
     });
-    it('should render Study', () => {
+    it('should render Study', async () => {
         console.log = jest.fn();
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
+        //await component.find('#close-eye').simulate('click');
+
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('Webcam')
         expect(wrapper.length).toBe(1);
@@ -169,28 +207,80 @@ describe('<Study />', () => {
         component.unmount();
         expect(componentWillUnmount).toHaveBeenCalled();
     });
-    it('should render change time', () => {
+    it('should render show error open', async () => {
+        const spypot = jest.spyOn(axios, 'post')
+        .mockImplementation((url, ar) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    status: 400,
+                };
+                reject(result);
+            });
+        })
+        const spyalert= jest.spyOn(window, 'alert').mockImplementation(() => {});
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        await component.update();
+        expect(spyalert).toBeCalledTimes(1);
+        component.unmount();
+    });
+    it('should render show error close', async () => {
+        const spypot = jest.spyOn(axios, 'put')
+        .mockImplementation((url, ar) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    status: 400,
+                };
+                reject(result);
+            });
+        })
+        const spyalert= jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        await component.update();
+        await component.find('#close-eye').simulate('click');
+        await component.update();
+        expect(spyalert).toBeCalledTimes(1);
+        component.unmount();
+    });
+    it('should render change time', async () => {
+        const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let newstudyinstance = component.find(Study.WrappedComponent).instance();
         expect(newstudyinstance.state.time.seconds()).toEqual(1);
         component.unmount();
     });
-    it('should render take picuture at 10seconds and post it to server', () => {
+    it('should render take picture at 10seconds and post it to server', async () => {
         const spypost = jest.spyOn(actionStudy, 'postCapturetoServer')
             .mockImplementation(() => {
                 return dispatch => {
                 };
             });
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
+        await Promise.resolve();
+        let newInstance = component.find(Study.WrappedComponent).instance();
+        expect(newInstance.state.closeEyeShow).toEqual(false);
         jest.advanceTimersByTime(12000);
         let newstudyinstance = component.find(Study.WrappedComponent).instance();
         expect(newstudyinstance.state.time.seconds()).toEqual(12);
+        await Promise.resolve();
         expect(spypost).toBeCalledTimes(1);
         component.unmount();
     });
-    it('should change modal show satate when click button', () => {
+    it('should change modal show state when click button', async () => {
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#change-subject-button')
         wrapper.simulate('click')
@@ -200,8 +290,12 @@ describe('<Study />', () => {
         expect(wrapper.length).toBe(1);
         component.unmount();
     });
-    it('should exit modal when click button', () => {
+    it('should exit modal when click button', async () => {
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#change-subject-button')
         wrapper.simulate('click')
@@ -212,8 +306,12 @@ describe('<Study />', () => {
         expect(newstudyinstance.state.subjectShow).toBe(false);
         component.unmount();
     });
-    it('should change subject in state if new subject is clicked', () => {
+    it('should change subject in state if new subject is clicked', async () => {
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#change-subject-button')
         wrapper.simulate('click');
@@ -228,7 +326,7 @@ describe('<Study />', () => {
         expect(newstudyinstance.state.subject).toBe('test1');
         component.unmount();
     });
-    it('should restart study when new subject is clicked', () => {
+    it('should restart study when new subject is clicked', async () => {
         const mockaction = (subject) => {
             return {type: actionTypes.CHANGE_SUBJECT, subject: subject}
         };
@@ -239,6 +337,10 @@ describe('<Study />', () => {
                 };
             });
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#change-subject-button')
         wrapper.simulate('click');
@@ -253,13 +355,17 @@ describe('<Study />', () => {
         expect(newstudyinstance.state.subjectShow).toBe(false);
         component.unmount();
     });
-    it('should restart study only when new subject is clicked', () => {
+    it('should restart study only when new subject is clicked', async () => {
         const spychangesubject = jest.spyOn(actionStudy, 'changeSubject')
             .mockImplementation(() => {
                 return dispatch => {
                 };
             });
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#change-subject-button')
         wrapper.simulate('click');
@@ -273,7 +379,7 @@ describe('<Study />', () => {
         expect(newstudyinstance.state.time.seconds()).toBe(1);
         component.unmount();
     });
-    it('should call endstudy and redirected to mainpage', () => {
+    it('should call endstudy and redirected to mainpage', async () => {
         const spyendstudy = jest.spyOn(actionStudy, 'endStudy')
             .mockImplementation(() => {
                 return dispatch => {
@@ -283,6 +389,11 @@ describe('<Study />', () => {
             .mockImplementation(path => {
             });
         const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        component.update();
+        await component.find('#close-eye').simulate('click');
+        component.update();
+
         jest.advanceTimersByTime(1000);
         let wrapper = component.find('#end-study-button')
         wrapper.simulate('click');

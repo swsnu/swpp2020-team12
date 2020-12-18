@@ -3,19 +3,17 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button' 
-import moment from 'moment'
 
 const UserGroupInfo=(props) => {
     const memberList=props.members.map(user=>{
-        const getHours =(duration)=>{
-            const m=moment.duration(duration);
-            return m.humanize();
-        }
+        //const getHours =(duration)=>{
+        //    const m=moment.duration(duration);
+        //    return m.humanize();
+        //}
         return(
             <ListGroup.Item key={user.id}>
                 <div className="name">
                     <h3>{user.name}</h3>
-                    <h4>{getHours(user.studyhour)}</h4>
                 </div>
                 <h4>{user.message}</h4>
             </ListGroup.Item>

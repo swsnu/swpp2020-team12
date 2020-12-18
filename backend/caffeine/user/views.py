@@ -5,7 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from .models import User
 
-
 @ensure_csrf_cookie
 @csrf_exempt
 def sign_up(request):
@@ -33,12 +32,11 @@ def sign_in(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'user': user.name}, status=204)
+            return JsonResponse({'user': user.name}, status=200)
         else:
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['POST'])
-
 
 def sign_out(request):
     if request.method == 'GET':
@@ -48,7 +46,6 @@ def sign_out(request):
         return HttpResponse(status=204)
     else:
         return HttpResponseNotAllowed(['GET'])
-
 
 def get_user(request):
     if request.method == 'GET':

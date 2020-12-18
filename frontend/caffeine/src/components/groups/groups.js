@@ -8,7 +8,6 @@ import UserGroupInfo from './userGroupInfo/userGroupInfo'
 import CreateGroup from './createGroup/createGroup'
 import SelectSubject from '../study/selectSubject/selectSubject'
 import './groups.css'
-import moment from 'moment'
 import { Container , Row, Col, Button } from 'react-bootstrap';
 
 
@@ -78,10 +77,10 @@ class Groups extends Component {
     searchHandler = () => {
         this.props.SearchGroups(this.state.group_name)
     }
-    getHours = (duration) => {
-        const m = moment.duration(duration);
-        return m.humanize();
-    }
+    //getHours = (duration) => {
+    //    const m = moment.duration(duration);
+    //    return m.humanize();
+    //}
     onClickCheck=(name)=>{
         this.setState({subject: name})
     }
@@ -96,7 +95,6 @@ class Groups extends Component {
                     key={group.id}
                     name={group.name}
                     members={group.members.length}
-                    averageHours={this.getHours(group.time)}
                     announcement={group.description}
                     activeCount={group.active_count}
                     clickDetail={() => this.clickGroupHandler(group)}
@@ -116,7 +114,7 @@ class Groups extends Component {
                 <Row>
                     <Col id='left-col'>
                         <span id="head">I &apos;m in...</span>
-                        <Button id='create-group-button' onClick={() => this.setState({
+                        <Button id='create-group-button' variant="outline-dark" onClick={() => this.setState({
                             createShow: true,
                             group_name: '',
                             name: '',
@@ -128,7 +126,7 @@ class Groups extends Component {
                     <Col>
                         <input type='text' id='group-search-input' value={this.state.group_name} placeholder="Find groups"
                             onChange={(e) => this.setState({group_name: e.target.value})}/>
-                        <Button id='group-search-button' onClick={this.searchHandler}>Search</Button>
+                        <Button id='group-search-button' variant="outline-dark" onClick={this.searchHandler}>Search</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -149,7 +147,7 @@ class Groups extends Component {
                         show={this.state.subjectShow}
                         mySubjectList={this.props.subjectList}
                         subject={this.state.subject}
-                        handleSubjectshow={this.onSubjectShow}
+                        handleSubjectShow={this.onSubjectShow}
                         onClickCheck={this.onClickCheck}
                         onClickChoose={this.onClickChoose}
                     />

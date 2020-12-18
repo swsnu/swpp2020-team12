@@ -38,7 +38,7 @@ class SubjectTestCase(TestCase):
     def test_get_subjects(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.get('/subject/')
+        response = client.get('/api/subject/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [{'id': 1,
                                             'name': 'subject1',
@@ -59,7 +59,7 @@ class SubjectTestCase(TestCase):
     def test_post_subjects(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.post('/subject/', json.dumps({
+        response = client.post('/api/subject/', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
             'days': [{'day': 2, 'end_time': '18:00:00',
                       'start_time': '15:00:00'}]
@@ -77,7 +77,7 @@ class SubjectTestCase(TestCase):
     def test_get_subject(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.get('/subject/1')
+        response = client.get('/api/subject/1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'id': 1,
                                            'name': 'subject1',
@@ -91,7 +91,7 @@ class SubjectTestCase(TestCase):
     def test_edit_subject(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.put('/subject/1', json.dumps({
+        response = client.put('/api/subject/1', json.dumps({
             'description': 'test_descript', 'name': 'test_subject',
             'days': [{'day': 2, 'end_time': '13:00:00',
                       'start_time': '15:00:00'}]}), content_type='application/json')
@@ -106,5 +106,5 @@ class SubjectTestCase(TestCase):
     def test_delete_subject(self):
         client = Client()
         client.login(username='id1', password='pw1')
-        response = client.delete('/subject/1')
+        response = client.delete('/api/subject/1')
         self.assertEqual(response.status_code, 200)

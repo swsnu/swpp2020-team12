@@ -6,7 +6,6 @@ from .models import Group, StudyRoom
 
 
 # Create your views here.
-
 def user_group_list(request):
     """user가 속한 그룹"""
     if request.method == 'GET':
@@ -15,7 +14,7 @@ def user_group_list(request):
         for group in groups:
             member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
                            for member in group.members.iterator()]
-            active_count = StudyRoom(group=group).active_studys.count()
+            active_count = StudyRoom.objects.get(group=group).active_studys.count()
             response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
                                   'description': group.description, 'members': member_list,
                                   'active_count': active_count})
@@ -42,7 +41,6 @@ def user_group_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-
 def user_group_info(request, group_id):
     """유저의 자기 그룹을 클릭했을 때"""
     # if group member에 request.user가 없다면 403
@@ -65,7 +63,6 @@ def user_group_info(request, group_id):
         return HttpResponse(status=200)
     else:
         return HttpResponseNotAllowed(['GET', 'DELETE'])
-
 
 def search_group_info(request, group_id):
     """검색 -> 그룹 클릭.

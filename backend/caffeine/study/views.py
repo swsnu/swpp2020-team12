@@ -6,6 +6,7 @@ from json import JSONDecodeError
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from .models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from .signals import inference_happen, join_group, leave_group
 from user.models import User
@@ -25,6 +26,63 @@ def calculate_ear(eye):
     vertic = math.sqrt(vertcal_sum)
     horigental = math.sqrt(horigental_sum)
     return vertic / horigental
+
+@require_http_methods(['POST', 'PUT'])
+def study_tune(request):
+    req_data = json.loads(request.body.decode())
+    user = User.objects.get(id=request.user.id)
+    img = req_data['image']
+    api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
+    key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
+    api_url += key
+    if img is None:
+        return HttpResponse(status=400)
+    image = img.split(',')[1]
+    _features = [{
+        "type": "FACE_DETECTION",
+        "maxResults": 1
+    }
+    ]
+    _features_label = [{
+        "type": "LABEL_DETECTION",
+        "maxResults": 10
+    },
+    ]
+    _image = {
+        'content': image
+    }
+    data = {
+        "requests": [{
+            'image': _image,
+            'features': [_features]
+        }
+        ]
+    }
+    response = requests.post(api_url, json=data)
+    # print(response_label.json()['responses'])
+    response = response.json()
+    if response['responses'][0] == {}:  # 얼굴이 없을 때
+        return HttpResponse(status=400)
+    else:
+        face = response['responses'][0]['faceAnnotations'][0]
+        landmarks = face['landmarks']
+        left = {}
+        right = {}
+        for i in range(4):
+            left[rot[i]] = landmarks[16 + i]['position']
+            right[rot[i]] = landmarks[20 + i]['position']
+        left_ear = calculate_ear(left)
+        right_ear = calculate_ear(right)
+        if request.method == 'POST':  # open
+            user.open_eye_left = left_ear
+            user.open_eye_right = right_ear
+            user.save()
+            return HttpResponse(status=204)
+        else:  # close
+            user.close_eye_left = left_ear
+            user.close_eye_right = right_ear
+            user.save()
+            return HttpResponse(status=204)
 
 
 # Create your views here.
@@ -91,14 +149,16 @@ def study_room(request):
             )
         return HttpResponse(status=200)
     else:
-        return HttpResponseNotAllowed(['GET', 'DELETE'])
-
+        return HttpResponseNotAllowed(['POST', 'PUT'])
 
 def study_infer(request):
     state = 0
     req_data = json.loads(request.body.decode())
     img = req_data['image']
+    simage = req_data['simage']
     group_id = req_data['id']
+    eye_data = User.objects.filter(id=request.user.id).values('open_eye_left',
+                'close_eye_left', 'open_eye_right', 'close_eye_right')[0]
     api_url = 'https://vision.googleapis.com/v1/images:annotate?key='
     key = 'AIzaSyC4Q4MCBS78pxzDk0dJCM6uAGoKMs866RM'
     api_url += key
@@ -149,8 +209,11 @@ def study_infer(request):
             left_ear = calculate_ear(left)
             right_ear = calculate_ear(right)
             ear = (left_ear + right_ear) / 2.0
-            print(ear)
-            if ear < 0.4:
+            print("ear: ", ear)
+            threshold = (eye_data['open_eye_left'] + eye_data['open_eye_right']) / 2.0 * 0.2 + \
+                        (eye_data['close_eye_left'] + eye_data['close_eye_right']) / 2.0 * 0.8
+            print(f"eye_data: {eye_data}, threshold: {threshold}")
+            if ear < threshold:
                 state = 3
             else:
                 labels = response_label.json()['responses'][0]['labelAnnotations']
@@ -179,7 +242,7 @@ def study_infer(request):
     inference_happen.send(sender='study_infer', studying_info={
         'user__id': request.user.id,
         'gauge': current_study.concentration_gauge,
-    }, group_id=group_id)
+    }, simage=simage, group_id=group_id)
 
     return JsonResponse({'status': state,
                          'gauge': current_study.concentration_gauge},

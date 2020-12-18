@@ -9,6 +9,8 @@ export {
 } from './groups';
 
 export{
+    captureOpenEye,
+    captureCloseEye,
     postCapturetoServer,
     startStudy,
     endStudy,

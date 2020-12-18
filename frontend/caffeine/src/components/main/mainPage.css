@@ -17,10 +17,20 @@ span[id="logo_text"] {
 
 div[id="Main"]{
     margin-top:100px;
+    height: 75vh;
 }
 
 #body {
     margin: 15px;
     font-size: 30px;
+}
+
+#study-button {
+    width: 240px;
+    height: 150px;
+    border-radius: 30px;
+    font-size: 50px;
+    font-weight: bold;
+    border-width: 5px;
 }
 

@@ -19,13 +19,13 @@ class UserTestCase(TestCase):
     def test_signup(self):
         client = Client()
         #        client.login(username='id1', password='pw1')
-        response = client.post('/user/signup', json.dumps({
+        response = client.post('/api/user/signup', json.dumps({
             'username': 'test_user',
             'name': 'test_name',
             'password': 'test_pw', 'message': 'test_message'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 201)
-        response = client.put('/user/signup', json.dumps({
+        response = client.put('/api/user/signup', json.dumps({
             'username': 'test_user',
             'name': 'test_name',
             'password': 'test_pw', 'message': 'test_message'}),
@@ -34,34 +34,36 @@ class UserTestCase(TestCase):
 
     def test_signin(self):
         client = Client()
-        response = client.post('/user/signin', json.dumps({'username': 'test_user',
+        response = client.post('/api/user/signin', json.dumps({'username': 'test_user',
                                                            'password': 'test_pw'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 401)
-        response = client.post('/user/signin', json.dumps({'username': 'id1', 'password': 'pw1'}),
-                               content_type='application/json')
-        self.assertEqual(response.status_code, 204)
-        response = client.put('/user/signin', json.dumps({'username': 'id1', 'password': 'pw1'}),
+        response = client.post('/api/user/signin',
+                        json.dumps({'username': 'id1', 'password': 'pw1'}),
+                            content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        response = client.put('/api/user/signin',
+                        json.dumps({'username': 'id1', 'password': 'pw1'}),
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)
 
     def test_signout(self):
         client = Client()
-        response = client.get('/user/signout')
+        response = client.get('/api/user/signout')
         self.assertEqual(response.status_code, 401)
         client.login(username='id1', password='pw1')
-        response = client.get('/user/signout')
+        response = client.get('/api/user/signout')
         self.assertEqual(response.status_code, 204)
-        response = client.put('/user/signout')
+        response = client.put('/api/user/signout')
         self.assertEqual(response.status_code, 405)
 
     def test_getUser(self):
         client = Client()
-        response = client.get('/user/')
+        response = client.get('/api/user/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'isLoggedIn': False})
         client.login(username='id1', password='pw1')
-        response = client.get('/user/')
+        response = client.get('/api/user/')
         self.assertEqual(response.status_code, 200)
-        response = client.put('/user/')
+        response = client.put('/api/user/')
         self.assertEqual(response.status_code, 405)

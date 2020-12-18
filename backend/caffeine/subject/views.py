@@ -1,9 +1,9 @@
 import json
 from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from .models import Subject, Days
-from django.core.cache import cache
 
 
 # Create your views here.
@@ -17,10 +17,12 @@ def subject_list(request):
             subjects = [subject for subject in Subject.objects.filter(user=request.user)]
             response_dict = list()
             for subject in subjects:
-                day_list = [{'day': day.day, 'start_time': day.start_time,
-                             'end_time': day.end_time} for day in subject.days.iterator()]
-                response_dict.append({'id': subject.id, 'name': subject.name, 'user': subject.user.id,
-                                      'description': subject.description, 'days': day_list})
+                day_list = [{
+                    'day': day.day, 'start_time': day.start_time,
+                    'end_time': day.end_time} for day in subject.days.iterator()]
+                response_dict.append({
+                    'id': subject.id, 'name': subject.name, 'user': subject.user.id,
+                    'description': subject.description, 'days': day_list})
             cache.set('subject-{}'.format(request.user.id), response_dict)
         return JsonResponse(response_dict, safe=False)
     if request.method == 'POST':

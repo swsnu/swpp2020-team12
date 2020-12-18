@@ -3,10 +3,11 @@ from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum, Q
 from django.db.models.functions import Coalesce
+from django.core.cache import cache
 from study.models import DailyStudyRecord, DailyStudyForSubject, Concentration
 from user.models import User
 from group.models import Group
-from django.core.cache import cache
+
 
 def user_rank(request):
     """get: 그 user 의 rank를 돌려줌, post: 전"""

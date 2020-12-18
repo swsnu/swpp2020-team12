@@ -2,8 +2,9 @@ import json
 from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Group, StudyRoom
 from django.core.cache import cache
+from .models import Group, StudyRoom
+
 
 # Create your views here.
 def user_group_list(request):

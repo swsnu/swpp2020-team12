@@ -37,6 +37,7 @@ AUTH_USER_MODEL = 'user.User'
 
 INSTALLED_APPS = [
     'channels',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -132,6 +133,9 @@ CACHES = {
         }
     }
 }
+
+SESSION_ENGINE='django.contrib.sessions.backends.cache'
+SESSION_ENGINE_ALIAS='default'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

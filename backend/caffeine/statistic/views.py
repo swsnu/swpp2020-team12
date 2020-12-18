@@ -4,46 +4,56 @@ from datetime import datetime, timedelta
 from json import JSONDecodeError
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from user.models import User
 from study.models import DailyStudyForSubject, DailyStudyRecord, Concentration
+
 
 
 def formatHHmm(duration):
     sec = duration.total_seconds()
     return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
+
 def getMonthlydata(request, year, month):
     if request.method == 'GET':
-        dailyRecord = request.user.daily_record
-        response_list = [
-            {'date': dailyRecord.date,
-             'count':
-                 math.ceil((
-                               dailyRecord.total_concentration).total_seconds() /
-                           dailyRecord.total_study_time.total_seconds() * 4)
-             }
-            for dailyRecord in dailyRecord.iterator() if
-            (str(dailyRecord.date.year) + str(dailyRecord.date.month)) ==
-            (str(year) + str(month + 1))
-        ]
+        response_list = cache.get(f'statistics{year}{month}{request.user.id}')
+        if not response_list:
+            dailyRecord = request.user.daily_record
+            response_list = [
+                {'date': dailyRecord.date,
+                 'count':
+                     math.ceil((
+                                   dailyRecord.total_concentration).total_seconds() /
+                               dailyRecord.total_study_time.total_seconds() * 4)
+                 }
+                for dailyRecord in dailyRecord.iterator() if
+                (str(dailyRecord.date.year) + str(dailyRecord.date.month)) ==
+                (str(year) + str(month + 1))
+            ]
+            cache.set(f'statistics{year}{month}{request.user.id}', response_list)
         return JsonResponse(response_list, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
 def getWeeklydata(request, year, month, date):
     if request.method == 'GET':
-        dailySubjectRecord = request.user.daily_subject_record
-        data_list = [
-            {'date': dailySubjectRecord.date,
-             'subject': dailySubjectRecord.subject,
-             'study_time': dailySubjectRecord.study_time,
-             'distracted_time': dailySubjectRecord.distracted_time
-             }
-            for dailySubjectRecord in dailySubjectRecord.iterator() if
-            dailySubjectRecord.date.year == year and
-            dailySubjectRecord.date.month == month + 1 and
-            6 >= (date - dailySubjectRecord.date.day) >= 0]
+        data_list = cache.get(f'statistics{year}{month}date{date}{request.user.id}')
+        if not data_list:
+            dailySubjectRecord = request.user.daily_subject_record
+            data_list = [
+                {'date': dailySubjectRecord.date,
+                 'subject': dailySubjectRecord.subject,
+                 'study_time': dailySubjectRecord.study_time,
+                 'distracted_time': dailySubjectRecord.distracted_time
+                 }
+                for dailySubjectRecord in dailySubjectRecord.iterator() if
+                dailySubjectRecord.date.year == year and
+                dailySubjectRecord.date.month == month + 1 and
+                6 >= (date - dailySubjectRecord.date.day) >= 0]
+            cache.set(f'statistics{year}{month}date{date}{request.user.id}', data_list)
         total = timedelta(0)
         study_time = timedelta(0)
         result_list = []
@@ -64,21 +74,26 @@ def getWeeklydata(request, year, month, date):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
 def getDailySubject(request, year, month, date):
     if request.method == 'GET':
-        dailySubjectRecord = request.user.daily_subject_record
-        data_list = [
-            {'date': dailySubjectRecord.date,
-             'subject': dailySubjectRecord.subject,
-             'start_time': dailySubjectRecord.start_time,
-             'end_time': dailySubjectRecord.end_time,
-             'study_time': dailySubjectRecord.study_time,
-             'distracted_time': dailySubjectRecord.distracted_time
-             }
-            for dailySubjectRecord in dailySubjectRecord.iterator() if
-            dailySubjectRecord.date.year == year and
-            dailySubjectRecord.date.month == month + 1 and
-            dailySubjectRecord.date.day == date]
+        data_list = cache.get(f'statistics{year}{month}date{date}subject{request.user.id}')
+        if not data_list:
+            dailySubjectRecord = request.user.daily_subject_record
+            data_list = [
+                {'date': dailySubjectRecord.date,
+                 'subject': dailySubjectRecord.subject,
+                 'start_time': dailySubjectRecord.start_time,
+                 'end_time': dailySubjectRecord.end_time,
+                 'study_time': dailySubjectRecord.study_time,
+                 'distracted_time': dailySubjectRecord.distracted_time
+                 }
+                for dailySubjectRecord in dailySubjectRecord.iterator() if
+                dailySubjectRecord.date.year == year and
+                dailySubjectRecord.date.month == month + 1 and
+                dailySubjectRecord.date.day == date]
+            cache.set(f'statistics{year}{month}date{date}subject{request.user.id}', data_list)
+
         total = timedelta(0)
         study_time = timedelta(0)
         result_list = []

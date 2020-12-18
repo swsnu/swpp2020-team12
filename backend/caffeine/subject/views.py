@@ -1,22 +1,29 @@
 import json
 from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
+from django.core.cache import cache
 from django.views.decorators.csrf import csrf_exempt
 from .models import Subject, Days
 
 
 # Create your views here.
 
+
 def subject_list(request):
     """user의 subject"""
     if request.method == 'GET':
-        subjects = [subject for subject in Subject.objects.filter(user=request.user)]
-        response_dict = list()
-        for subject in subjects:
-            day_list = [{'day': day.day, 'start_time': day.start_time,
-                         'end_time': day.end_time} for day in subject.days.iterator()]
-            response_dict.append({'id': subject.id, 'name': subject.name, 'user': subject.user.id,
-                                  'description': subject.description, 'days': day_list})
+        response_dict = cache.get('subject-{}'.format(request.user.id))
+        if not response_dict:
+            subjects = [subject for subject in Subject.objects.filter(user=request.user)]
+            response_dict = list()
+            for subject in subjects:
+                day_list = [{
+                    'day': day.day, 'start_time': day.start_time,
+                    'end_time': day.end_time} for day in subject.days.iterator()]
+                response_dict.append({
+                    'id': subject.id, 'name': subject.name, 'user': subject.user.id,
+                    'description': subject.description, 'days': day_list})
+            cache.set('subject-{}'.format(request.user.id), response_dict)
         return JsonResponse(response_dict, safe=False)
     if request.method == 'POST':
         try:
@@ -42,6 +49,7 @@ def subject_list(request):
         return JsonResponse(response_dict, status=201)
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
+
 
 def subject_info(request, subject_id):
     """유저의 자기 subject을 클릭했을 때"""

@@ -12,16 +12,6 @@ export const postCapturetoServer = (image, simage, id) =>{
             .then(res => dispatch(postCapturetoServer_(res.data)));
     } 
 }
-export const captureOpenEye = (image, id) =>{
-    return dispatch =>{
-        return axios.post('/api/study/tune/', {image: image, id: id})
-    }
-}
-export const captureCloseEye = (image, id) =>{
-    return dispatch =>{
-        return axios.put('/api/study/tune/', {image: image, id: id})
-    }
-}
 
 export const startStudy_ = (data) =>{
     return { type: actionTypes.START_STUDY, subject: data.subject, members: data.members};

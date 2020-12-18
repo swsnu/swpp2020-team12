@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import * as actionCreators from '../../../store/actions/index';
 import Button from 'react-bootstrap/Button'
-import moment from "moment";
 import './GroupInfo.css'
 
 class GroupInfo extends Component {

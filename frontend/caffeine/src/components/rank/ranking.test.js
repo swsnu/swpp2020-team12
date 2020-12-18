@@ -107,6 +107,23 @@ describe('<Rankings />', () => {
         wrapper.simulate('change', {target: {value: group_id}});
         const newInstance = component.find(Ranking.WrappedComponent).instance();
         expect(newInstance.state.selectedGroupId).toEqual(group_id);
+
+    });
+    it(`should change call total rank of group click 'ChangeGroup'`, () => {
+        const spyUserTotalRank = jest.spyOn(actionCreators, 'getUserTotalRank')
+        .mockImplementation(() => {
+            return () => {
+            };
+        });
+        const component = mount(ranking);
+        const wrapper_click1 = component.find('#show-total-rank').at(0);
+        wrapper_click1.simulate('click');
+        const wrapper = component.find('#group-select');
+        let group_id=1;
+        wrapper.simulate('change', {target: {value: group_id}});
+        const newInstance = component.find(Ranking.WrappedComponent).instance();
+        expect(newInstance.state.selectedGroupId).toEqual(group_id);
+        expect(spyUserTotalRank).toHaveBeenCalledTimes(1);
     });
 });
     

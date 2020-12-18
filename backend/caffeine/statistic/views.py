@@ -15,7 +15,6 @@ def formatHHmm(duration):
     return '%02d:%02d' % (int((sec / 3600) % 3600), int((sec / 60) % 60))
 
 
-@csrf_exempt
 def getMonthlydata(request, year, month):
     if request.method == 'GET':
         response_list = cache.get(f'statistics{year}{month}{request.user.id}')
@@ -38,7 +37,6 @@ def getMonthlydata(request, year, month):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def getWeeklydata(request, year, month, date):
     if request.method == 'GET':
         data_list = cache.get(f'statistics{year}{month}date{date}{request.user.id}')
@@ -76,20 +74,19 @@ def getWeeklydata(request, year, month, date):
         return HttpResponseNotAllowed(['GET'])
 
 
-@csrf_exempt
 def getDailySubject(request, year, month, date):
     if request.method == 'GET':
-        data_list=cache.get(f'statistics{year}{month}date{date}subject{request.user.id}')
+        data_list = cache.get(f'statistics{year}{month}date{date}subject{request.user.id}')
         if not data_list:
             dailySubjectRecord = request.user.daily_subject_record
             data_list = [
                 {'date': dailySubjectRecord.date,
-                'subject': dailySubjectRecord.subject,
-                'start_time': dailySubjectRecord.start_time,
-                'end_time': dailySubjectRecord.end_time,
-                'study_time': dailySubjectRecord.study_time,
-                'distracted_time': dailySubjectRecord.distracted_time
-                }
+                 'subject': dailySubjectRecord.subject,
+                 'start_time': dailySubjectRecord.start_time,
+                 'end_time': dailySubjectRecord.end_time,
+                 'study_time': dailySubjectRecord.study_time,
+                 'distracted_time': dailySubjectRecord.distracted_time
+                 }
                 for dailySubjectRecord in dailySubjectRecord.iterator() if
                 dailySubjectRecord.date.year == year and
                 dailySubjectRecord.date.month == month + 1 and

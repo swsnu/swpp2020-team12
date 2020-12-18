@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, {createRef} from 'react';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {Route, Router, Switch} from 'react-router-dom';
@@ -15,6 +15,13 @@ import * as actionTypes from '../../store/actions/actionTypes'
 import WS from "jest-websocket-mock";
 import axios from "axios";
 
+const webcam = jest.genMockFromModule('react-webcam');
+
+Webcam.prototype.getScreenshot = function () {
+    return 'img,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+};
+
+jest.mock('react-webcam');
 jest.mock('./selectSubject/selectSubject', () => {
     return jest.fn(props => {
         const subjects = props.mySubjectList.map(subject => {
@@ -65,7 +72,8 @@ const stubstudylState = {
     subject: 'test2',
     memberlist: [
         {user__id: 1, user__name: 'test', concentration_gauge: 0.5, user__message: "testing"},
-        {user__id: 2, user__name: 'test2', concentration_gauge: 0.7, user__message: "testing"}
+        {user__id: 2, user__name: 'test2', concentration_gauge: 0.7, user__message: "testing"},
+        {user__id: 3, user__name: 'test3', concentration_gauge: 0.9, user__message: "testing"}
     ]
 };
 const stubsubjectState = {
@@ -124,7 +132,7 @@ const mockStore = createStore(rootReducer, applyMiddleware(thunk));
 describe('<Study />', () => {
     let study, spygetSubjects, server;
     beforeEach(() => {
-        server = new WS("ws://localhost:8000", {jsonProtocol: true});
+        server = new WS("ws://localhost:8000/ws/study/1/", {jsonProtocol: true});
         jest.useFakeTimers();
         history.push('/1')
         study = (
@@ -173,7 +181,9 @@ describe('<Study />', () => {
         jest.runOnlyPendingTimers();
         server.send({inference: {user__id: 1, gauge: 0.3}})
         server.send({join: {user__id: 3, user__name: 'test3', user__message: "testing"}})
-        server.send({leave: {user__id: 2}})
+        server.send({join: {user__id: 3, user__name: 'test3', user__message: "testing"}})
+        server.send({join: {user__id: 4, user__name: 'test4', user__message: "testing"}})
+        server.send({leave: {user__id: 3}})
         server.send({})
         component.unmount();
     });
@@ -197,6 +207,42 @@ describe('<Study />', () => {
         component.unmount();
         expect(componentWillUnmount).toHaveBeenCalled();
     });
+    it('should render show error open', async () => {
+        const spypot = jest.spyOn(axios, 'post')
+        .mockImplementation((url, ar) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    status: 400,
+                };
+                reject(result);
+            });
+        })
+        const spyalert= jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        await component.update();
+        expect(spyalert).toBeCalledTimes(1);
+        component.unmount();
+    });
+    it('should render show error close', async () => {
+        const spypot = jest.spyOn(axios, 'put')
+        .mockImplementation((url, ar) => {
+            return new Promise((resolve, reject) => {
+                const result = {
+                    status: 400,
+                };
+                reject(result);
+            });
+        })
+        const spyalert= jest.spyOn(window, 'alert').mockImplementation(() => {});
+        const component = mount(study);
+        await component.find('#open-eye').simulate('click');
+        await component.update();
+        await component.find('#close-eye').simulate('click');
+        await component.update();
+        expect(spyalert).toBeCalledTimes(1);
+        component.unmount();
+    });
     it('should render change time', async () => {
         const component = mount(study);
         await component.find('#open-eye').simulate('click');
@@ -214,10 +260,6 @@ describe('<Study />', () => {
                 return dispatch => {
                 };
             });
-        /*const spy = jest.spyOn(Webcam, 'getScreenshot')
-            .mockImplementation(url => {
-                return 'img,DBJBJKSNDOQ'
-            })*/
         const component = mount(study);
         await component.find('#open-eye').simulate('click');
         component.update();
@@ -229,6 +271,7 @@ describe('<Study />', () => {
         jest.advanceTimersByTime(12000);
         let newstudyinstance = component.find(Study.WrappedComponent).instance();
         expect(newstudyinstance.state.time.seconds()).toEqual(12);
+        await Promise.resolve();
         expect(spypost).toBeCalledTimes(1);
         component.unmount();
     });

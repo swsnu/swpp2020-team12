@@ -5,10 +5,10 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Subject, Days
 from django.core.cache import cache
 
+
 # Create your views here.
 
 
-@csrf_exempt
 def subject_list(request):
     """user의 subject"""
     if request.method == 'GET':
@@ -18,9 +18,9 @@ def subject_list(request):
             response_dict = list()
             for subject in subjects:
                 day_list = [{'day': day.day, 'start_time': day.start_time,
-                         'end_time': day.end_time} for day in subject.days.iterator()]
+                             'end_time': day.end_time} for day in subject.days.iterator()]
                 response_dict.append({'id': subject.id, 'name': subject.name, 'user': subject.user.id,
-                                  'description': subject.description, 'days': day_list})
+                                      'description': subject.description, 'days': day_list})
             cache.set('subject-{}'.format(request.user.id), response_dict)
         return JsonResponse(response_dict, safe=False)
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def subject_list(request):
     else:
         return HttpResponseNotAllowed(['GET', 'POST'])
 
-@csrf_exempt
+
 def subject_info(request, subject_id):
     """유저의 자기 subject을 클릭했을 때"""
     # if subject member에 request.user가 없다면 403

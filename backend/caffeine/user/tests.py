@@ -38,10 +38,12 @@ class UserTestCase(TestCase):
                                                            'password': 'test_pw'}),
                                content_type='application/json')
         self.assertEqual(response.status_code, 401)
-        response = client.post('/api/user/signin', json.dumps({'username': 'id1', 'password': 'pw1'}),
-                               content_type='application/json')
+        response = client.post('/api/user/signin',
+                        json.dumps({'username': 'id1', 'password': 'pw1'}),
+                            content_type='application/json')
         self.assertEqual(response.status_code, 200)
-        response = client.put('/api/user/signin', json.dumps({'username': 'id1', 'password': 'pw1'}),
+        response = client.put('/api/user/signin',
+                        json.dumps({'username': 'id1', 'password': 'pw1'}),
                               content_type='application/json')
         self.assertEqual(response.status_code, 405)
 

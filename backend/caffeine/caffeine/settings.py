@@ -37,6 +37,7 @@ AUTH_USER_MODEL = 'user.User'
 
 INSTALLED_APPS = [
     'channels',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'caffeine.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -120,7 +121,7 @@ DATABASES = {
    #     },
    # }
 }
-"""
+
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -132,6 +133,9 @@ CACHES = {
         }
     }
 }
+
+SESSION_ENGINE='django.contrib.sessions.backends.cache'
+SESSION_ENGINE_ALIAS='default'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

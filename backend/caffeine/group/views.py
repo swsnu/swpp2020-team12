@@ -3,22 +3,25 @@ from json import JSONDecodeError
 from django.http import HttpResponse, HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Group, StudyRoom
-
+from django.core.cache import cache
 
 # Create your views here.
 @csrf_exempt
 def user_group_list(request):
     """user가 속한 그룹"""
     if request.method == 'GET':
-        groups = [group for group in Group.objects.filter(members__id=request.user.id)]
-        response_dict = list()
-        for group in groups:
-            member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
-                           for member in group.members.iterator()]
-            active_count = StudyRoom.objects.get(group=group).active_studys.count()
-            response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
-                                  'description': group.description, 'members': member_list,
-                                  'active_count': active_count})
+        response_dict = cache.get('group-{}'.format(request.user.id))
+        if not response_dict:
+            groups = [group for group in Group.objects.filter(members__id=request.user.id)]
+            response_dict = list()
+            for group in groups:
+                member_list = [{'id': member.id, 'name': member.name, 'message': member.message}
+                               for member in group.members.iterator()]
+                active_count = StudyRoom.objects.get(group=group).active_studys.count()
+                response_dict.append({'id': group.id, 'name': group.name, 'time': group.time,
+                                      'description': group.description, 'members': member_list,
+                                      'active_count': active_count})
+            cache.set('group-{}'.format(request.user.id), response_dict)
         return JsonResponse(response_dict, safe=False)
     elif request.method == 'POST':
         try:
